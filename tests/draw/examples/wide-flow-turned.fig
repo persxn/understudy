@@ -1,0 +1,12 @@
+title: The test cycle
+kind: flow
+dir: right
+box a: decide the question
+box b: write the task
+box c: run the session quietly
+box d: take notes of what happened
+box e: write one finding
+a -> b
+b -> c
+c -> d
+d -> e

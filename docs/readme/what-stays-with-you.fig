@@ -1,0 +1,13 @@
+title: What stays on your machine
+kind: flow
+dir: down
+box pro: a month with a subscription\nthe agent writes, reviews, tutors
+store book: book/\nchapters, figures, reading page
+store priv: private/\nlevels, practice record, RESUME.md
+box off: a month without\nread, practise, pick up the note
+pro -> book: writes
+pro -> priv: records
+book -> off
+priv -> off
+off ..> pro: back: say one sentence
+hot: book priv

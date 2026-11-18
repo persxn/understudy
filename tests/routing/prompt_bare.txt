@@ -1,0 +1,78 @@
+You are simulating ONE step of a coding-agent harness: deciding which skill to load first for a user message.
+Below is everything the harness puts in front of the model before any skill is loaded. Do not read any files; decide only from this text.
+For each numbered user message, choose the ONE skill that should be loaded first, or "none" if no skill should be loaded.
+Treat each message as the first message of its own session.
+Write your answer as a JSON object mapping the message number (as a string) to the skill name or "none", and save it to the file path given at the end. Reply with only the word DONE.
+
+=== AVAILABLE SKILLS (name: description) ===
+- us-build: Project client and reviewer; never writes the learner's code. Use when the learner wants to build, code, implement or deploy something themselves, needs a project, is stuck on their own project, wants its code, plan, schema or design reviewed, brings an app or repository to understand or rebuild, wants to study or contribute to an open-source project, runs a security or cloud lab, or should break and repair what they built.
+- us-compete: Algorithms and contest coach. Use when the learner practises data structures and algorithms problems or competitive programming, wants problems chosen, a contest solution reviewed or debugged, a contest reviewed or upsolved, or asks about their rating. Not for first learning an algorithm's chapter (us-teach).
+- us-design: System-design coach and interviewer. Use when the learner wants to practise designing a system or architecture, have a hand-drawn design reviewed, do a mock system-design or technical interview, or look at their past interview results. Not for the plan of their own real project (us-build).
+- us-draw: Draws a diagram for the learner's book as an SVG: a flow, layers, a tree, a sequence of messages, memory boxes, pointers or an array layout. Use when the learner asks for a diagram, picture, figure or drawing of something they are studying, when a chapter being written needs a picture, or to fix or restyle a figure. Not for charts of data or interface designs.
+- us-map: Plans a book and the learner's route. Maps a subject into parts, chapters and sections in learning order. Use when a goal needs a subject that has no book yet, when the learner asks for a roadmap, syllabus, contents page, prerequisites or learning order, when a route must be rebuilt, fitted to a deadline or merged with a second goal, or when a new topic must be placed in a book. Not for writing chapters (us-write).
+- us-review: Flaw-finder and repairer for the learner's book. Use when the learner asks to review, audit, proofread or check chapters, reports a mistake in the book or a place where it lost them, or when a chapter has just been written. Not for writing new chapters (us-write).
+- us-start: Entry point and guide. Use first in any session where the learner greets, starts or resumes, states or changes what they want to learn or become, asks about their progress, asks what to learn next, plans their week, or when book/ or private/ is missing. Not for studying a topic (us-teach) or ordering a subject's topics (us-map).
+- us-teach: Tutor. Use when the learner wants to learn, study, understand or be taught a topic, continue a lesson, ask a question about something they are studying, be quizzed, tested or checked for a level, revise, or says they already know something. Not for their own projects (us-build), design practice (us-design) or contest problems (us-compete).
+- us-write: Writes chapters of the learner's book. Use when the learner asks for a chapter, a book, notes or a written explanation to keep, wants several chapters or a whole book written, wants a section added or a chapter updated, wants a cheat sheet, a printable copy, or notes made from their own lectures or slides, or when a lesson needs a chapter that is not written yet. Not for explaining in conversation (us-teach).
+
+=== USER MESSAGES ===
+1. hey
+2. I want to become a backend engineer in about 8 months
+3. teach me docker
+4. where was I?
+5. how am I doing overall?
+6. what should I pick up after this?
+7. plan my week, I have exams on wednesday and thursday
+8. actually I'd rather aim for ML engineering now
+9. give me a roadmap for learning Kubernetes
+10. what do I need to know before I start Kubernetes?
+11. I only have 6 weeks till placement season, redo my route
+12. I'm already following a YouTube playlist for DSA, can you fit that into the plan?
+13. write me the chapter on virtual memory
+14. can I get proper notes on the TCP handshake that I can keep?
+15. the processes chapter looks outdated, some commands changed
+16. make a cheat sheet for the processes chapter
+17. explain how a process differs from a thread
+18. let's continue yesterday's lesson
+19. quiz me on signals
+20. I already know git well, mark it done
+21. I think I'm ready for level 2 on processes, test me
+22. can we revise the stuff from last month?
+23. why does kill -9 not let the program clean up?
+24. I want to build a URL shortener myself
+25. my rate limiter lets a 6th request through, I've been stuck for 40 minutes
+26. can you just write the Dockerfile for my lap project?
+27. here's a GitHub repo I like, help me understand how it works so I can rebuild it
+28. review my code for the lap project
+29. let's do the break-it exercise on the app I deployed
+30. set up a lab so I can practise SQL injection on my own VM
+31. design Twitter's home feed with me
+32. mock interview me for system design
+33. here's a photo of the architecture I drew for a chat app, tear it apart
+34. how did my last few interviews go, any pattern?
+35. give me 3 problems on binary search around 1400 rating
+36. I'm getting wrong answer on test 7 of this Codeforces problem, here's my code
+37. did yesterday's Div 2, solved A to C, help me upsolve D
+38. what's my rating trend?
+39. rename the variable foo to bar in scripts/us_lib.py
+40. what time is it in Tokyo right now?
+41. fix the failing test in my company's repo at ~/work/api, it's not one of my learning projects
+42. commit and push the book repo
+43. convert this CSV to JSON for me
+44. scan my college's wifi network for open ports
+45. I want to get into pentesting
+46. explain binary search to me
+47. help me pick my lap project
+48. I want to study how Redis is implemented internally
+49. can you check the chapters I've written so far for mistakes
+50. do the weekly review of my book
+51. proofread the processes chapter before I study it
+52. audit my whole operating systems section
+53. draw me a diagram of how fork and exec work
+54. can I get a picture of the TCP handshake for my notes
+55. the memory layout figure in the processes chapter is cramped, fix it
+56. here are my professor's OS slides, turn them into notes for my book
+57. review my pull request for the todo app I'm building
+58. draw a bar chart of my monthly expenses
+59. make the diagrams in my book use blue instead of green
+60. is the binary search chapter correct? I don't trust the part about overflow

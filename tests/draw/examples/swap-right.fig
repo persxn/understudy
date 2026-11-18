@@ -1,0 +1,7 @@
+title: swap gets two addresses and writes through them
+frame swap: swap's frame (`int *a, int *b`)
+vars: a=1000@3000 b=1004@3008 temp=3@3016 | shade=temp
+frame main: main's frame
+vars: x=7@1000 y=3@1004 | hot=x,y
+ptr a -> x: writes 7
+ptr b -> y: writes 3

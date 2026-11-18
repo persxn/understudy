@@ -1,0 +1,3 @@
+title: p holds 1000, and 1000 leads to x
+vars: p=1000@2000 x=5@1000
+ptr p -> x

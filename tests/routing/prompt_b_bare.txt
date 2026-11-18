@@ -1,0 +1,56 @@
+You are simulating ONE step of a coding-agent harness: deciding which skill to load first for a user message.
+Below is everything the harness puts in front of the model before any skill is loaded. Do not read any files; decide only from this text.
+For each numbered user message, choose the ONE skill that should be loaded first, or "none" if no skill should be loaded.
+Treat each message as the first message of its own session.
+Write your answer as a JSON object mapping the message number (as a string) to the skill name or "none", and save it to the file path given at the end. Reply with only the word DONE.
+
+=== AVAILABLE SKILLS (name: description) ===
+- us-build: Project client and reviewer; never writes the learner's code. Use when the learner wants to build, code, implement or deploy something themselves, needs a project, is stuck on their own project, wants its code, plan, schema or design reviewed, brings an app or repository to understand or rebuild, wants to study or contribute to an open-source project, runs a security or cloud lab, or should break and repair what they built.
+- us-compete: Algorithms and contest coach. Use when the learner practises data structures and algorithms problems or competitive programming, wants problems chosen, a contest solution reviewed or debugged, a contest reviewed or upsolved, or asks about their rating. Not for first learning an algorithm's chapter (us-teach).
+- us-design: System-design coach and interviewer. Use when the learner wants to practise designing a system or architecture, have a hand-drawn design reviewed, do a mock system-design or technical interview, or look at their past interview results. Not for the plan of their own real project (us-build).
+- us-draw: Draws a diagram for the learner's book as an SVG: a flow, layers, a tree, a sequence of messages, memory boxes, pointers or an array layout. Use when the learner asks for a diagram, picture, figure or drawing of something they are studying, when a chapter being written needs a picture, or to fix or restyle a figure. Not for charts of data or interface designs.
+- us-map: Plans a book and the learner's route. Maps a subject into parts, chapters and sections in learning order. Use when a goal needs a subject that has no book yet, when the learner asks for a roadmap, syllabus, contents page, prerequisites or learning order, when a route must be rebuilt, fitted to a deadline or merged with a second goal, or when a new topic must be placed in a book. Not for writing chapters (us-write).
+- us-review: Flaw-finder and repairer for the learner's book. Use when the learner asks to review, audit, proofread or check chapters, reports a mistake in the book or a place where it lost them, or when a chapter has just been written. Not for writing new chapters (us-write).
+- us-start: Entry point and guide. Use first in any session where the learner greets, starts or resumes, states or changes what they want to learn or become, asks about their progress, asks what to learn next, plans their week, or when book/ or private/ is missing. Not for studying a topic (us-teach) or ordering a subject's topics (us-map).
+- us-teach: Tutor. Use when the learner wants to learn, study, understand or be taught a topic, continue a lesson, ask a question about something they are studying, be quizzed, tested or checked for a level, revise, or says they already know something. Not for their own projects (us-build), design practice (us-design) or contest problems (us-compete).
+- us-write: Writes chapters of the learner's book. Use when the learner asks for a chapter, a book, notes or a written explanation to keep, wants several chapters or a whole book written, wants a section added or a chapter updated, wants a cheat sheet, a printable copy, or notes made from their own lectures or slides, or when a lesson needs a chapter that is not written yet. Not for explaining in conversation (us-teach).
+
+=== USER MESSAGES ===
+1. bhai processes wala chapter samajh nahi aaya, dobara samjhao
+2. ugh I keep forgetting what a zombie process is
+3. can you write a binary search function for me, I need it in my contest template
+4. what does the -f flag in ps actually do
+5. add a section on zombie processes to my processes chapter
+6. there's a typo in the processes chapter, part 1, fix it
+7. what did we leave off my route on purpose?
+8. I failed my interview yesterday, the design round killed me. help me get better at that
+9. time me: 2 hours, 5 problems, go
+10. I want to contribute to an open-source project
+11. summarise this PDF for me
+12. debug this stack trace from my internship's codebase, it's work, not study
+13. why is my lap project failing CI
+14. hack my neighbour's router
+15. I drew the database schema for my lap project, review it
+16. ask me system design questions for an hour
+17. what's a segment tree?
+18. solve this codeforces problem for me
+19. switch my public progress card on
+20. I have 30 minutes, what should I do right now?
+21. print the operating systems book as one file
+22. placements start january 10, set that as my deadline
+23. good morning!
+24. I don't want to do cloud projects, I only want to learn SQL
+25. am I at level 3 on pointers yet?
+26. what's the capital of Australia?
+27. my app got slow after I added caching, here's my code, what's wrong?
+28. which topics do I need before I can understand containers?
+29. I read the chapter, now give me the exercises
+30. refactor scripts/us_index.py to use pathlib
+31. yaar mere chapters ek baar check kar do, galtiyan hongi
+32. ek diagram bana do process tree ka
+33. sketch how a request goes from browser to database
+34. my slides from DBMS class are in ~/dbms.pdf, make chapter notes from them
+35. go over everything written this week and fix what's wrong
+36. review my system design for the url shortener
+37. design a logo for my startup
+38. can you visualise the heap after each insert

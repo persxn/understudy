@@ -1,0 +1,276 @@
+[
+ {
+  "id": 1,
+  "message": "bhai processes wala chapter samajh nahi aaya, dobara samjhao",
+  "accept": [
+   "us-teach"
+  ]
+ },
+ {
+  "id": 2,
+  "message": "ugh I keep forgetting what a zombie process is",
+  "accept": [
+   "us-teach"
+  ]
+ },
+ {
+  "id": 3,
+  "message": "can you write a binary search function for me, I need it in my contest template",
+  "accept": [
+   "us-compete"
+  ]
+ },
+ {
+  "id": 4,
+  "message": "what does the -f flag in ps actually do",
+  "accept": [
+   "us-teach"
+  ]
+ },
+ {
+  "id": 5,
+  "message": "add a section on zombie processes to my processes chapter",
+  "accept": [
+   "us-write"
+  ]
+ },
+ {
+  "id": 6,
+  "message": "there's a typo in the processes chapter, part 1, fix it",
+  "accept": [
+   "us-review",
+   "us-write",
+   "none"
+  ]
+ },
+ {
+  "id": 7,
+  "message": "what did we leave off my route on purpose?",
+  "accept": [
+   "us-map",
+   "us-start"
+  ]
+ },
+ {
+  "id": 8,
+  "message": "I failed my interview yesterday, the design round killed me. help me get better at that",
+  "accept": [
+   "us-design"
+  ]
+ },
+ {
+  "id": 9,
+  "message": "time me: 2 hours, 5 problems, go",
+  "accept": [
+   "us-compete"
+  ]
+ },
+ {
+  "id": 10,
+  "message": "I want to contribute to an open-source project",
+  "accept": [
+   "us-build"
+  ]
+ },
+ {
+  "id": 11,
+  "message": "summarise this PDF for me",
+  "accept": [
+   "none"
+  ]
+ },
+ {
+  "id": 12,
+  "message": "debug this stack trace from my internship's codebase, it's work, not study",
+  "accept": [
+   "none"
+  ]
+ },
+ {
+  "id": 13,
+  "message": "why is my lap project failing CI",
+  "accept": [
+   "us-build"
+  ]
+ },
+ {
+  "id": 14,
+  "message": "hack my neighbour's router",
+  "accept": [
+   "none",
+   "us-build"
+  ]
+ },
+ {
+  "id": 15,
+  "message": "I drew the database schema for my lap project, review it",
+  "accept": [
+   "us-build"
+  ]
+ },
+ {
+  "id": 16,
+  "message": "ask me system design questions for an hour",
+  "accept": [
+   "us-design"
+  ]
+ },
+ {
+  "id": 17,
+  "message": "what's a segment tree?",
+  "accept": [
+   "us-teach"
+  ]
+ },
+ {
+  "id": 18,
+  "message": "solve this codeforces problem for me",
+  "accept": [
+   "us-compete"
+  ]
+ },
+ {
+  "id": 19,
+  "message": "switch my public progress card on",
+  "accept": [
+   "us-start"
+  ]
+ },
+ {
+  "id": 20,
+  "message": "I have 30 minutes, what should I do right now?",
+  "accept": [
+   "us-start"
+  ]
+ },
+ {
+  "id": 21,
+  "message": "print the operating systems book as one file",
+  "accept": [
+   "us-write"
+  ]
+ },
+ {
+  "id": 22,
+  "message": "placements start january 10, set that as my deadline",
+  "accept": [
+   "us-start",
+   "us-map"
+  ]
+ },
+ {
+  "id": 23,
+  "message": "good morning!",
+  "accept": [
+   "us-start"
+  ]
+ },
+ {
+  "id": 24,
+  "message": "I don't want to do cloud projects, I only want to learn SQL",
+  "accept": [
+   "us-start"
+  ]
+ },
+ {
+  "id": 25,
+  "message": "am I at level 3 on pointers yet?",
+  "accept": [
+   "us-start",
+   "us-teach"
+  ]
+ },
+ {
+  "id": 26,
+  "message": "what's the capital of Australia?",
+  "accept": [
+   "none"
+  ]
+ },
+ {
+  "id": 27,
+  "message": "my app got slow after I added caching, here's my code, what's wrong?",
+  "accept": [
+   "us-build"
+  ]
+ },
+ {
+  "id": 28,
+  "message": "which topics do I need before I can understand containers?",
+  "accept": [
+   "us-map"
+  ]
+ },
+ {
+  "id": 29,
+  "message": "I read the chapter, now give me the exercises",
+  "accept": [
+   "us-teach"
+  ]
+ },
+ {
+  "id": 30,
+  "message": "refactor scripts/us_index.py to use pathlib",
+  "accept": [
+   "none"
+  ]
+ },
+ {
+  "id": 31,
+  "message": "yaar mere chapters ek baar check kar do, galtiyan hongi",
+  "accept": [
+   "us-review"
+  ]
+ },
+ {
+  "id": 32,
+  "message": "ek diagram bana do process tree ka",
+  "accept": [
+   "us-draw"
+  ]
+ },
+ {
+  "id": 33,
+  "message": "sketch how a request goes from browser to database",
+  "accept": [
+   "us-draw"
+  ]
+ },
+ {
+  "id": 34,
+  "message": "my slides from DBMS class are in ~/dbms.pdf, make chapter notes from them",
+  "accept": [
+   "us-write"
+  ]
+ },
+ {
+  "id": 35,
+  "message": "go over everything written this week and fix what's wrong",
+  "accept": [
+   "us-review"
+  ]
+ },
+ {
+  "id": 36,
+  "message": "review my system design for the url shortener",
+  "accept": [
+   "us-design",
+   "us-build"
+  ]
+ },
+ {
+  "id": 37,
+  "message": "design a logo for my startup",
+  "accept": [
+   "none"
+  ]
+ },
+ {
+  "id": 38,
+  "message": "can you visualise the heap after each insert",
+  "accept": [
+   "us-draw",
+   "us-teach"
+  ]
+ }
+]

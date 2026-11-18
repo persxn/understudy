@@ -1,0 +1,12 @@
+title: Where a running C program keeps things
+layer stack: Stack @ high addresses
+in stack: frame = `main`'s frame; local = local variables of the function now running
+layer heap: Heap
+in heap: blk = `malloc` block; free = free space
+layer data: Data\nsegment
+in data: glob = globals
+layer text: Text @ low addresses
+in text: code = machine code
+local ..> blk: points into
+hot: local
+shade: free

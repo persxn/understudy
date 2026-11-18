@@ -1,0 +1,6 @@
+title: fill gets the address of one element, not a copy of the array
+frame fill: `fill`'s frame, which holds an address and a count but none of the ints themselves
+vars: p=1008@3000 n=2@3008 | shade=n
+frame main: `main`'s frame:\nowns the array
+row a: 1 2 3 4 5 | at=1000 step=4 | hot=2
+ptr p -> a[2]: writes here

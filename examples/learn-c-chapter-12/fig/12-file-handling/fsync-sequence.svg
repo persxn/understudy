@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 624 544" width="624" height="544" role="img" aria-labelledby="fsync-sequence-t fsync-sequence-d" data-kind="sequence" data-count="4">
+<title id="fsync-sequence-t">write returns at once; fsync waits for the disk</title>
+<desc id="fsync-sequence-d">Sequence between your program, kernel page cache and disk, in time order. your program sends write 1000 bytes to kernel page cache. kernel page cache replies to your program: done (in memory only). your program sends fsync to kernel page cache. kernel page cache sends write the cached pages to disk. disk replies to kernel page cache: stored. kernel page cache replies to your program: fsync returns 0. Note over kernel page cache and disk: without fsync this happens seconds later.</desc>
+<style>.bg{fill:#E6ECF0}.sh{fill:#000000}.box{fill:#FFFFFF;stroke:#000000;stroke-width:2.5}.hot{fill:#FFE600;stroke:#000000;stroke-width:4.5}.mut{fill:#CDD5DC;stroke:#000000;stroke-width:2.5;stroke-dasharray:6 4}.band{fill:#F6F8FA;stroke:#000000;stroke-width:2.5}.note{fill:#FFFFFF;stroke:#000000;stroke-width:1.5}.deco{stroke:#000000;fill:none;stroke-width:2}.ek{stroke:#000000;fill:none;stroke-width:2}.er{stroke:#D92B2B;fill:none;stroke-width:3}.eb{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.ep{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.hk{fill:#000000}.hr{fill:#D92B2B}.hb{fill:#1F4BFF}.hp{stroke:#1F4BFF;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.5}.dot{fill:#1F4BFF}.tick{fill:#000000}.life{stroke:#3B4651;fill:none;stroke-dasharray:4 5;stroke-width:1.5}.plate{fill:#E6ECF0}.plateb{fill:#F6F8FA}.ink{fill:#000000}.soft{fill:#3B4651}.hink{fill:#000000}.t{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:15px;font-weight:600}.s{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:13px;font-weight:600}.tt{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:17px;font-weight:700}.m{font-family:ui-monospace, 'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace}@media (prefers-color-scheme:dark){svg:not([data-theme="light"]) .bg{fill:#000000}svg:not([data-theme="light"]) .sh{fill:#6F7B86}svg:not([data-theme="light"]) .box{fill:#15181B;stroke:#FFFFFF}svg:not([data-theme="light"]) .hot{fill:#FFE600;stroke:#FFFFFF}svg:not([data-theme="light"]) .mut{fill:#3A424A;stroke:#FFFFFF}svg:not([data-theme="light"]) .band{fill:#1C2126;stroke:#FFFFFF}svg:not([data-theme="light"]) .note{fill:#15181B;stroke:#FFFFFF}svg:not([data-theme="light"]) .deco{stroke:#FFFFFF}svg:not([data-theme="light"]) .ek{stroke:#FFFFFF}svg:not([data-theme="light"]) .er{stroke:#FF6464}svg:not([data-theme="light"]) .eb{stroke:#7D9BFF}svg:not([data-theme="light"]) .ep{stroke:#7D9BFF}svg:not([data-theme="light"]) .hk{fill:#FFFFFF}svg:not([data-theme="light"]) .hr{fill:#FF6464}svg:not([data-theme="light"]) .hb{fill:#7D9BFF}svg:not([data-theme="light"]) .hp{stroke:#7D9BFF}svg:not([data-theme="light"]) .dot{fill:#7D9BFF}svg:not([data-theme="light"]) .tick{fill:#FFFFFF}svg:not([data-theme="light"]) .life{stroke:#B9C3CC}svg:not([data-theme="light"]) .plate{fill:#000000}svg:not([data-theme="light"]) .plateb{fill:#1C2126}svg:not([data-theme="light"]) .ink{fill:#FFFFFF}svg:not([data-theme="light"]) .soft{fill:#B9C3CC}svg:not([data-theme="light"]) .hink{fill:#000000}}svg[data-theme="dark"] .bg{fill:#000000}svg[data-theme="dark"] .sh{fill:#6F7B86}svg[data-theme="dark"] .box{fill:#15181B;stroke:#FFFFFF}svg[data-theme="dark"] .hot{fill:#FFE600;stroke:#FFFFFF}svg[data-theme="dark"] .mut{fill:#3A424A;stroke:#FFFFFF}svg[data-theme="dark"] .band{fill:#1C2126;stroke:#FFFFFF}svg[data-theme="dark"] .note{fill:#15181B;stroke:#FFFFFF}svg[data-theme="dark"] .deco{stroke:#FFFFFF}svg[data-theme="dark"] .ek{stroke:#FFFFFF}svg[data-theme="dark"] .er{stroke:#FF6464}svg[data-theme="dark"] .eb{stroke:#7D9BFF}svg[data-theme="dark"] .ep{stroke:#7D9BFF}svg[data-theme="dark"] .hk{fill:#FFFFFF}svg[data-theme="dark"] .hr{fill:#FF6464}svg[data-theme="dark"] .hb{fill:#7D9BFF}svg[data-theme="dark"] .hp{stroke:#7D9BFF}svg[data-theme="dark"] .dot{fill:#7D9BFF}svg[data-theme="dark"] .tick{fill:#FFFFFF}svg[data-theme="dark"] .life{stroke:#B9C3CC}svg[data-theme="dark"] .plate{fill:#000000}svg[data-theme="dark"] .plateb{fill:#1C2126}svg[data-theme="dark"] .ink{fill:#FFFFFF}svg[data-theme="dark"] .soft{fill:#B9C3CC}svg[data-theme="dark"] .hink{fill:#000000}</style>
+<rect class="bg" data-role="bg" x="0" y="0" width="624" height="544"/>
+<path class="life" data-role="life" d="M104 134L104 513.4"/>
+<path class="life" data-role="life" d="M328 134L328 513.4"/>
+<path class="life" data-role="life" d="M552 134L552 513.4"/>
+<rect class="sh" data-role="shadow" data-for="prog" x="28" y="68" width="160" height="64"/>
+<rect class="box" data-role="node" data-id="prog" x="24" y="64" width="160" height="64"/>
+<rect class="sh" data-role="shadow" data-for="kern" x="260" y="68" width="144" height="64"/>
+<rect class="box" data-role="node" data-id="kern" x="256" y="64" width="144" height="64"/>
+<rect class="sh" data-role="shadow" data-for="disk" x="516" y="68" width="80" height="64"/>
+<rect class="box" data-role="node" data-id="disk" x="512" y="64" width="80" height="64"/>
+<rect class="note" data-role="node" data-id="note7" x="304" y="437.4" width="272" height="56"/>
+<path class="ek" data-role="edge" data-id="e1" data-from="prog" data-to="kern" d="M104 178.9L319 178.9"/>
+<path class="hk" data-role="head" data-for="e1" d="M328 178.9L318 183.9L318 173.9Z"/>
+<path class="eb" data-role="edge" data-id="e2" data-from="kern" data-to="prog" d="M328 225.8L113 225.8"/>
+<path class="hb" data-role="head" data-for="e2" d="M104 225.8L114 220.8L114 230.8Z"/>
+<path class="ek" data-role="edge" data-id="e3" data-from="prog" data-to="kern" d="M104 272.7L319 272.7"/>
+<path class="hk" data-role="head" data-for="e3" d="M328 272.7L318 277.7L318 267.7Z"/>
+<path class="ek" data-role="edge" data-id="e4" data-from="kern" data-to="disk" d="M328 319.6L543 319.6"/>
+<path class="hk" data-role="head" data-for="e4" d="M552 319.6L542 324.6L542 314.6Z"/>
+<path class="eb" data-role="edge" data-id="e5" data-from="disk" data-to="kern" d="M552 366.5L337 366.5"/>
+<path class="hb" data-role="head" data-for="e5" d="M328 366.5L338 361.5L338 371.5Z"/>
+<path class="eb" data-role="edge" data-id="e6" data-from="kern" data-to="prog" d="M328 413.4L113 413.4"/>
+<path class="hb" data-role="head" data-for="e6" d="M104 413.4L114 408.4L114 418.4Z"/>
+<text class="tt ink" data-role="title" data-id="title"><tspan x="24" y="41">write returns at once; fsync waits for the disk</tspan></text>
+<text class="t ink" data-role="label" data-id="prog" data-in="prog" text-anchor="middle"><tspan x="104" y="101.2">your program</tspan></text>
+<text class="t ink" data-role="label" data-id="kern" data-in="kern" text-anchor="middle"><tspan x="328" y="91.5">kernel page</tspan><tspan x="328" y="111">cache</tspan></text>
+<text class="t ink" data-role="label" data-id="disk" data-in="disk" text-anchor="middle"><tspan x="552" y="101.2">disk</tspan></text>
+<rect class="plate" data-role="plate" data-for="e1" x="149.2" y="154" width="133.6" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e1" text-anchor="middle"><tspan x="216" y="169">write 1000 bytes</tspan></text>
+<rect class="plate" data-role="plate" data-for="e2" x="129" y="200.9" width="174.1" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e2" text-anchor="middle"><tspan x="216" y="215.9">done (in memory only)</tspan></text>
+<rect class="plate" data-role="plate" data-for="e3" x="191.3" y="247.8" width="49.4" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e3" text-anchor="middle"><tspan x="216" y="262.8">fsync</tspan></text>
+<rect class="plate" data-role="plate" data-for="e4" x="349.7" y="294.7" width="180.7" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e4" text-anchor="middle"><tspan x="440" y="309.7">write the cached pages</tspan></text>
+<rect class="plate" data-role="plate" data-for="e5" x="412.2" y="341.6" width="55.5" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e5" text-anchor="middle"><tspan x="440" y="356.6">stored</tspan></text>
+<rect class="plate" data-role="plate" data-for="e6" x="155.3" y="388.5" width="121.5" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e6" text-anchor="middle"><tspan x="216" y="403.5">fsync returns 0</tspan></text>
+<text class="s ink" data-role="label" data-id="note7" data-in="note7" text-anchor="middle"><tspan x="440" y="461.5">without fsync this</tspan><tspan x="440" y="478.4">happens seconds later</tspan></text>
+</svg>

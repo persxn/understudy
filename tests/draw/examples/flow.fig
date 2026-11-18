@@ -1,0 +1,17 @@
+title: How the shell runs a command
+round start: you press Enter
+box read: the shell reads the line and splits it into words
+diamond q: built in?
+box run: run it inside the shell
+box fork: `fork()` a child\nprocess
+box exec: child calls `exec()`
+box wait: shell waits for the child to finish
+round done: prompt again
+start -> read -> q
+q -> run: yes
+q -> fork: no
+fork -> exec
+fork ..> wait: parent
+exec -> done
+run -> done
+wait -> read: next line

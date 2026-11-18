@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 584 864" width="584" height="864" role="img" aria-labelledby="flow-t flow-d" data-kind="flow" data-count="8">
+<title id="flow-t">How the shell runs a command</title>
+<desc id="flow-d">Flow chart, top to bottom. you press Enter leads to the shell reads the line and splits it into words. the shell reads the line and splits it into words leads to built in? built in? yes: run it inside the shell. built in? no: fork() a child process. run it inside the shell leads to prompt again. fork() a child process leads to child calls exec(). fork() a child process leads to shell waits for the child to finish by a dashed arrow (parent). child calls exec() leads to prompt again. shell waits for the child to finish leads back to the shell reads the line and splits it into words (next line).</desc>
+<style>.bg{fill:#E6ECF0}.sh{fill:#000000}.box{fill:#FFFFFF;stroke:#000000;stroke-width:2.5}.hot{fill:#FFE600;stroke:#000000;stroke-width:4.5}.mut{fill:#CDD5DC;stroke:#000000;stroke-width:2.5;stroke-dasharray:6 4}.band{fill:#F6F8FA;stroke:#000000;stroke-width:2.5}.note{fill:#FFFFFF;stroke:#000000;stroke-width:1.5}.deco{stroke:#000000;fill:none;stroke-width:2}.ek{stroke:#000000;fill:none;stroke-width:2}.er{stroke:#D92B2B;fill:none;stroke-width:3}.eb{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.ep{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.hk{fill:#000000}.hr{fill:#D92B2B}.hb{fill:#1F4BFF}.hp{stroke:#1F4BFF;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.5}.dot{fill:#1F4BFF}.tick{fill:#000000}.life{stroke:#3B4651;fill:none;stroke-dasharray:4 5;stroke-width:1.5}.plate{fill:#E6ECF0}.plateb{fill:#F6F8FA}.ink{fill:#000000}.soft{fill:#3B4651}.hink{fill:#000000}.t{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:15px;font-weight:600}.s{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:13px;font-weight:600}.tt{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:17px;font-weight:700}.m{font-family:ui-monospace, 'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace}@media (prefers-color-scheme:dark){svg:not([data-theme="light"]) .bg{fill:#2A2F36}svg:not([data-theme="light"]) .sh{fill:#000000}svg:not([data-theme="light"]) .box{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .hot{fill:#F2D13A;stroke:#ECE9E2}svg:not([data-theme="light"]) .mut{fill:#1D2126;stroke:#ECE9E2}svg:not([data-theme="light"]) .band{fill:#2F343C;stroke:#ECE9E2}svg:not([data-theme="light"]) .note{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .deco{stroke:#ECE9E2}svg:not([data-theme="light"]) .ek{stroke:#ECE9E2}svg:not([data-theme="light"]) .er{stroke:#FF7B72}svg:not([data-theme="light"]) .eb{stroke:#8EA6FF}svg:not([data-theme="light"]) .ep{stroke:#8EA6FF}svg:not([data-theme="light"]) .hk{fill:#ECE9E2}svg:not([data-theme="light"]) .hr{fill:#FF7B72}svg:not([data-theme="light"]) .hb{fill:#8EA6FF}svg:not([data-theme="light"]) .hp{stroke:#8EA6FF}svg:not([data-theme="light"]) .dot{fill:#8EA6FF}svg:not([data-theme="light"]) .tick{fill:#ECE9E2}svg:not([data-theme="light"]) .life{stroke:#B9BFC7}svg:not([data-theme="light"]) .plate{fill:#2A2F36}svg:not([data-theme="light"]) .plateb{fill:#2F343C}svg:not([data-theme="light"]) .ink{fill:#ECE9E2}svg:not([data-theme="light"]) .soft{fill:#B9BFC7}svg:not([data-theme="light"]) .hink{fill:#000000}}svg[data-theme="dark"] .bg{fill:#2A2F36}svg[data-theme="dark"] .sh{fill:#000000}svg[data-theme="dark"] .box{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .hot{fill:#F2D13A;stroke:#ECE9E2}svg[data-theme="dark"] .mut{fill:#1D2126;stroke:#ECE9E2}svg[data-theme="dark"] .band{fill:#2F343C;stroke:#ECE9E2}svg[data-theme="dark"] .note{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .deco{stroke:#ECE9E2}svg[data-theme="dark"] .ek{stroke:#ECE9E2}svg[data-theme="dark"] .er{stroke:#FF7B72}svg[data-theme="dark"] .eb{stroke:#8EA6FF}svg[data-theme="dark"] .ep{stroke:#8EA6FF}svg[data-theme="dark"] .hk{fill:#ECE9E2}svg[data-theme="dark"] .hr{fill:#FF7B72}svg[data-theme="dark"] .hb{fill:#8EA6FF}svg[data-theme="dark"] .hp{stroke:#8EA6FF}svg[data-theme="dark"] .dot{fill:#8EA6FF}svg[data-theme="dark"] .tick{fill:#ECE9E2}svg[data-theme="dark"] .life{stroke:#B9BFC7}svg[data-theme="dark"] .plate{fill:#2A2F36}svg[data-theme="dark"] .plateb{fill:#2F343C}svg[data-theme="dark"] .ink{fill:#ECE9E2}svg[data-theme="dark"] .soft{fill:#B9BFC7}svg[data-theme="dark"] .hink{fill:#000000}</style>
+<rect class="bg" data-role="bg" x="0" y="0" width="584" height="864"/>
+<rect class="sh" data-role="shadow" data-for="start" x="116" y="68" width="160" height="64" rx="32"/>
+<rect class="box" data-role="node" data-id="start" data-shape="pill" x="112" y="64" width="160" height="64" rx="32"/>
+<rect class="sh" data-role="shadow" data-for="read" x="116" y="180" width="160" height="112"/>
+<rect class="box" data-role="node" data-id="read" data-shape="box" x="112" y="176" width="160" height="112"/>
+<polygon class="sh" data-role="shadow" data-for="q" points="196,340 276,380 196,420 116,380"/>
+<polygon class="box" data-role="node" data-id="q" data-shape="diamond" points="192,336 272,376 192,416 112,376"/>
+<rect class="sh" data-role="shadow" data-for="run" x="28" y="500" width="144" height="64"/>
+<rect class="box" data-role="node" data-id="run" data-shape="box" x="24" y="496" width="144" height="64"/>
+<rect class="sh" data-role="shadow" data-for="fork" x="212" y="500" width="160" height="64"/>
+<rect class="box" data-role="node" data-id="fork" data-shape="box" x="208" y="496" width="160" height="64"/>
+<rect class="sh" data-role="shadow" data-for="exec" x="140" y="644" width="128" height="96"/>
+<rect class="box" data-role="node" data-id="exec" data-shape="box" x="136" y="640" width="128" height="96"/>
+<rect class="sh" data-role="shadow" data-for="wait" x="300" y="644" width="160" height="96"/>
+<rect class="box" data-role="node" data-id="wait" data-shape="box" x="296" y="640" width="160" height="96"/>
+<rect class="sh" data-role="shadow" data-for="done" x="60" y="788" width="176" height="48" rx="24"/>
+<rect class="box" data-role="node" data-id="done" data-shape="pill" x="56" y="784" width="176" height="48" rx="24"/>
+<path class="ek" data-role="edge" data-id="e1" data-from="start" data-to="read" d="M192 132L192 167"/>
+<path class="hk" data-role="head" data-for="e1" d="M192 176L187 166L197 166Z"/>
+<path class="ek" data-role="edge" data-id="e2" data-from="read" data-to="q" d="M192 292L192 327"/>
+<path class="hk" data-role="head" data-for="e2" d="M192 336L187 326L197 326Z"/>
+<path class="ek" data-role="edge" data-id="e3" data-from="q" data-to="run" d="M192 418L192 436L96 436L96 487"/>
+<path class="hk" data-role="head" data-for="e3" d="M96 496L91 486L101 486Z"/>
+<path class="ek" data-role="edge" data-id="e4" data-from="q" data-to="fork" d="M192 418L192 436L288 436L288 487"/>
+<path class="hk" data-role="head" data-for="e4" d="M288 496L283 486L293 486Z"/>
+<path class="ek" data-role="edge" data-id="e5" data-from="fork" data-to="exec" d="M280 564L280 580L200 580L200 631"/>
+<path class="hk" data-role="head" data-for="e5" d="M200 640L195 630L205 630Z"/>
+<path class="eb" data-role="edge" data-id="e6" data-from="fork" data-to="wait" d="M296 564L296 580L376 580L376 631"/>
+<path class="hb" data-role="head" data-for="e6" d="M376 640L371 630L381 630Z"/>
+<path class="ek" data-role="edge" data-id="e7" data-from="exec" data-to="done" d="M200 740L200 760L144 760L144 775"/>
+<path class="hk" data-role="head" data-for="e7" d="M144 784L139 774L149 774Z"/>
+<path class="ek" data-role="edge" data-id="e8" data-from="run" data-to="done" d="M96 564L96 760L144 760L144 775"/>
+<path class="hk" data-role="head" data-for="e8" d="M144 784L139 774L149 774Z"/>
+<path class="ek" data-role="edge" data-id="e9" data-from="wait" data-to="read" d="M460 688L520 688L520 232L285 232"/>
+<path class="hk" data-role="head" data-for="e9" d="M276 232L286 227L286 237Z"/>
+<text class="tt ink" data-role="title" data-id="title"><tspan x="24" y="41">How the shell runs a command</tspan></text>
+<text class="t ink" data-role="label" data-id="start" data-in="start" text-anchor="middle"><tspan x="192" y="91.5">you press</tspan><tspan x="192" y="111">Enter</tspan></text>
+<text class="t ink" data-role="label" data-id="read" data-in="read" text-anchor="middle"><tspan x="192" y="208">the shell reads</tspan><tspan x="192" y="227.5">the line and</tspan><tspan x="192" y="247">splits it into</tspan><tspan x="192" y="266.5">words</tspan></text>
+<text class="t ink" data-role="label" data-id="q" data-in="q" text-anchor="middle"><tspan x="192" y="381.2">built in?</tspan></text>
+<text class="t ink" data-role="label" data-id="run" data-in="run" text-anchor="middle"><tspan x="96" y="523.5">run it inside</tspan><tspan x="96" y="543">the shell</tspan></text>
+<text class="t ink" data-role="label" data-id="fork" data-in="fork" text-anchor="middle"><tspan x="288" y="523.5"><tspan class="m">fork()</tspan> a child</tspan><tspan x="288" y="543">process</tspan></text>
+<text class="t ink" data-role="label" data-id="exec" data-in="exec" text-anchor="middle"><tspan x="200" y="683.5">child calls</tspan><tspan x="200" y="703"><tspan class="m">exec()</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="wait" data-in="wait" text-anchor="middle"><tspan x="376" y="673.8">shell waits for</tspan><tspan x="376" y="693.2">the child to</tspan><tspan x="376" y="712.8">finish</tspan></text>
+<text class="t ink" data-role="label" data-id="done" data-in="done" text-anchor="middle"><tspan x="144" y="813.2">prompt again</tspan></text>
+<rect class="plate" data-role="plate" data-for="e3" x="78.8" y="453.6" width="34.3" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e3" text-anchor="middle"><tspan x="96" y="468.6">yes</tspan></text>
+<rect class="plate" data-role="plate" data-for="e4" x="274.8" y="453.6" width="26.4" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e4" text-anchor="middle"><tspan x="288" y="468.6">no</tspan></text>
+<rect class="plate" data-role="plate" data-for="e6" x="348" y="597.5" width="56" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e6" text-anchor="middle"><tspan x="376" y="612.5">parent</tspan></text>
+<rect class="plate" data-role="plate" data-for="e9" x="484.4" y="449.6" width="71.2" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e9" text-anchor="middle"><tspan x="520" y="464.6">next line</tspan></text>
+</svg>

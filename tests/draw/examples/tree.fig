@@ -1,0 +1,16 @@
+title: Which loop should I use?
+kind: tree
+box q: Do you know how many times the loop runs before it starts?
+box yes: `for`
+box no: Must the body run at least once?
+box once: `do` ... `while`
+box zero: `while`
+box count: counting up\nor down
+box each: walking an array by index
+q -> yes: yes
+q -> no: no
+yes -> count
+yes -> each
+no -> once: yes
+no -> zero: no
+hot: yes

@@ -1,0 +1,5 @@
+/book/
+/private/
+.agents/
+__pycache__/
+tests/*/shots/

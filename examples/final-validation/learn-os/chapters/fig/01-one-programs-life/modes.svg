@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 728 496" width="728" height="496" role="img" aria-labelledby="modes-t modes-d" data-kind="layers" data-count="9">
+<title id="modes-t">Two modes, and the doors between them</title>
+<desc id="modes-d">Layers, top to bottom. User mode (ring 3) holds ./hello and C library. Doors: the CPU switches mode holds trap: syscall, fault: hlt and interrupt. Kernel mode (ring 0) holds entry points and handlers. Hardware holds CPU mode bit and disk, screen, timer. trap: syscall, fault: hlt and interrupt are highlighted.</desc>
+<style>.bg{fill:#E6ECF0}.sh{fill:#000000}.box{fill:#FFFFFF;stroke:#000000;stroke-width:2.5}.hot{fill:#FFE600;stroke:#000000;stroke-width:4.5}.mut{fill:#CDD5DC;stroke:#000000;stroke-width:2.5;stroke-dasharray:6 4}.band{fill:#F6F8FA;stroke:#000000;stroke-width:2.5}.note{fill:#FFFFFF;stroke:#000000;stroke-width:1.5}.deco{stroke:#000000;fill:none;stroke-width:2}.ek{stroke:#000000;fill:none;stroke-width:2}.er{stroke:#D92B2B;fill:none;stroke-width:3}.eb{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.ep{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.hk{fill:#000000}.hr{fill:#D92B2B}.hb{fill:#1F4BFF}.hp{stroke:#1F4BFF;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.5}.dot{fill:#1F4BFF}.tick{fill:#000000}.life{stroke:#3B4651;fill:none;stroke-dasharray:4 5;stroke-width:1.5}.plate{fill:#E6ECF0}.plateb{fill:#F6F8FA}.ink{fill:#000000}.soft{fill:#3B4651}.hink{fill:#000000}.t{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:15px;font-weight:600}.s{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:13px;font-weight:600}.tt{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:17px;font-weight:700}.m{font-family:ui-monospace, 'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace}@media (prefers-color-scheme:dark){svg:not([data-theme="light"]) .bg{fill:#2A2F36}svg:not([data-theme="light"]) .sh{fill:#000000}svg:not([data-theme="light"]) .box{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .hot{fill:#F2D13A;stroke:#ECE9E2}svg:not([data-theme="light"]) .mut{fill:#1D2126;stroke:#ECE9E2}svg:not([data-theme="light"]) .band{fill:#2F343C;stroke:#ECE9E2}svg:not([data-theme="light"]) .note{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .deco{stroke:#ECE9E2}svg:not([data-theme="light"]) .ek{stroke:#ECE9E2}svg:not([data-theme="light"]) .er{stroke:#FF7B72}svg:not([data-theme="light"]) .eb{stroke:#8EA6FF}svg:not([data-theme="light"]) .ep{stroke:#8EA6FF}svg:not([data-theme="light"]) .hk{fill:#ECE9E2}svg:not([data-theme="light"]) .hr{fill:#FF7B72}svg:not([data-theme="light"]) .hb{fill:#8EA6FF}svg:not([data-theme="light"]) .hp{stroke:#8EA6FF}svg:not([data-theme="light"]) .dot{fill:#8EA6FF}svg:not([data-theme="light"]) .tick{fill:#ECE9E2}svg:not([data-theme="light"]) .life{stroke:#B9BFC7}svg:not([data-theme="light"]) .plate{fill:#2A2F36}svg:not([data-theme="light"]) .plateb{fill:#2F343C}svg:not([data-theme="light"]) .ink{fill:#ECE9E2}svg:not([data-theme="light"]) .soft{fill:#B9BFC7}svg:not([data-theme="light"]) .hink{fill:#000000}}svg[data-theme="dark"] .bg{fill:#2A2F36}svg[data-theme="dark"] .sh{fill:#000000}svg[data-theme="dark"] .box{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .hot{fill:#F2D13A;stroke:#ECE9E2}svg[data-theme="dark"] .mut{fill:#1D2126;stroke:#ECE9E2}svg[data-theme="dark"] .band{fill:#2F343C;stroke:#ECE9E2}svg[data-theme="dark"] .note{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .deco{stroke:#ECE9E2}svg[data-theme="dark"] .ek{stroke:#ECE9E2}svg[data-theme="dark"] .er{stroke:#FF7B72}svg[data-theme="dark"] .eb{stroke:#8EA6FF}svg[data-theme="dark"] .ep{stroke:#8EA6FF}svg[data-theme="dark"] .hk{fill:#ECE9E2}svg[data-theme="dark"] .hr{fill:#FF7B72}svg[data-theme="dark"] .hb{fill:#8EA6FF}svg[data-theme="dark"] .hp{stroke:#8EA6FF}svg[data-theme="dark"] .dot{fill:#8EA6FF}svg[data-theme="dark"] .tick{fill:#ECE9E2}svg[data-theme="dark"] .life{stroke:#B9BFC7}svg[data-theme="dark"] .plate{fill:#2A2F36}svg[data-theme="dark"] .plateb{fill:#2F343C}svg[data-theme="dark"] .ink{fill:#ECE9E2}svg[data-theme="dark"] .soft{fill:#B9BFC7}svg[data-theme="dark"] .hink{fill:#000000}</style>
+<rect class="bg" data-role="bg" x="0" y="0" width="728" height="496"/>
+<rect class="sh" data-role="shadow" data-for="user" x="28" y="68" width="672" height="80"/>
+<rect class="band" data-role="band" data-id="user" x="24" y="64" width="672" height="80"/>
+<rect class="sh" data-role="shadow" data-for="door" x="28" y="164" width="672" height="96"/>
+<rect class="band" data-role="band" data-id="door" x="24" y="160" width="672" height="96"/>
+<rect class="sh" data-role="shadow" data-for="kern" x="28" y="276" width="672" height="80"/>
+<rect class="band" data-role="band" data-id="kern" x="24" y="272" width="672" height="80"/>
+<rect class="sh" data-role="shadow" data-for="hw" x="28" y="372" width="672" height="96"/>
+<rect class="band" data-role="band" data-id="hw" x="24" y="368" width="672" height="96"/>
+<rect class="sh" data-role="shadow" data-for="app" x="316" y="82" width="112" height="48"/>
+<rect class="box" data-role="node" data-id="app" x="312" y="78" width="112" height="48"/>
+<rect class="sh" data-role="shadow" data-for="lib" x="460" y="82" width="112" height="48"/>
+<rect class="box" data-role="node" data-id="lib" x="456" y="78" width="112" height="48"/>
+<rect class="sh" data-role="shadow" data-for="trap" x="212" y="186" width="160" height="48"/>
+<rect class="hot" data-role="node" data-id="trap" x="208" y="182" width="160" height="48"/>
+<rect class="sh" data-role="shadow" data-for="fault" x="404" y="186" width="128" height="48"/>
+<rect class="hot" data-role="node" data-id="fault" x="400" y="182" width="128" height="48"/>
+<rect class="sh" data-role="shadow" data-for="intr" x="564" y="186" width="112" height="48"/>
+<rect class="hot" data-role="node" data-id="intr" x="560" y="182" width="112" height="48"/>
+<rect class="sh" data-role="shadow" data-for="entry" x="300" y="290" width="144" height="48"/>
+<rect class="box" data-role="node" data-id="entry" x="296" y="286" width="144" height="48"/>
+<rect class="sh" data-role="shadow" data-for="work" x="476" y="290" width="112" height="48"/>
+<rect class="box" data-role="node" data-id="work" x="472" y="286" width="112" height="48"/>
+<rect class="sh" data-role="shadow" data-for="cpu" x="276" y="386" width="160" height="64"/>
+<rect class="box" data-role="node" data-id="cpu" x="272" y="382" width="160" height="64"/>
+<rect class="sh" data-role="shadow" data-for="dev" x="468" y="386" width="144" height="64"/>
+<rect class="box" data-role="node" data-id="dev" x="464" y="382" width="144" height="64"/>
+<text class="tt ink" data-role="title" data-id="title"><tspan x="24" y="41">Two modes, and the doors between them</tspan></text>
+<text class="t ink" data-role="label" data-id="user" data-in="user"><tspan x="40" y="99.5">User mode</tspan><tspan x="40" y="119">(ring 3)</tspan></text>
+<text class="t ink" data-role="label" data-id="app" data-in="app" text-anchor="middle"><tspan x="368" y="107.2"><tspan class="m">./hello</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="lib" data-in="lib" text-anchor="middle"><tspan x="512" y="107.2">C library</tspan></text>
+<text class="t ink" data-role="label" data-id="door" data-in="door"><tspan x="40" y="193.8">Doors: the</tspan><tspan x="40" y="213.2">CPU switches</tspan><tspan x="40" y="232.8">mode</tspan></text>
+<text class="t hink" data-role="label" data-id="trap" data-in="trap" text-anchor="middle"><tspan x="288" y="211.2">trap: <tspan class="m">syscall</tspan></tspan></text>
+<text class="t hink" data-role="label" data-id="fault" data-in="fault" text-anchor="middle"><tspan x="464" y="211.2">fault: <tspan class="m">hlt</tspan></tspan></text>
+<text class="t hink" data-role="label" data-id="intr" data-in="intr" text-anchor="middle"><tspan x="616" y="211.2">interrupt</tspan></text>
+<text class="t ink" data-role="label" data-id="kern" data-in="kern"><tspan x="40" y="307.5">Kernel mode</tspan><tspan x="40" y="327">(ring 0)</tspan></text>
+<text class="t ink" data-role="label" data-id="entry" data-in="entry" text-anchor="middle"><tspan x="368" y="315.2">entry points</tspan></text>
+<text class="t ink" data-role="label" data-id="work" data-in="work" text-anchor="middle"><tspan x="528" y="315.2">handlers</tspan></text>
+<text class="t ink" data-role="label" data-id="hw" data-in="hw"><tspan x="40" y="421.2">Hardware</tspan></text>
+<text class="t ink" data-role="label" data-id="cpu" data-in="cpu" text-anchor="middle"><tspan x="352" y="419.2">CPU mode bit</tspan></text>
+<text class="t ink" data-role="label" data-id="dev" data-in="dev" text-anchor="middle"><tspan x="536" y="409.5">disk, screen,</tspan><tspan x="536" y="429">timer</tspan></text>
+</svg>

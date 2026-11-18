@@ -1,0 +1,8 @@
+title: swapWrong swaps its own copies: only the arrows move
+frame sw: `swapWrong`'s frame, after `temp = a; a = b; b = temp;`
+vars: a=1004@3000 b=1000@3008 temp=1000@3016 | shade=temp
+frame main: `main`'s frame, untouched
+vars: x=3@1000 y=7@1004
+ptr a -> y
+ptr b -> x
+ptr temp -> x

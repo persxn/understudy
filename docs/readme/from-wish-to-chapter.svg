@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 960" width="384" height="960" role="img" aria-labelledby="from-wish-to-chapter-t from-wish-to-chapter-d" data-kind="flow" data-count="7">
+<title id="from-wish-to-chapter-t">From a wish to a reviewed chapter</title>
+<desc id="from-wish-to-chapter-d">Flow chart, top to bottom. &quot;I want to learn Git&quot; leads to plan the book. plan the book leads to you approve? you approve? change it: back to plan the book. you approve? yes: one writer writes the whole chapter. one writer writes the whole chapter leads to scripts run code, paste output, draw, check. scripts run code, paste output, draw, check leads to one review: risk list, then one read. one review: risk list, then one read leads to you read and practise. scripts run code, paste output, draw, check is highlighted.</desc>
+<style>.bg{fill:#E6ECF0}.sh{fill:#000000}.box{fill:#FFFFFF;stroke:#000000;stroke-width:2.5}.hot{fill:#FFE600;stroke:#000000;stroke-width:4.5}.mut{fill:#CDD5DC;stroke:#000000;stroke-width:2.5;stroke-dasharray:6 4}.band{fill:#F6F8FA;stroke:#000000;stroke-width:2.5}.note{fill:#FFFFFF;stroke:#000000;stroke-width:1.5}.deco{stroke:#000000;fill:none;stroke-width:2}.ek{stroke:#000000;fill:none;stroke-width:2}.er{stroke:#D92B2B;fill:none;stroke-width:3}.eb{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.ep{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.hk{fill:#000000}.hr{fill:#D92B2B}.hb{fill:#1F4BFF}.hp{stroke:#1F4BFF;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.5}.dot{fill:#1F4BFF}.tick{fill:#000000}.life{stroke:#3B4651;fill:none;stroke-dasharray:4 5;stroke-width:1.5}.plate{fill:#E6ECF0}.plateb{fill:#F6F8FA}.ink{fill:#000000}.soft{fill:#3B4651}.hink{fill:#000000}.t{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:15px;font-weight:600}.s{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:13px;font-weight:600}.tt{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:17px;font-weight:700}.m{font-family:ui-monospace, 'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace}@media (prefers-color-scheme:dark){svg:not([data-theme="light"]) .bg{fill:#2A2F36}svg:not([data-theme="light"]) .sh{fill:#000000}svg:not([data-theme="light"]) .box{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .hot{fill:#F2D13A;stroke:#ECE9E2}svg:not([data-theme="light"]) .mut{fill:#1D2126;stroke:#ECE9E2}svg:not([data-theme="light"]) .band{fill:#2F343C;stroke:#ECE9E2}svg:not([data-theme="light"]) .note{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .deco{stroke:#ECE9E2}svg:not([data-theme="light"]) .ek{stroke:#ECE9E2}svg:not([data-theme="light"]) .er{stroke:#FF7B72}svg:not([data-theme="light"]) .eb{stroke:#8EA6FF}svg:not([data-theme="light"]) .ep{stroke:#8EA6FF}svg:not([data-theme="light"]) .hk{fill:#ECE9E2}svg:not([data-theme="light"]) .hr{fill:#FF7B72}svg:not([data-theme="light"]) .hb{fill:#8EA6FF}svg:not([data-theme="light"]) .hp{stroke:#8EA6FF}svg:not([data-theme="light"]) .dot{fill:#8EA6FF}svg:not([data-theme="light"]) .tick{fill:#ECE9E2}svg:not([data-theme="light"]) .life{stroke:#B9BFC7}svg:not([data-theme="light"]) .plate{fill:#2A2F36}svg:not([data-theme="light"]) .plateb{fill:#2F343C}svg:not([data-theme="light"]) .ink{fill:#ECE9E2}svg:not([data-theme="light"]) .soft{fill:#B9BFC7}svg:not([data-theme="light"]) .hink{fill:#000000}}svg[data-theme="dark"] .bg{fill:#2A2F36}svg[data-theme="dark"] .sh{fill:#000000}svg[data-theme="dark"] .box{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .hot{fill:#F2D13A;stroke:#ECE9E2}svg[data-theme="dark"] .mut{fill:#1D2126;stroke:#ECE9E2}svg[data-theme="dark"] .band{fill:#2F343C;stroke:#ECE9E2}svg[data-theme="dark"] .note{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .deco{stroke:#ECE9E2}svg[data-theme="dark"] .ek{stroke:#ECE9E2}svg[data-theme="dark"] .er{stroke:#FF7B72}svg[data-theme="dark"] .eb{stroke:#8EA6FF}svg[data-theme="dark"] .ep{stroke:#8EA6FF}svg[data-theme="dark"] .hk{fill:#ECE9E2}svg[data-theme="dark"] .hr{fill:#FF7B72}svg[data-theme="dark"] .hb{fill:#8EA6FF}svg[data-theme="dark"] .hp{stroke:#8EA6FF}svg[data-theme="dark"] .dot{fill:#8EA6FF}svg[data-theme="dark"] .tick{fill:#ECE9E2}svg[data-theme="dark"] .life{stroke:#B9BFC7}svg[data-theme="dark"] .plate{fill:#2A2F36}svg[data-theme="dark"] .plateb{fill:#2F343C}svg[data-theme="dark"] .ink{fill:#ECE9E2}svg[data-theme="dark"] .soft{fill:#B9BFC7}svg[data-theme="dark"] .hink{fill:#000000}</style>
+<rect class="bg" data-role="bg" x="0" y="0" width="384" height="960"/>
+<rect class="sh" data-role="shadow" data-for="want" x="44" y="68" width="208" height="64" rx="32"/>
+<rect class="box" data-role="node" data-id="want" data-shape="pill" x="40" y="64" width="208" height="64" rx="32"/>
+<rect class="sh" data-role="shadow" data-for="plan" x="68" y="180" width="160" height="48"/>
+<rect class="box" data-role="node" data-id="plan" data-shape="box" x="64" y="176" width="160" height="48"/>
+<polygon class="sh" data-role="shadow" data-for="ok" points="148,276 252,332 148,388 44,332"/>
+<polygon class="box" data-role="node" data-id="ok" data-shape="diamond" points="144,272 248,328 144,384 40,328"/>
+<rect class="sh" data-role="shadow" data-for="write" x="52" y="468" width="192" height="64"/>
+<rect class="box" data-role="node" data-id="write" data-shape="box" x="48" y="464" width="192" height="64"/>
+<rect class="sh" data-role="shadow" data-for="run" x="52" y="580" width="192" height="96"/>
+<rect class="hot" data-role="node" data-id="run" data-shape="box" x="48" y="576" width="192" height="96"/>
+<rect class="sh" data-role="shadow" data-for="review" x="52" y="724" width="192" height="96"/>
+<rect class="box" data-role="node" data-id="review" data-shape="box" x="48" y="720" width="192" height="96"/>
+<rect class="sh" data-role="shadow" data-for="read" x="52" y="868" width="192" height="64" rx="32"/>
+<rect class="box" data-role="node" data-id="read" data-shape="pill" x="48" y="864" width="192" height="64" rx="32"/>
+<path class="ek" data-role="edge" data-id="e1" data-from="want" data-to="plan" d="M144 132L144 167"/>
+<path class="hk" data-role="head" data-for="e1" d="M144 176L139 166L149 166Z"/>
+<path class="ek" data-role="edge" data-id="e2" data-from="plan" data-to="ok" d="M144 228L144 263"/>
+<path class="hk" data-role="head" data-for="e2" d="M144 272L139 262L149 262Z"/>
+<path class="ek" data-role="edge" data-id="e3" data-from="ok" data-to="plan" d="M248 328L320 328L320 200L237 200"/>
+<path class="hk" data-role="head" data-for="e3" d="M228 200L238 195L238 205Z"/>
+<path class="ek" data-role="edge" data-id="e4" data-from="ok" data-to="write" d="M144 386L144 455"/>
+<path class="hk" data-role="head" data-for="e4" d="M144 464L139 454L149 454Z"/>
+<path class="ek" data-role="edge" data-id="e5" data-from="write" data-to="run" d="M144 532L144 567"/>
+<path class="hk" data-role="head" data-for="e5" d="M144 576L139 566L149 566Z"/>
+<path class="ek" data-role="edge" data-id="e6" data-from="run" data-to="review" d="M144 676L144 711"/>
+<path class="hk" data-role="head" data-for="e6" d="M144 720L139 710L149 710Z"/>
+<path class="ek" data-role="edge" data-id="e7" data-from="review" data-to="read" d="M144 820L144 855"/>
+<path class="hk" data-role="head" data-for="e7" d="M144 864L139 854L149 854Z"/>
+<text class="tt ink" data-role="title" data-id="title"><tspan x="24" y="41">From a wish to a reviewed chapter</tspan></text>
+<text class="t ink" data-role="label" data-id="want" data-in="want" text-anchor="middle"><tspan x="144" y="91.5">&quot;I want to learn</tspan><tspan x="144" y="111">Git&quot;</tspan></text>
+<text class="t ink" data-role="label" data-id="plan" data-in="plan" text-anchor="middle"><tspan x="144" y="205.2">plan the book</tspan></text>
+<text class="t ink" data-role="label" data-id="ok" data-in="ok" text-anchor="middle"><tspan x="144" y="333.2">you approve?</tspan></text>
+<text class="t ink" data-role="label" data-id="write" data-in="write" text-anchor="middle"><tspan x="144" y="491.5">one writer writes</tspan><tspan x="144" y="511">the whole chapter</tspan></text>
+<text class="t hink" data-role="label" data-id="run" data-in="run" text-anchor="middle"><tspan x="144" y="609.8">scripts run code,</tspan><tspan x="144" y="629.2">paste output,</tspan><tspan x="144" y="648.8">draw, check</tspan></text>
+<text class="t ink" data-role="label" data-id="review" data-in="review" text-anchor="middle"><tspan x="144" y="753.8">one review:</tspan><tspan x="144" y="773.2">risk list, then one</tspan><tspan x="144" y="792.8">read</tspan></text>
+<text class="t ink" data-role="label" data-id="read" data-in="read" text-anchor="middle"><tspan x="144" y="891.5">you read and</tspan><tspan x="144" y="911">practise</tspan></text>
+<rect class="plate" data-role="plate" data-for="e3" x="281.8" y="253.6" width="76.3" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e3" text-anchor="middle"><tspan x="320" y="268.6">change it</tspan></text>
+<rect class="plate" data-role="plate" data-for="e4" x="126.8" y="413.6" width="34.3" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e4" text-anchor="middle"><tspan x="144" y="428.6">yes</tspan></text>
+</svg>

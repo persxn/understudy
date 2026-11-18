@@ -1,0 +1,18 @@
+title: From a wish to a reviewed chapter
+kind: flow
+dir: down
+round want: "I want to learn Git"
+box plan: plan the book
+diamond ok: you approve?
+box write: one writer writes\nthe whole chapter
+box run: scripts run code,\npaste output, draw, check
+box review: one review:\nrisk list, then one read
+round read: you read and practise
+want -> plan
+plan -> ok
+ok -> plan: change it
+ok -> write: yes
+write -> run
+run -> review
+review -> read
+hot: run

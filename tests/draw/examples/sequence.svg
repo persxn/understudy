@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 688 664" width="688" height="664" role="img" aria-labelledby="sequence-t sequence-d" data-kind="sequence" data-count="6">
+<title id="sequence-t">What happens when the shell runs ls</title>
+<desc id="sequence-d">Sequence between shell, kernel, child process with a long name and file system, in time order. shell sends fork() to kernel. kernel sends create to child process with a long name. Note over child process with a long name: a copy of the shell, same code. child process with a long name sends exec(&quot;ls&quot;) to kernel. kernel sends load ls to file system. file system replies to kernel: program bytes. child process with a long name does run ls itself. child process with a long name replies to shell: exit status. Note over shell and kernel: the shell waits.</desc>
+<style>.bg{fill:#E6ECF0}.sh{fill:#000000}.box{fill:#FFFFFF;stroke:#000000;stroke-width:2.5}.hot{fill:#FFE600;stroke:#000000;stroke-width:4.5}.mut{fill:#CDD5DC;stroke:#000000;stroke-width:2.5;stroke-dasharray:6 4}.band{fill:#F6F8FA;stroke:#000000;stroke-width:2.5}.note{fill:#FFFFFF;stroke:#000000;stroke-width:1.5}.deco{stroke:#000000;fill:none;stroke-width:2}.ek{stroke:#000000;fill:none;stroke-width:2}.er{stroke:#D92B2B;fill:none;stroke-width:3}.eb{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.ep{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.hk{fill:#000000}.hr{fill:#D92B2B}.hb{fill:#1F4BFF}.hp{stroke:#1F4BFF;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.5}.dot{fill:#1F4BFF}.tick{fill:#000000}.life{stroke:#3B4651;fill:none;stroke-dasharray:4 5;stroke-width:1.5}.plate{fill:#E6ECF0}.plateb{fill:#F6F8FA}.ink{fill:#000000}.soft{fill:#3B4651}.hink{fill:#000000}.t{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:15px;font-weight:600}.s{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:13px;font-weight:600}.tt{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:17px;font-weight:700}.m{font-family:ui-monospace, 'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace}@media (prefers-color-scheme:dark){svg:not([data-theme="light"]) .bg{fill:#2A2F36}svg:not([data-theme="light"]) .sh{fill:#000000}svg:not([data-theme="light"]) .box{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .hot{fill:#F2D13A;stroke:#ECE9E2}svg:not([data-theme="light"]) .mut{fill:#1D2126;stroke:#ECE9E2}svg:not([data-theme="light"]) .band{fill:#2F343C;stroke:#ECE9E2}svg:not([data-theme="light"]) .note{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .deco{stroke:#ECE9E2}svg:not([data-theme="light"]) .ek{stroke:#ECE9E2}svg:not([data-theme="light"]) .er{stroke:#FF7B72}svg:not([data-theme="light"]) .eb{stroke:#8EA6FF}svg:not([data-theme="light"]) .ep{stroke:#8EA6FF}svg:not([data-theme="light"]) .hk{fill:#ECE9E2}svg:not([data-theme="light"]) .hr{fill:#FF7B72}svg:not([data-theme="light"]) .hb{fill:#8EA6FF}svg:not([data-theme="light"]) .hp{stroke:#8EA6FF}svg:not([data-theme="light"]) .dot{fill:#8EA6FF}svg:not([data-theme="light"]) .tick{fill:#ECE9E2}svg:not([data-theme="light"]) .life{stroke:#B9BFC7}svg:not([data-theme="light"]) .plate{fill:#2A2F36}svg:not([data-theme="light"]) .plateb{fill:#2F343C}svg:not([data-theme="light"]) .ink{fill:#ECE9E2}svg:not([data-theme="light"]) .soft{fill:#B9BFC7}svg:not([data-theme="light"]) .hink{fill:#000000}}svg[data-theme="dark"] .bg{fill:#2A2F36}svg[data-theme="dark"] .sh{fill:#000000}svg[data-theme="dark"] .box{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .hot{fill:#F2D13A;stroke:#ECE9E2}svg[data-theme="dark"] .mut{fill:#1D2126;stroke:#ECE9E2}svg[data-theme="dark"] .band{fill:#2F343C;stroke:#ECE9E2}svg[data-theme="dark"] .note{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .deco{stroke:#ECE9E2}svg[data-theme="dark"] .ek{stroke:#ECE9E2}svg[data-theme="dark"] .er{stroke:#FF7B72}svg[data-theme="dark"] .eb{stroke:#8EA6FF}svg[data-theme="dark"] .ep{stroke:#8EA6FF}svg[data-theme="dark"] .hk{fill:#ECE9E2}svg[data-theme="dark"] .hr{fill:#FF7B72}svg[data-theme="dark"] .hb{fill:#8EA6FF}svg[data-theme="dark"] .hp{stroke:#8EA6FF}svg[data-theme="dark"] .dot{fill:#8EA6FF}svg[data-theme="dark"] .tick{fill:#ECE9E2}svg[data-theme="dark"] .life{stroke:#B9BFC7}svg[data-theme="dark"] .plate{fill:#2A2F36}svg[data-theme="dark"] .plateb{fill:#2F343C}svg[data-theme="dark"] .ink{fill:#ECE9E2}svg[data-theme="dark"] .soft{fill:#B9BFC7}svg[data-theme="dark"] .hink{fill:#000000}</style>
+<rect class="bg" data-role="bg" x="0" y="0" width="688" height="664"/>
+<path class="life" data-role="life" d="M64 134L64 629.4"/>
+<path class="life" data-role="life" d="M208 134L208 629.4"/>
+<path class="life" data-role="life" d="M384 134L384 629.4"/>
+<path class="life" data-role="life" d="M592 134L592 629.4"/>
+<rect class="sh" data-role="shadow" data-for="sh" x="28" y="68" width="80" height="64"/>
+<rect class="box" data-role="node" data-id="sh" x="24" y="64" width="80" height="64"/>
+<rect class="sh" data-role="shadow" data-for="k" x="164" y="68" width="96" height="64"/>
+<rect class="box" data-role="node" data-id="k" x="160" y="64" width="96" height="64"/>
+<rect class="sh" data-role="shadow" data-for="ch" x="292" y="68" width="192" height="64"/>
+<rect class="box" data-role="node" data-id="ch" x="288" y="64" width="192" height="64"/>
+<rect class="sh" data-role="shadow" data-for="fs" x="532" y="68" width="128" height="64"/>
+<rect class="box" data-role="node" data-id="fs" x="528" y="64" width="128" height="64"/>
+<rect class="note" data-role="node" data-id="note3" x="296" y="249.8" width="176" height="56"/>
+<rect class="note" data-role="node" data-id="note9" x="40" y="569.4" width="192" height="40"/>
+<path class="ek" data-role="edge" data-id="e1" data-from="sh" data-to="k" d="M64 178.9L199 178.9"/>
+<path class="hk" data-role="head" data-for="e1" d="M208 178.9L198 183.9L198 173.9Z"/>
+<path class="ek" data-role="edge" data-id="e2" data-from="k" data-to="ch" d="M208 225.8L375 225.8"/>
+<path class="hk" data-role="head" data-for="e2" d="M384 225.8L374 230.8L374 220.8Z"/>
+<path class="ek" data-role="edge" data-id="e4" data-from="ch" data-to="k" d="M384 348.7L217 348.7"/>
+<path class="hk" data-role="head" data-for="e4" d="M208 348.7L218 343.7L218 353.7Z"/>
+<path class="ek" data-role="edge" data-id="e5" data-from="k" data-to="fs" d="M208 395.6L583 395.6"/>
+<path class="hk" data-role="head" data-for="e5" d="M592 395.6L582 400.6L582 390.6Z"/>
+<path class="eb" data-role="edge" data-id="e6" data-from="fs" data-to="k" d="M592 442.5L217 442.5"/>
+<path class="hb" data-role="head" data-for="e6" d="M208 442.5L218 437.5L218 447.5Z"/>
+<path class="ek" data-role="edge" data-id="e7" data-from="ch" data-to="ch" d="M384 466.5L416 466.5L416 486.5L393 486.5"/>
+<path class="hk" data-role="head" data-for="e7" d="M384 486.5L394 481.5L394 491.5Z"/>
+<path class="eb" data-role="edge" data-id="e8" data-from="ch" data-to="sh" d="M384 545.4L73 545.4"/>
+<path class="hb" data-role="head" data-for="e8" d="M64 545.4L74 540.4L74 550.4Z"/>
+<text class="tt ink" data-role="title" data-id="title"><tspan x="24" y="41">What happens when the shell runs ls</tspan></text>
+<text class="t ink" data-role="label" data-id="sh" data-in="sh" text-anchor="middle"><tspan x="64" y="101.2">shell</tspan></text>
+<text class="t ink" data-role="label" data-id="k" data-in="k" text-anchor="middle"><tspan x="208" y="101.2">kernel</tspan></text>
+<text class="t ink" data-role="label" data-id="ch" data-in="ch" text-anchor="middle"><tspan x="384" y="91.5">child process</tspan><tspan x="384" y="111">with a long name</tspan></text>
+<text class="t ink" data-role="label" data-id="fs" data-in="fs" text-anchor="middle"><tspan x="592" y="101.2">file system</tspan></text>
+<rect class="plate" data-role="plate" data-for="e1" x="105.1" y="154" width="61.8" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e1" text-anchor="middle"><tspan x="136" y="169"><tspan class="m">fork()</tspan></tspan></text>
+<rect class="plate" data-role="plate" data-for="e2" x="268.5" y="200.9" width="55.1" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e2" text-anchor="middle"><tspan x="296" y="215.9">create</tspan></text>
+<text class="s ink" data-role="label" data-id="note3" data-in="note3" text-anchor="middle"><tspan x="384" y="273.9">a copy of the shell,</tspan><tspan x="384" y="290.8">same code</tspan></text>
+<rect class="plate" data-role="plate" data-for="e4" x="247.2" y="323.8" width="97.7" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e4" text-anchor="middle"><tspan x="296" y="338.8"><tspan class="m">exec(&quot;ls&quot;)</tspan></tspan></text>
+<rect class="plate" data-role="plate" data-for="e5" x="371.9" y="370.7" width="56.1" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e5" text-anchor="middle"><tspan x="400" y="385.7">load ls</tspan></text>
+<rect class="plate" data-role="plate" data-for="e6" x="342" y="417.6" width="115.9" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e6" text-anchor="middle"><tspan x="400" y="432.6">program bytes</tspan></text>
+<rect class="plate" data-role="plate" data-for="e7" x="420" y="466" width="49.4" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e7"><tspan x="424" y="481">run ls</tspan></text>
+<rect class="plate" data-role="plate" data-for="e8" x="181.4" y="520.5" width="85.3" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e8" text-anchor="middle"><tspan x="224" y="535.5">exit status</tspan></text>
+<text class="s ink" data-role="label" data-id="note9" data-in="note9" text-anchor="middle"><tspan x="136" y="593.9">the shell waits</tspan></text>
+</svg>

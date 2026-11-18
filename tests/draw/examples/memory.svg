@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 624 472" width="624" height="472" role="img" aria-labelledby="memory-t memory-d" data-kind="memory" data-count="7">
+<title id="memory-t">fill gets the address of one element, not a copy of the array</title>
+<desc id="memory-d">Memory. fill's frame, which holds an address and a count but none of the ints themselves. It holds p and n. p holds 1008 at address 3000 and points to a[2] (writes here). n holds 2 at address 3008. n is greyed out. main's frame: owns the array. It holds a. a holds 1, 2, 3, 4 and 5 at addresses 1000 to 1016. a[2] is highlighted.</desc>
+<style>.bg{fill:#E6ECF0}.sh{fill:#000000}.box{fill:#FFFFFF;stroke:#000000;stroke-width:2.5}.hot{fill:#FFE600;stroke:#000000;stroke-width:4.5}.mut{fill:#CDD5DC;stroke:#000000;stroke-width:2.5;stroke-dasharray:6 4}.band{fill:#F6F8FA;stroke:#000000;stroke-width:2.5}.note{fill:#FFFFFF;stroke:#000000;stroke-width:1.5}.deco{stroke:#000000;fill:none;stroke-width:2}.ek{stroke:#000000;fill:none;stroke-width:2}.er{stroke:#D92B2B;fill:none;stroke-width:3}.eb{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.ep{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.hk{fill:#000000}.hr{fill:#D92B2B}.hb{fill:#1F4BFF}.hp{stroke:#1F4BFF;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.5}.dot{fill:#1F4BFF}.tick{fill:#000000}.life{stroke:#3B4651;fill:none;stroke-dasharray:4 5;stroke-width:1.5}.plate{fill:#E6ECF0}.plateb{fill:#F6F8FA}.ink{fill:#000000}.soft{fill:#3B4651}.hink{fill:#000000}.t{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:15px;font-weight:600}.s{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:13px;font-weight:600}.tt{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:17px;font-weight:700}.m{font-family:ui-monospace, 'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace}@media (prefers-color-scheme:dark){svg:not([data-theme="light"]) .bg{fill:#2A2F36}svg:not([data-theme="light"]) .sh{fill:#000000}svg:not([data-theme="light"]) .box{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .hot{fill:#F2D13A;stroke:#ECE9E2}svg:not([data-theme="light"]) .mut{fill:#1D2126;stroke:#ECE9E2}svg:not([data-theme="light"]) .band{fill:#2F343C;stroke:#ECE9E2}svg:not([data-theme="light"]) .note{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .deco{stroke:#ECE9E2}svg:not([data-theme="light"]) .ek{stroke:#ECE9E2}svg:not([data-theme="light"]) .er{stroke:#FF7B72}svg:not([data-theme="light"]) .eb{stroke:#8EA6FF}svg:not([data-theme="light"]) .ep{stroke:#8EA6FF}svg:not([data-theme="light"]) .hk{fill:#ECE9E2}svg:not([data-theme="light"]) .hr{fill:#FF7B72}svg:not([data-theme="light"]) .hb{fill:#8EA6FF}svg:not([data-theme="light"]) .hp{stroke:#8EA6FF}svg:not([data-theme="light"]) .dot{fill:#8EA6FF}svg:not([data-theme="light"]) .tick{fill:#ECE9E2}svg:not([data-theme="light"]) .life{stroke:#B9BFC7}svg:not([data-theme="light"]) .plate{fill:#2A2F36}svg:not([data-theme="light"]) .plateb{fill:#2F343C}svg:not([data-theme="light"]) .ink{fill:#ECE9E2}svg:not([data-theme="light"]) .soft{fill:#B9BFC7}svg:not([data-theme="light"]) .hink{fill:#000000}}svg[data-theme="dark"] .bg{fill:#2A2F36}svg[data-theme="dark"] .sh{fill:#000000}svg[data-theme="dark"] .box{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .hot{fill:#F2D13A;stroke:#ECE9E2}svg[data-theme="dark"] .mut{fill:#1D2126;stroke:#ECE9E2}svg[data-theme="dark"] .band{fill:#2F343C;stroke:#ECE9E2}svg[data-theme="dark"] .note{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .deco{stroke:#ECE9E2}svg[data-theme="dark"] .ek{stroke:#ECE9E2}svg[data-theme="dark"] .er{stroke:#FF7B72}svg[data-theme="dark"] .eb{stroke:#8EA6FF}svg[data-theme="dark"] .ep{stroke:#8EA6FF}svg[data-theme="dark"] .hk{fill:#ECE9E2}svg[data-theme="dark"] .hr{fill:#FF7B72}svg[data-theme="dark"] .hb{fill:#8EA6FF}svg[data-theme="dark"] .hp{stroke:#8EA6FF}svg[data-theme="dark"] .dot{fill:#8EA6FF}svg[data-theme="dark"] .tick{fill:#ECE9E2}svg[data-theme="dark"] .life{stroke:#B9BFC7}svg[data-theme="dark"] .plate{fill:#2A2F36}svg[data-theme="dark"] .plateb{fill:#2F343C}svg[data-theme="dark"] .ink{fill:#ECE9E2}svg[data-theme="dark"] .soft{fill:#B9BFC7}svg[data-theme="dark"] .hink{fill:#000000}</style>
+<rect class="bg" data-role="bg" x="0" y="0" width="624" height="472"/>
+<rect class="sh" data-role="shadow" data-for="main" x="116" y="288" width="400" height="160"/>
+<rect class="band" data-role="band" data-id="main" x="112" y="284" width="400" height="160"/>
+<rect class="sh" data-role="shadow" data-for="fill" x="116" y="68" width="400" height="176"/>
+<rect class="band" data-role="band" data-id="fill" x="112" y="64" width="400" height="176"/>
+<rect class="sh" data-role="shadow" data-for="p" x="252" y="156" width="112" height="48"/>
+<rect class="box" data-role="cell" data-id="p" x="248" y="152" width="112" height="48"/>
+<rect class="sh" data-role="shadow" data-for="n" x="404" y="156" width="64" height="48"/>
+<rect class="mut" data-role="cell" data-id="n" x="400" y="152" width="64" height="48"/>
+<rect class="sh" data-role="shadow" data-for="a[0]" x="172" y="360" width="64" height="48"/>
+<rect class="box" data-role="cell" data-id="a[0]" x="168" y="356" width="64" height="48"/>
+<rect class="sh" data-role="shadow" data-for="a[1]" x="236" y="360" width="64" height="48"/>
+<rect class="box" data-role="cell" data-id="a[1]" x="232" y="356" width="64" height="48"/>
+<rect class="sh" data-role="shadow" data-for="a[2]" x="300" y="360" width="64" height="48"/>
+<rect class="hot" data-role="cell" data-id="a[2]" x="296" y="356" width="64" height="48"/>
+<rect class="sh" data-role="shadow" data-for="a[3]" x="364" y="360" width="64" height="48"/>
+<rect class="box" data-role="cell" data-id="a[3]" x="360" y="356" width="64" height="48"/>
+<rect class="sh" data-role="shadow" data-for="a[4]" x="428" y="360" width="64" height="48"/>
+<rect class="box" data-role="cell" data-id="a[4]" x="424" y="356" width="64" height="48"/>
+<path class="ep" data-role="edge" data-id="p1" data-from="p" data-to="a[2]" d="M344 176C376.4 266 376.4 266 344 356"/>
+<circle class="dot" data-role="deco" cx="344" cy="176" r="4.5"/>
+<path class="hp" data-role="head" data-for="p1" d="M344 356L351.6 349.5M344 356L342.2 346.2"/>
+<text class="tt ink" data-role="title" data-id="title"><tspan x="24" y="41">fill gets the address of one element, not a copy of the array</tspan></text>
+<text class="t ink" data-role="label" data-id="p" data-in="p" text-anchor="middle"><tspan x="288" y="181.2"><tspan class="m">1008</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="p:name" text-anchor="middle"><tspan x="304" y="145.2"><tspan class="m">p</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="p:addr" text-anchor="middle"><tspan x="288" y="218.6"><tspan class="m">at 3000</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="n" data-in="n" text-anchor="middle"><tspan x="432" y="181.2"><tspan class="m">2</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="n:name" text-anchor="middle"><tspan x="432" y="145.2"><tspan class="m">n</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="n:addr" text-anchor="middle"><tspan x="432" y="218.6"><tspan class="m">at 3008</tspan></tspan></text>
+<text class="s ink" data-role="label" data-id="fill:label"><tspan x="124" y="85"><tspan class="m">fill</tspan>'s frame, which holds an</tspan><tspan x="124" y="101.9">address and a count but none of the</tspan><tspan x="124" y="118.8">ints themselves</tspan></text>
+<text class="t ink" data-role="label" data-id="a[0]" data-in="a[0]" text-anchor="middle"><tspan x="200" y="385.2"><tspan class="m">1</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[0]:index" text-anchor="middle"><tspan x="200" y="348.6"><tspan class="m">0</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[0]:addr" text-anchor="middle"><tspan x="200" y="422.6"><tspan class="m">1000</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="a[1]" data-in="a[1]" text-anchor="middle"><tspan x="264" y="385.2"><tspan class="m">2</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[1]:index" text-anchor="middle"><tspan x="264" y="348.6"><tspan class="m">1</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[1]:addr" text-anchor="middle"><tspan x="264" y="422.6"><tspan class="m">1004</tspan></tspan></text>
+<text class="t hink" data-role="label" data-id="a[2]" data-in="a[2]" text-anchor="middle"><tspan x="328" y="385.2"><tspan class="m">3</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[2]:index" text-anchor="middle"><tspan x="328" y="348.6"><tspan class="m">2</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[2]:addr" text-anchor="middle"><tspan x="328" y="422.6"><tspan class="m">1008</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="a[3]" data-in="a[3]" text-anchor="middle"><tspan x="392" y="385.2"><tspan class="m">4</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[3]:index" text-anchor="middle"><tspan x="392" y="348.6"><tspan class="m">3</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[3]:addr" text-anchor="middle"><tspan x="392" y="422.6"><tspan class="m">1012</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="a[4]" data-in="a[4]" text-anchor="middle"><tspan x="456" y="385.2"><tspan class="m">5</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[4]:index" text-anchor="middle"><tspan x="456" y="348.6"><tspan class="m">4</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[4]:addr" text-anchor="middle"><tspan x="456" y="422.6"><tspan class="m">1016</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="a:row" text-anchor="end"><tspan x="156" y="385.2"><tspan class="m">a</tspan></tspan></text>
+<text class="s ink" data-role="label" data-id="main:label"><tspan x="124" y="305"><tspan class="m">main</tspan>'s frame:</tspan><tspan x="124" y="321.9">owns the array</tspan></text>
+<rect class="plate" data-role="plate" data-for="p1" x="322.6" y="255.6" width="91.4" height="20.9"/>
+<text class="s ink" data-role="label" data-id="p1" text-anchor="middle"><tspan x="368.3" y="270.6">writes here</tspan></text>
+</svg>

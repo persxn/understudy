@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 432 360" width="432" height="360" role="img" aria-labelledby="array-pointer-step-t array-pointer-step-d" data-kind="memory" data-count="6">
+<title id="array-pointer-step-t">p + 1 steps one int along: four bytes on</title>
+<desc id="array-pointer-step-d">Memory. p holds 1000 at address 2000 and points to a[0]. a holds 10, 20, 30, 40 and 50 at addresses 1000 to 1016. a[2] is highlighted. p marks a[0]. p+1 marks a[1]. p+2 marks a[2].</desc>
+<style>.bg{fill:#E6ECF0}.sh{fill:#000000}.box{fill:#FFFFFF;stroke:#000000;stroke-width:2.5}.hot{fill:#FFE600;stroke:#000000;stroke-width:4.5}.mut{fill:#CDD5DC;stroke:#000000;stroke-width:2.5;stroke-dasharray:6 4}.band{fill:#F6F8FA;stroke:#000000;stroke-width:2.5}.note{fill:#FFFFFF;stroke:#000000;stroke-width:1.5}.deco{stroke:#000000;fill:none;stroke-width:2}.ek{stroke:#000000;fill:none;stroke-width:2}.er{stroke:#D92B2B;fill:none;stroke-width:3}.eb{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.ep{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.hk{fill:#000000}.hr{fill:#D92B2B}.hb{fill:#1F4BFF}.hp{stroke:#1F4BFF;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.5}.dot{fill:#1F4BFF}.tick{fill:#000000}.life{stroke:#3B4651;fill:none;stroke-dasharray:4 5;stroke-width:1.5}.plate{fill:#E6ECF0}.plateb{fill:#F6F8FA}.ink{fill:#000000}.soft{fill:#3B4651}.hink{fill:#000000}.t{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:15px;font-weight:600}.s{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:13px;font-weight:600}.tt{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:17px;font-weight:700}.m{font-family:ui-monospace, 'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace}@media (prefers-color-scheme:dark){svg:not([data-theme="light"]) .bg{fill:#2A2F36}svg:not([data-theme="light"]) .sh{fill:#000000}svg:not([data-theme="light"]) .box{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .hot{fill:#F2D13A;stroke:#ECE9E2}svg:not([data-theme="light"]) .mut{fill:#1D2126;stroke:#ECE9E2}svg:not([data-theme="light"]) .band{fill:#2F343C;stroke:#ECE9E2}svg:not([data-theme="light"]) .note{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .deco{stroke:#ECE9E2}svg:not([data-theme="light"]) .ek{stroke:#ECE9E2}svg:not([data-theme="light"]) .er{stroke:#FF7B72}svg:not([data-theme="light"]) .eb{stroke:#8EA6FF}svg:not([data-theme="light"]) .ep{stroke:#8EA6FF}svg:not([data-theme="light"]) .hk{fill:#ECE9E2}svg:not([data-theme="light"]) .hr{fill:#FF7B72}svg:not([data-theme="light"]) .hb{fill:#8EA6FF}svg:not([data-theme="light"]) .hp{stroke:#8EA6FF}svg:not([data-theme="light"]) .dot{fill:#8EA6FF}svg:not([data-theme="light"]) .tick{fill:#ECE9E2}svg:not([data-theme="light"]) .life{stroke:#B9BFC7}svg:not([data-theme="light"]) .plate{fill:#2A2F36}svg:not([data-theme="light"]) .plateb{fill:#2F343C}svg:not([data-theme="light"]) .ink{fill:#ECE9E2}svg:not([data-theme="light"]) .soft{fill:#B9BFC7}svg:not([data-theme="light"]) .hink{fill:#000000}}svg[data-theme="dark"] .bg{fill:#2A2F36}svg[data-theme="dark"] .sh{fill:#000000}svg[data-theme="dark"] .box{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .hot{fill:#F2D13A;stroke:#ECE9E2}svg[data-theme="dark"] .mut{fill:#1D2126;stroke:#ECE9E2}svg[data-theme="dark"] .band{fill:#2F343C;stroke:#ECE9E2}svg[data-theme="dark"] .note{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .deco{stroke:#ECE9E2}svg[data-theme="dark"] .ek{stroke:#ECE9E2}svg[data-theme="dark"] .er{stroke:#FF7B72}svg[data-theme="dark"] .eb{stroke:#8EA6FF}svg[data-theme="dark"] .ep{stroke:#8EA6FF}svg[data-theme="dark"] .hk{fill:#ECE9E2}svg[data-theme="dark"] .hr{fill:#FF7B72}svg[data-theme="dark"] .hb{fill:#8EA6FF}svg[data-theme="dark"] .hp{stroke:#8EA6FF}svg[data-theme="dark"] .dot{fill:#8EA6FF}svg[data-theme="dark"] .tick{fill:#ECE9E2}svg[data-theme="dark"] .life{stroke:#B9BFC7}svg[data-theme="dark"] .plate{fill:#2A2F36}svg[data-theme="dark"] .plateb{fill:#2F343C}svg[data-theme="dark"] .ink{fill:#ECE9E2}svg[data-theme="dark"] .soft{fill:#B9BFC7}svg[data-theme="dark"] .hink{fill:#000000}</style>
+<rect class="bg" data-role="bg" x="0" y="0" width="432" height="360"/>
+<rect class="sh" data-role="shadow" data-for="p" x="76" y="92" width="112" height="48"/>
+<rect class="box" data-role="cell" data-id="p" x="72" y="88" width="112" height="48"/>
+<rect class="sh" data-role="shadow" data-for="a[0]" x="76" y="228" width="64" height="48"/>
+<rect class="box" data-role="cell" data-id="a[0]" x="72" y="224" width="64" height="48"/>
+<rect class="sh" data-role="shadow" data-for="a[1]" x="140" y="228" width="64" height="48"/>
+<rect class="box" data-role="cell" data-id="a[1]" x="136" y="224" width="64" height="48"/>
+<rect class="sh" data-role="shadow" data-for="a[2]" x="204" y="228" width="64" height="48"/>
+<rect class="hot" data-role="cell" data-id="a[2]" x="200" y="224" width="64" height="48"/>
+<rect class="sh" data-role="shadow" data-for="a[3]" x="268" y="228" width="64" height="48"/>
+<rect class="box" data-role="cell" data-id="a[3]" x="264" y="224" width="64" height="48"/>
+<rect class="sh" data-role="shadow" data-for="a[4]" x="332" y="228" width="64" height="48"/>
+<rect class="box" data-role="cell" data-id="a[4]" x="328" y="224" width="64" height="48"/>
+<path class="tick" data-role="deco" d="M104 302L98 311L110 311Z"/>
+<path class="tick" data-role="deco" d="M168 302L162 311L174 311Z"/>
+<path class="tick" data-role="deco" d="M232 302L226 311L238 311Z"/>
+<path class="ep" data-role="edge" data-id="p1" data-from="p" data-to="a[0]" d="M168 112C168 172.9 120 187.4 120 224"/>
+<circle class="dot" data-role="deco" cx="168" cy="112" r="4.5"/>
+<path class="hp" data-role="head" data-for="p1" d="M120 224L125 215.3M120 224L115 215.3"/>
+<text class="tt ink" data-role="title" data-id="title"><tspan x="24" y="41">p + 1 steps one int along: four bytes on</tspan></text>
+<text class="t ink" data-role="label" data-id="p" data-in="p" text-anchor="middle"><tspan x="112" y="117.2"><tspan class="m">1000</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="p:name" text-anchor="middle"><tspan x="128" y="81.2"><tspan class="m">p</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="p:addr" text-anchor="middle"><tspan x="112" y="154.6"><tspan class="m">at 2000</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="a[0]" data-in="a[0]" text-anchor="middle"><tspan x="104" y="253.2"><tspan class="m">10</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[0]:index" text-anchor="middle"><tspan x="104" y="216.6"><tspan class="m">0</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[0]:addr" text-anchor="middle"><tspan x="104" y="290.6"><tspan class="m">1000</tspan></tspan></text>
+<text class="s ink" data-role="label" data-id="a[0]:mark" text-anchor="middle"><tspan x="104" y="325.6">p</tspan></text>
+<text class="t ink" data-role="label" data-id="a[1]" data-in="a[1]" text-anchor="middle"><tspan x="168" y="253.2"><tspan class="m">20</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[1]:index" text-anchor="middle"><tspan x="168" y="216.6"><tspan class="m">1</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[1]:addr" text-anchor="middle"><tspan x="168" y="290.6"><tspan class="m">1004</tspan></tspan></text>
+<text class="s ink" data-role="label" data-id="a[1]:mark" text-anchor="middle"><tspan x="168" y="325.6">p+1</tspan></text>
+<text class="t hink" data-role="label" data-id="a[2]" data-in="a[2]" text-anchor="middle"><tspan x="232" y="253.2"><tspan class="m">30</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[2]:index" text-anchor="middle"><tspan x="232" y="216.6"><tspan class="m">2</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[2]:addr" text-anchor="middle"><tspan x="232" y="290.6"><tspan class="m">1008</tspan></tspan></text>
+<text class="s ink" data-role="label" data-id="a[2]:mark" text-anchor="middle"><tspan x="232" y="325.6">p+2</tspan></text>
+<text class="t ink" data-role="label" data-id="a[3]" data-in="a[3]" text-anchor="middle"><tspan x="296" y="253.2"><tspan class="m">40</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[3]:index" text-anchor="middle"><tspan x="296" y="216.6"><tspan class="m">3</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[3]:addr" text-anchor="middle"><tspan x="296" y="290.6"><tspan class="m">1012</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="a[4]" data-in="a[4]" text-anchor="middle"><tspan x="360" y="253.2"><tspan class="m">50</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[4]:index" text-anchor="middle"><tspan x="360" y="216.6"><tspan class="m">4</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a[4]:addr" text-anchor="middle"><tspan x="360" y="290.6"><tspan class="m">1016</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="a:row" text-anchor="end"><tspan x="60" y="253.2"><tspan class="m">a</tspan></tspan></text>
+</svg>

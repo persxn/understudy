@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 560" width="680" height="560" role="img" aria-labelledby="layers-t layers-d" data-kind="layers" data-count="6">
+<title id="layers-t">Where a running C program keeps things</title>
+<desc id="layers-d">Layers, top to bottom. Stack (high addresses) holds main's frame and local variables of the function now running. Heap holds malloc block and free space. Data segment holds globals. Text (low addresses) holds machine code. local variables of the function now running leads to malloc block by a dashed arrow (points into). local variables of the function now running is highlighted. free space is greyed out.</desc>
+<style>.bg{fill:#E6ECF0}.sh{fill:#000000}.box{fill:#FFFFFF;stroke:#000000;stroke-width:2.5}.hot{fill:#FFE600;stroke:#000000;stroke-width:4.5}.mut{fill:#CDD5DC;stroke:#000000;stroke-width:2.5;stroke-dasharray:6 4}.band{fill:#F6F8FA;stroke:#000000;stroke-width:2.5}.note{fill:#FFFFFF;stroke:#000000;stroke-width:1.5}.deco{stroke:#000000;fill:none;stroke-width:2}.ek{stroke:#000000;fill:none;stroke-width:2}.er{stroke:#D92B2B;fill:none;stroke-width:3}.eb{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.ep{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.hk{fill:#000000}.hr{fill:#D92B2B}.hb{fill:#1F4BFF}.hp{stroke:#1F4BFF;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.5}.dot{fill:#1F4BFF}.tick{fill:#000000}.life{stroke:#3B4651;fill:none;stroke-dasharray:4 5;stroke-width:1.5}.plate{fill:#E6ECF0}.plateb{fill:#F6F8FA}.ink{fill:#000000}.soft{fill:#3B4651}.hink{fill:#000000}.t{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:15px;font-weight:600}.s{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:13px;font-weight:600}.tt{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:17px;font-weight:700}.m{font-family:ui-monospace, 'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace}@media (prefers-color-scheme:dark){svg:not([data-theme="light"]) .bg{fill:#2A2F36}svg:not([data-theme="light"]) .sh{fill:#000000}svg:not([data-theme="light"]) .box{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .hot{fill:#F2D13A;stroke:#ECE9E2}svg:not([data-theme="light"]) .mut{fill:#1D2126;stroke:#ECE9E2}svg:not([data-theme="light"]) .band{fill:#2F343C;stroke:#ECE9E2}svg:not([data-theme="light"]) .note{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .deco{stroke:#ECE9E2}svg:not([data-theme="light"]) .ek{stroke:#ECE9E2}svg:not([data-theme="light"]) .er{stroke:#FF7B72}svg:not([data-theme="light"]) .eb{stroke:#8EA6FF}svg:not([data-theme="light"]) .ep{stroke:#8EA6FF}svg:not([data-theme="light"]) .hk{fill:#ECE9E2}svg:not([data-theme="light"]) .hr{fill:#FF7B72}svg:not([data-theme="light"]) .hb{fill:#8EA6FF}svg:not([data-theme="light"]) .hp{stroke:#8EA6FF}svg:not([data-theme="light"]) .dot{fill:#8EA6FF}svg:not([data-theme="light"]) .tick{fill:#ECE9E2}svg:not([data-theme="light"]) .life{stroke:#B9BFC7}svg:not([data-theme="light"]) .plate{fill:#2A2F36}svg:not([data-theme="light"]) .plateb{fill:#2F343C}svg:not([data-theme="light"]) .ink{fill:#ECE9E2}svg:not([data-theme="light"]) .soft{fill:#B9BFC7}svg:not([data-theme="light"]) .hink{fill:#000000}}svg[data-theme="dark"] .bg{fill:#2A2F36}svg[data-theme="dark"] .sh{fill:#000000}svg[data-theme="dark"] .box{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .hot{fill:#F2D13A;stroke:#ECE9E2}svg[data-theme="dark"] .mut{fill:#1D2126;stroke:#ECE9E2}svg[data-theme="dark"] .band{fill:#2F343C;stroke:#ECE9E2}svg[data-theme="dark"] .note{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .deco{stroke:#ECE9E2}svg[data-theme="dark"] .ek{stroke:#ECE9E2}svg[data-theme="dark"] .er{stroke:#FF7B72}svg[data-theme="dark"] .eb{stroke:#8EA6FF}svg[data-theme="dark"] .ep{stroke:#8EA6FF}svg[data-theme="dark"] .hk{fill:#ECE9E2}svg[data-theme="dark"] .hr{fill:#FF7B72}svg[data-theme="dark"] .hb{fill:#8EA6FF}svg[data-theme="dark"] .hp{stroke:#8EA6FF}svg[data-theme="dark"] .dot{fill:#8EA6FF}svg[data-theme="dark"] .tick{fill:#ECE9E2}svg[data-theme="dark"] .life{stroke:#B9BFC7}svg[data-theme="dark"] .plate{fill:#2A2F36}svg[data-theme="dark"] .plateb{fill:#2F343C}svg[data-theme="dark"] .ink{fill:#ECE9E2}svg[data-theme="dark"] .soft{fill:#B9BFC7}svg[data-theme="dark"] .hink{fill:#000000}</style>
+<rect class="bg" data-role="bg" x="0" y="0" width="680" height="560"/>
+<rect class="sh" data-role="shadow" data-for="stack" x="28" y="68" width="496" height="128"/>
+<rect class="band" data-role="band" data-id="stack" x="24" y="64" width="496" height="128"/>
+<rect class="sh" data-role="shadow" data-for="heap" x="28" y="260" width="496" height="80"/>
+<rect class="band" data-role="band" data-id="heap" x="24" y="256" width="496" height="80"/>
+<rect class="sh" data-role="shadow" data-for="data" x="28" y="356" width="496" height="80"/>
+<rect class="band" data-role="band" data-id="data" x="24" y="352" width="496" height="80"/>
+<rect class="sh" data-role="shadow" data-for="text" x="28" y="452" width="496" height="80"/>
+<rect class="band" data-role="band" data-id="text" x="24" y="448" width="496" height="80"/>
+<rect class="sh" data-role="shadow" data-for="frame" x="164" y="82" width="144" height="96"/>
+<rect class="box" data-role="node" data-id="frame" x="160" y="78" width="144" height="96"/>
+<rect class="sh" data-role="shadow" data-for="local" x="340" y="82" width="160" height="96"/>
+<rect class="hot" data-role="node" data-id="local" x="336" y="78" width="160" height="96"/>
+<rect class="sh" data-role="shadow" data-for="blk" x="172" y="274" width="160" height="48"/>
+<rect class="box" data-role="node" data-id="blk" x="168" y="270" width="160" height="48"/>
+<rect class="sh" data-role="shadow" data-for="free" x="364" y="274" width="128" height="48"/>
+<rect class="mut" data-role="node" data-id="free" x="360" y="270" width="128" height="48"/>
+<rect class="sh" data-role="shadow" data-for="glob" x="284" y="370" width="96" height="48"/>
+<rect class="box" data-role="node" data-id="glob" x="280" y="366" width="96" height="48"/>
+<rect class="sh" data-role="shadow" data-for="code" x="252" y="466" width="160" height="48"/>
+<rect class="box" data-role="node" data-id="code" x="248" y="462" width="160" height="48"/>
+<path class="eb" data-role="edge" data-id="e1" data-from="local" data-to="blk" d="M416 178L416 226L248 226L248 261"/>
+<path class="hb" data-role="head" data-for="e1" d="M248 270L243 260L253 260Z"/>
+<text class="tt ink" data-role="title" data-id="title"><tspan x="24" y="41">Where a running C program keeps things</tspan></text>
+<text class="t ink" data-role="label" data-id="stack" data-in="stack"><tspan x="40" y="133.2">Stack</tspan></text>
+<text class="s soft" data-role="label" data-id="stack:side"><tspan x="536" y="132.6">high addresses</tspan></text>
+<text class="t ink" data-role="label" data-id="frame" data-in="frame" text-anchor="middle"><tspan x="232" y="131.2"><tspan class="m">main</tspan>'s frame</tspan></text>
+<text class="t hink" data-role="label" data-id="local" data-in="local" text-anchor="middle"><tspan x="416" y="111.8">local variables</tspan><tspan x="416" y="131.2">of the function</tspan><tspan x="416" y="150.8">now running</tspan></text>
+<text class="t ink" data-role="label" data-id="heap" data-in="heap"><tspan x="40" y="301.2">Heap</tspan></text>
+<text class="t ink" data-role="label" data-id="blk" data-in="blk" text-anchor="middle"><tspan x="248" y="299.2"><tspan class="m">malloc</tspan> block</tspan></text>
+<text class="t ink" data-role="label" data-id="free" data-in="free" text-anchor="middle"><tspan x="424" y="299.2">free space</tspan></text>
+<text class="t ink" data-role="label" data-id="data" data-in="data"><tspan x="40" y="387.5">Data</tspan><tspan x="40" y="407">segment</tspan></text>
+<text class="t ink" data-role="label" data-id="glob" data-in="glob" text-anchor="middle"><tspan x="328" y="395.2">globals</tspan></text>
+<text class="t ink" data-role="label" data-id="text" data-in="text"><tspan x="40" y="493.2">Text</tspan></text>
+<text class="s soft" data-role="label" data-id="text:side"><tspan x="536" y="492.6">low addresses</tspan></text>
+<text class="t ink" data-role="label" data-id="code" data-in="code" text-anchor="middle"><tspan x="328" y="491.2">machine code</tspan></text>
+<rect class="plate" data-role="plate" data-for="e1" x="288.9" y="215.6" width="86.2" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e1" text-anchor="middle"><tspan x="332" y="230.6">points into</tspan></text>
+</svg>

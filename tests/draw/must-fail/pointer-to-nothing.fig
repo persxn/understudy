@@ -1,0 +1,2 @@
+vars: p=1000 x=5
+ptr p -> z

@@ -1,0 +1,4 @@
+- ch 12: false fixed 4 (§12.5 fscanf "%31s %d" said to loop for ever on `sixty`, twice; §12.5 array-decay ref §8.2→§8.8; §12.7 "In §12.2 you printed Could not open").
+- ch 12: stuck points fixed 2 (§12.4 byte numbering from 1 in program vs 0 in Figure 12.4a; §12.13 trace step 5 contradicted §12.8's line-buffering rule for a reader running it in a terminal).
+- ch 12: suspects 80 shown of 326, all cleared (2 FLAGs on 'write'/'operating system' in §12.1 are noise: everyday word, and §12.13 forward ref already given); rest covered by the full read.
+- ch 12: open: §12.5 fscanf table row 0 can't actually occur with "%31s %d" (left: harmless); stderr lines in captured outputs (sum-pairs, set-mark) print last, explained only once in §12.7.

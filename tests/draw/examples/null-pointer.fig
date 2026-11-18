@@ -1,0 +1,4 @@
+title: A null pointer leads nowhere
+vars: p=NULL@2000 q=1000@2008 x=42@1000
+ptr p -> null
+ptr q -> x

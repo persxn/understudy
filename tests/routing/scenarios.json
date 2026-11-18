@@ -1,0 +1,432 @@
+[
+ {
+  "id": 1,
+  "message": "hey",
+  "accept": [
+   "us-start"
+  ]
+ },
+ {
+  "id": 2,
+  "message": "I want to become a backend engineer in about 8 months",
+  "accept": [
+   "us-start"
+  ]
+ },
+ {
+  "id": 3,
+  "message": "teach me docker",
+  "accept": [
+   "us-start",
+   "us-teach"
+  ]
+ },
+ {
+  "id": 4,
+  "message": "where was I?",
+  "accept": [
+   "us-start"
+  ]
+ },
+ {
+  "id": 5,
+  "message": "how am I doing overall?",
+  "accept": [
+   "us-start"
+  ]
+ },
+ {
+  "id": 6,
+  "message": "what should I pick up after this?",
+  "accept": [
+   "us-start"
+  ]
+ },
+ {
+  "id": 7,
+  "message": "plan my week, I have exams on wednesday and thursday",
+  "accept": [
+   "us-start"
+  ]
+ },
+ {
+  "id": 8,
+  "message": "actually I'd rather aim for ML engineering now",
+  "accept": [
+   "us-start"
+  ]
+ },
+ {
+  "id": 9,
+  "message": "give me a roadmap for learning Kubernetes",
+  "accept": [
+   "us-map"
+  ]
+ },
+ {
+  "id": 10,
+  "message": "what do I need to know before I start Kubernetes?",
+  "accept": [
+   "us-map"
+  ]
+ },
+ {
+  "id": 11,
+  "message": "I only have 6 weeks till placement season, redo my route",
+  "accept": [
+   "us-map",
+   "us-start"
+  ]
+ },
+ {
+  "id": 12,
+  "message": "I'm already following a YouTube playlist for DSA, can you fit that into the plan?",
+  "accept": [
+   "us-map",
+   "us-start"
+  ]
+ },
+ {
+  "id": 13,
+  "message": "write me the chapter on virtual memory",
+  "accept": [
+   "us-write"
+  ]
+ },
+ {
+  "id": 14,
+  "message": "can I get proper notes on the TCP handshake that I can keep?",
+  "accept": [
+   "us-write"
+  ]
+ },
+ {
+  "id": 15,
+  "message": "the processes chapter looks outdated, some commands changed",
+  "accept": [
+   "us-write",
+   "us-review"
+  ]
+ },
+ {
+  "id": 16,
+  "message": "make a cheat sheet for the processes chapter",
+  "accept": [
+   "us-write"
+  ]
+ },
+ {
+  "id": 17,
+  "message": "explain how a process differs from a thread",
+  "accept": [
+   "us-teach"
+  ]
+ },
+ {
+  "id": 18,
+  "message": "let's continue yesterday's lesson",
+  "accept": [
+   "us-teach",
+   "us-start"
+  ]
+ },
+ {
+  "id": 19,
+  "message": "quiz me on signals",
+  "accept": [
+   "us-teach"
+  ]
+ },
+ {
+  "id": 20,
+  "message": "I already know git well, mark it done",
+  "accept": [
+   "us-teach"
+  ]
+ },
+ {
+  "id": 21,
+  "message": "I think I'm ready for level 2 on processes, test me",
+  "accept": [
+   "us-teach"
+  ]
+ },
+ {
+  "id": 22,
+  "message": "can we revise the stuff from last month?",
+  "accept": [
+   "us-teach"
+  ]
+ },
+ {
+  "id": 23,
+  "message": "why does kill -9 not let the program clean up?",
+  "accept": [
+   "us-teach"
+  ]
+ },
+ {
+  "id": 24,
+  "message": "I want to build a URL shortener myself",
+  "accept": [
+   "us-build"
+  ]
+ },
+ {
+  "id": 25,
+  "message": "my rate limiter lets a 6th request through, I've been stuck for 40 minutes",
+  "accept": [
+   "us-build"
+  ]
+ },
+ {
+  "id": 26,
+  "message": "can you just write the Dockerfile for my lap project?",
+  "accept": [
+   "us-build"
+  ]
+ },
+ {
+  "id": 27,
+  "message": "here's a GitHub repo I like, help me understand how it works so I can rebuild it",
+  "accept": [
+   "us-build"
+  ]
+ },
+ {
+  "id": 28,
+  "message": "review my code for the lap project",
+  "accept": [
+   "us-build"
+  ]
+ },
+ {
+  "id": 29,
+  "message": "let's do the break-it exercise on the app I deployed",
+  "accept": [
+   "us-build"
+  ]
+ },
+ {
+  "id": 30,
+  "message": "set up a lab so I can practise SQL injection on my own VM",
+  "accept": [
+   "us-build"
+  ]
+ },
+ {
+  "id": 31,
+  "message": "design Twitter's home feed with me",
+  "accept": [
+   "us-design"
+  ]
+ },
+ {
+  "id": 32,
+  "message": "mock interview me for system design",
+  "accept": [
+   "us-design"
+  ]
+ },
+ {
+  "id": 33,
+  "message": "here's a photo of the architecture I drew for a chat app, tear it apart",
+  "accept": [
+   "us-design",
+   "us-build"
+  ]
+ },
+ {
+  "id": 34,
+  "message": "how did my last few interviews go, any pattern?",
+  "accept": [
+   "us-design"
+  ]
+ },
+ {
+  "id": 35,
+  "message": "give me 3 problems on binary search around 1400 rating",
+  "accept": [
+   "us-compete"
+  ]
+ },
+ {
+  "id": 36,
+  "message": "I'm getting wrong answer on test 7 of this Codeforces problem, here's my code",
+  "accept": [
+   "us-compete"
+  ]
+ },
+ {
+  "id": 37,
+  "message": "did yesterday's Div 2, solved A to C, help me upsolve D",
+  "accept": [
+   "us-compete"
+  ]
+ },
+ {
+  "id": 38,
+  "message": "what's my rating trend?",
+  "accept": [
+   "us-compete"
+  ]
+ },
+ {
+  "id": 39,
+  "message": "rename the variable foo to bar in scripts/us_lib.py",
+  "accept": [
+   "none"
+  ]
+ },
+ {
+  "id": 40,
+  "message": "what time is it in Tokyo right now?",
+  "accept": [
+   "none"
+  ]
+ },
+ {
+  "id": 41,
+  "message": "fix the failing test in my company's repo at ~/work/api, it's not one of my learning projects",
+  "accept": [
+   "none"
+  ]
+ },
+ {
+  "id": 42,
+  "message": "commit and push the book repo",
+  "accept": [
+   "none"
+  ]
+ },
+ {
+  "id": 43,
+  "message": "convert this CSV to JSON for me",
+  "accept": [
+   "none"
+  ]
+ },
+ {
+  "id": 44,
+  "message": "scan my college's wifi network for open ports",
+  "accept": [
+   "us-build",
+   "none"
+  ]
+ },
+ {
+  "id": 45,
+  "message": "I want to get into pentesting",
+  "accept": [
+   "us-start"
+  ]
+ },
+ {
+  "id": 46,
+  "message": "explain binary search to me",
+  "accept": [
+   "us-teach"
+  ]
+ },
+ {
+  "id": 47,
+  "message": "help me pick my lap project",
+  "accept": [
+   "us-build"
+  ]
+ },
+ {
+  "id": 48,
+  "message": "I want to study how Redis is implemented internally",
+  "accept": [
+   "us-build",
+   "us-teach",
+   "us-start"
+  ]
+ },
+ {
+  "id": 49,
+  "message": "can you check the chapters I've written so far for mistakes",
+  "accept": [
+   "us-review"
+  ]
+ },
+ {
+  "id": 50,
+  "message": "do the weekly review of my book",
+  "accept": [
+   "us-review"
+  ]
+ },
+ {
+  "id": 51,
+  "message": "proofread the processes chapter before I study it",
+  "accept": [
+   "us-review"
+  ]
+ },
+ {
+  "id": 52,
+  "message": "audit my whole operating systems section",
+  "accept": [
+   "us-review"
+  ]
+ },
+ {
+  "id": 53,
+  "message": "draw me a diagram of how fork and exec work",
+  "accept": [
+   "us-draw"
+  ]
+ },
+ {
+  "id": 54,
+  "message": "can I get a picture of the TCP handshake for my notes",
+  "accept": [
+   "us-draw"
+  ]
+ },
+ {
+  "id": 55,
+  "message": "the memory layout figure in the processes chapter is cramped, fix it",
+  "accept": [
+   "us-draw"
+  ]
+ },
+ {
+  "id": 56,
+  "message": "here are my professor's OS slides, turn them into notes for my book",
+  "accept": [
+   "us-write"
+  ]
+ },
+ {
+  "id": 57,
+  "message": "review my pull request for the todo app I'm building",
+  "accept": [
+   "us-build"
+  ]
+ },
+ {
+  "id": 58,
+  "message": "draw a bar chart of my monthly expenses",
+  "accept": [
+   "none"
+  ]
+ },
+ {
+  "id": 59,
+  "message": "make the diagrams in my book use blue instead of green",
+  "accept": [
+   "us-draw"
+  ]
+ },
+ {
+  "id": 60,
+  "message": "is the binary search chapter correct? I don't trust the part about overflow",
+  "accept": [
+   "us-review",
+   "us-write"
+  ]
+ }
+]

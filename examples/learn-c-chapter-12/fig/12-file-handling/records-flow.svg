@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 776" width="400" height="776" role="img" aria-labelledby="records-flow-t records-flow-d" data-kind="flow" data-count="7">
+<title id="records-flow-t">Flow chart, top to bottom</title>
+<desc id="records-flow-d">Flow chart, top to bottom. ./records add Eve 88 leads to load: students.txt → vector. load: students.txt → vector leads to file read? file read? yes: push Eve onto the vector. file read? no: exit 1. push Eve onto the vector leads to save: write students.tmp, fsync, rename. save: write students.tmp, fsync, rename leads to students.txt by the highlighted path. save: write students.tmp, fsync, rename is highlighted.</desc>
+<style>.bg{fill:#E6ECF0}.sh{fill:#000000}.box{fill:#FFFFFF;stroke:#000000;stroke-width:2.5}.hot{fill:#FFE600;stroke:#000000;stroke-width:4.5}.mut{fill:#CDD5DC;stroke:#000000;stroke-width:2.5;stroke-dasharray:6 4}.band{fill:#F6F8FA;stroke:#000000;stroke-width:2.5}.note{fill:#FFFFFF;stroke:#000000;stroke-width:1.5}.deco{stroke:#000000;fill:none;stroke-width:2}.ek{stroke:#000000;fill:none;stroke-width:2}.er{stroke:#D92B2B;fill:none;stroke-width:3}.eb{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.ep{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.hk{fill:#000000}.hr{fill:#D92B2B}.hb{fill:#1F4BFF}.hp{stroke:#1F4BFF;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.5}.dot{fill:#1F4BFF}.tick{fill:#000000}.life{stroke:#3B4651;fill:none;stroke-dasharray:4 5;stroke-width:1.5}.plate{fill:#E6ECF0}.plateb{fill:#F6F8FA}.ink{fill:#000000}.soft{fill:#3B4651}.hink{fill:#000000}.t{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:15px;font-weight:600}.s{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:13px;font-weight:600}.tt{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:17px;font-weight:700}.m{font-family:ui-monospace, 'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace}@media (prefers-color-scheme:dark){svg:not([data-theme="light"]) .bg{fill:#000000}svg:not([data-theme="light"]) .sh{fill:#6F7B86}svg:not([data-theme="light"]) .box{fill:#15181B;stroke:#FFFFFF}svg:not([data-theme="light"]) .hot{fill:#FFE600;stroke:#FFFFFF}svg:not([data-theme="light"]) .mut{fill:#3A424A;stroke:#FFFFFF}svg:not([data-theme="light"]) .band{fill:#1C2126;stroke:#FFFFFF}svg:not([data-theme="light"]) .note{fill:#15181B;stroke:#FFFFFF}svg:not([data-theme="light"]) .deco{stroke:#FFFFFF}svg:not([data-theme="light"]) .ek{stroke:#FFFFFF}svg:not([data-theme="light"]) .er{stroke:#FF6464}svg:not([data-theme="light"]) .eb{stroke:#7D9BFF}svg:not([data-theme="light"]) .ep{stroke:#7D9BFF}svg:not([data-theme="light"]) .hk{fill:#FFFFFF}svg:not([data-theme="light"]) .hr{fill:#FF6464}svg:not([data-theme="light"]) .hb{fill:#7D9BFF}svg:not([data-theme="light"]) .hp{stroke:#7D9BFF}svg:not([data-theme="light"]) .dot{fill:#7D9BFF}svg:not([data-theme="light"]) .tick{fill:#FFFFFF}svg:not([data-theme="light"]) .life{stroke:#B9C3CC}svg:not([data-theme="light"]) .plate{fill:#000000}svg:not([data-theme="light"]) .plateb{fill:#1C2126}svg:not([data-theme="light"]) .ink{fill:#FFFFFF}svg:not([data-theme="light"]) .soft{fill:#B9C3CC}svg:not([data-theme="light"]) .hink{fill:#000000}}svg[data-theme="dark"] .bg{fill:#000000}svg[data-theme="dark"] .sh{fill:#6F7B86}svg[data-theme="dark"] .box{fill:#15181B;stroke:#FFFFFF}svg[data-theme="dark"] .hot{fill:#FFE600;stroke:#FFFFFF}svg[data-theme="dark"] .mut{fill:#3A424A;stroke:#FFFFFF}svg[data-theme="dark"] .band{fill:#1C2126;stroke:#FFFFFF}svg[data-theme="dark"] .note{fill:#15181B;stroke:#FFFFFF}svg[data-theme="dark"] .deco{stroke:#FFFFFF}svg[data-theme="dark"] .ek{stroke:#FFFFFF}svg[data-theme="dark"] .er{stroke:#FF6464}svg[data-theme="dark"] .eb{stroke:#7D9BFF}svg[data-theme="dark"] .ep{stroke:#7D9BFF}svg[data-theme="dark"] .hk{fill:#FFFFFF}svg[data-theme="dark"] .hr{fill:#FF6464}svg[data-theme="dark"] .hb{fill:#7D9BFF}svg[data-theme="dark"] .hp{stroke:#7D9BFF}svg[data-theme="dark"] .dot{fill:#7D9BFF}svg[data-theme="dark"] .tick{fill:#FFFFFF}svg[data-theme="dark"] .life{stroke:#B9C3CC}svg[data-theme="dark"] .plate{fill:#000000}svg[data-theme="dark"] .plateb{fill:#1C2126}svg[data-theme="dark"] .ink{fill:#FFFFFF}svg[data-theme="dark"] .soft{fill:#B9C3CC}svg[data-theme="dark"] .hink{fill:#000000}</style>
+<rect class="bg" data-role="bg" x="0" y="0" width="400" height="776"/>
+<rect class="sh" data-role="shadow" data-for="start" x="116" y="28" width="208" height="64" rx="32"/>
+<rect class="box" data-role="node" data-id="start" data-shape="pill" x="112" y="24" width="208" height="64" rx="32"/>
+<rect class="sh" data-role="shadow" data-for="load" x="124" y="140" width="192" height="64"/>
+<rect class="box" data-role="node" data-id="load" data-shape="box" x="120" y="136" width="192" height="64"/>
+<polygon class="sh" data-role="shadow" data-for="ok" points="220,252 308,300 220,348 132,300"/>
+<polygon class="box" data-role="node" data-id="ok" data-shape="diamond" points="216,248 304,296 216,344 128,296"/>
+<rect class="sh" data-role="shadow" data-for="change" x="28" y="428" width="192" height="64"/>
+<rect class="box" data-role="node" data-id="change" data-shape="box" x="24" y="424" width="192" height="64"/>
+<rect class="sh" data-role="shadow" data-for="save" x="44" y="540" width="160" height="96"/>
+<rect class="hot" data-role="node" data-id="save" data-shape="box" x="40" y="536" width="160" height="96"/>
+<rect class="sh" data-role="shadow" data-for="disk" x="52" y="684" width="144" height="64"/>
+<rect class="box" data-role="node" data-id="disk" data-shape="store" x="48" y="680" width="144" height="64"/>
+<path class="deco" data-role="deco" d="M48 688H192"/>
+<rect class="sh" data-role="shadow" data-for="fail" x="260" y="428" width="112" height="64" rx="32"/>
+<rect class="box" data-role="node" data-id="fail" data-shape="pill" x="256" y="424" width="112" height="64" rx="32"/>
+<path class="ek" data-role="edge" data-id="e1" data-from="start" data-to="load" d="M216 92L216 127"/>
+<path class="hk" data-role="head" data-for="e1" d="M216 136L211 126L221 126Z"/>
+<path class="ek" data-role="edge" data-id="e2" data-from="load" data-to="ok" d="M216 204L216 239"/>
+<path class="hk" data-role="head" data-for="e2" d="M216 248L211 238L221 238Z"/>
+<path class="ek" data-role="edge" data-id="e3" data-from="ok" data-to="change" d="M216 346L216 364L120 364L120 415"/>
+<path class="hk" data-role="head" data-for="e3" d="M120 424L115 414L125 414Z"/>
+<path class="ek" data-role="edge" data-id="e4" data-from="ok" data-to="fail" d="M216 346L216 364L312 364L312 415"/>
+<path class="hk" data-role="head" data-for="e4" d="M312 424L307 414L317 414Z"/>
+<path class="ek" data-role="edge" data-id="e5" data-from="change" data-to="save" d="M120 492L120 527"/>
+<path class="hk" data-role="head" data-for="e5" d="M120 536L115 526L125 526Z"/>
+<path class="er" data-role="edge" data-id="e6" data-from="save" data-to="disk" d="M120 636L120 669"/>
+<path class="hr" data-role="head" data-for="e6" d="M120 680L114 668L126 668Z"/>
+<text class="t ink" data-role="label" data-id="start" data-in="start" text-anchor="middle"><tspan x="216" y="51.5"><tspan class="m">./records add</tspan></tspan><tspan x="216" y="71"><tspan class="m">Eve 88</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="load" data-in="load" text-anchor="middle"><tspan x="216" y="163.5">load: students.txt</tspan><tspan x="216" y="183">→ vector</tspan></text>
+<text class="t ink" data-role="label" data-id="ok" data-in="ok" text-anchor="middle"><tspan x="216" y="301.2">file read?</tspan></text>
+<text class="t ink" data-role="label" data-id="change" data-in="change" text-anchor="middle"><tspan x="120" y="451.5">push Eve onto the</tspan><tspan x="120" y="471">vector</tspan></text>
+<text class="t hink" data-role="label" data-id="save" data-in="save" text-anchor="middle"><tspan x="120" y="569.8">save: write</tspan><tspan x="120" y="589.2">students.tmp,</tspan><tspan x="120" y="608.8">fsync, rename</tspan></text>
+<text class="t ink" data-role="label" data-id="disk" data-in="disk" text-anchor="middle"><tspan x="120" y="721.2">students.txt</tspan></text>
+<text class="t ink" data-role="label" data-id="fail" data-in="fail" text-anchor="middle"><tspan x="312" y="461.2">exit 1</tspan></text>
+<rect class="plate" data-role="plate" data-for="e3" x="102.8" y="381.6" width="34.3" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e3" text-anchor="middle"><tspan x="120" y="396.6">yes</tspan></text>
+<rect class="plate" data-role="plate" data-for="e4" x="298.8" y="381.6" width="26.4" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e4" text-anchor="middle"><tspan x="312" y="396.6">no</tspan></text>
+</svg>

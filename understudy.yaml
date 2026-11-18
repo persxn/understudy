@@ -1,0 +1,2 @@
+book: book        # the learner's book, its own git repository
+private: private  # personal records, never pushed

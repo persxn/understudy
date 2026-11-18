@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 712 496" width="712" height="496" role="img" aria-labelledby="tree-t tree-d" data-kind="tree" data-count="7">
+<title id="tree-t">Which loop should I use?</title>
+<desc id="tree-d">Tree, top to bottom. Do you know how many times the loop runs before it starts? leads to for (yes). Do you know how many times the loop runs before it starts? leads to Must the body run at least once? (no). for leads to counting up or down. for leads to walking an array by index. Must the body run at least once? leads to do ... while (yes). Must the body run at least once? leads to while (no). for is highlighted.</desc>
+<style>.bg{fill:#E6ECF0}.sh{fill:#000000}.box{fill:#FFFFFF;stroke:#000000;stroke-width:2.5}.hot{fill:#FFE600;stroke:#000000;stroke-width:4.5}.mut{fill:#CDD5DC;stroke:#000000;stroke-width:2.5;stroke-dasharray:6 4}.band{fill:#F6F8FA;stroke:#000000;stroke-width:2.5}.note{fill:#FFFFFF;stroke:#000000;stroke-width:1.5}.deco{stroke:#000000;fill:none;stroke-width:2}.ek{stroke:#000000;fill:none;stroke-width:2}.er{stroke:#D92B2B;fill:none;stroke-width:3}.eb{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.ep{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.hk{fill:#000000}.hr{fill:#D92B2B}.hb{fill:#1F4BFF}.hp{stroke:#1F4BFF;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.5}.dot{fill:#1F4BFF}.tick{fill:#000000}.life{stroke:#3B4651;fill:none;stroke-dasharray:4 5;stroke-width:1.5}.plate{fill:#E6ECF0}.plateb{fill:#F6F8FA}.ink{fill:#000000}.soft{fill:#3B4651}.hink{fill:#000000}.t{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:15px;font-weight:600}.s{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:13px;font-weight:600}.tt{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:17px;font-weight:700}.m{font-family:ui-monospace, 'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace}@media (prefers-color-scheme:dark){svg:not([data-theme="light"]) .bg{fill:#2A2F36}svg:not([data-theme="light"]) .sh{fill:#000000}svg:not([data-theme="light"]) .box{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .hot{fill:#F2D13A;stroke:#ECE9E2}svg:not([data-theme="light"]) .mut{fill:#1D2126;stroke:#ECE9E2}svg:not([data-theme="light"]) .band{fill:#2F343C;stroke:#ECE9E2}svg:not([data-theme="light"]) .note{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .deco{stroke:#ECE9E2}svg:not([data-theme="light"]) .ek{stroke:#ECE9E2}svg:not([data-theme="light"]) .er{stroke:#FF7B72}svg:not([data-theme="light"]) .eb{stroke:#8EA6FF}svg:not([data-theme="light"]) .ep{stroke:#8EA6FF}svg:not([data-theme="light"]) .hk{fill:#ECE9E2}svg:not([data-theme="light"]) .hr{fill:#FF7B72}svg:not([data-theme="light"]) .hb{fill:#8EA6FF}svg:not([data-theme="light"]) .hp{stroke:#8EA6FF}svg:not([data-theme="light"]) .dot{fill:#8EA6FF}svg:not([data-theme="light"]) .tick{fill:#ECE9E2}svg:not([data-theme="light"]) .life{stroke:#B9BFC7}svg:not([data-theme="light"]) .plate{fill:#2A2F36}svg:not([data-theme="light"]) .plateb{fill:#2F343C}svg:not([data-theme="light"]) .ink{fill:#ECE9E2}svg:not([data-theme="light"]) .soft{fill:#B9BFC7}svg:not([data-theme="light"]) .hink{fill:#000000}}svg[data-theme="dark"] .bg{fill:#2A2F36}svg[data-theme="dark"] .sh{fill:#000000}svg[data-theme="dark"] .box{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .hot{fill:#F2D13A;stroke:#ECE9E2}svg[data-theme="dark"] .mut{fill:#1D2126;stroke:#ECE9E2}svg[data-theme="dark"] .band{fill:#2F343C;stroke:#ECE9E2}svg[data-theme="dark"] .note{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .deco{stroke:#ECE9E2}svg[data-theme="dark"] .ek{stroke:#ECE9E2}svg[data-theme="dark"] .er{stroke:#FF7B72}svg[data-theme="dark"] .eb{stroke:#8EA6FF}svg[data-theme="dark"] .ep{stroke:#8EA6FF}svg[data-theme="dark"] .hk{fill:#ECE9E2}svg[data-theme="dark"] .hr{fill:#FF7B72}svg[data-theme="dark"] .hb{fill:#8EA6FF}svg[data-theme="dark"] .hp{stroke:#8EA6FF}svg[data-theme="dark"] .dot{fill:#8EA6FF}svg[data-theme="dark"] .tick{fill:#ECE9E2}svg[data-theme="dark"] .life{stroke:#B9BFC7}svg[data-theme="dark"] .plate{fill:#2A2F36}svg[data-theme="dark"] .plateb{fill:#2F343C}svg[data-theme="dark"] .ink{fill:#ECE9E2}svg[data-theme="dark"] .soft{fill:#B9BFC7}svg[data-theme="dark"] .hink{fill:#000000}</style>
+<rect class="bg" data-role="bg" x="0" y="0" width="712" height="496"/>
+<rect class="sh" data-role="shadow" data-for="q" x="282" y="68" width="192" height="112"/>
+<rect class="box" data-role="node" data-id="q" data-shape="box" x="278" y="64" width="192" height="112"/>
+<rect class="sh" data-role="shadow" data-for="yes" x="148" y="260" width="96" height="64"/>
+<rect class="hot" data-role="node" data-id="yes" data-shape="box" x="144" y="256" width="96" height="64"/>
+<rect class="sh" data-role="shadow" data-for="no" x="464" y="260" width="192" height="64"/>
+<rect class="box" data-role="node" data-id="no" data-shape="box" x="460" y="256" width="192" height="64"/>
+<rect class="sh" data-role="shadow" data-for="once" x="412" y="404" width="144" height="64"/>
+<rect class="box" data-role="node" data-id="once" data-shape="box" x="408" y="400" width="144" height="64"/>
+<rect class="sh" data-role="shadow" data-for="zero" x="588" y="404" width="96" height="64"/>
+<rect class="box" data-role="node" data-id="zero" data-shape="box" x="584" y="400" width="96" height="64"/>
+<rect class="sh" data-role="shadow" data-for="count" x="28" y="404" width="144" height="64"/>
+<rect class="box" data-role="node" data-id="count" data-shape="box" x="24" y="400" width="144" height="64"/>
+<rect class="sh" data-role="shadow" data-for="each" x="204" y="404" width="176" height="64"/>
+<rect class="box" data-role="node" data-id="each" data-shape="box" x="200" y="400" width="176" height="64"/>
+<path class="ek" data-role="edge" data-id="e1" data-from="q" data-to="yes" d="M374 180L374 196L192 196L192 247"/>
+<path class="hk" data-role="head" data-for="e1" d="M192 256L187 246L197 246Z"/>
+<path class="ek" data-role="edge" data-id="e2" data-from="q" data-to="no" d="M374 180L374 196L556 196L556 247"/>
+<path class="hk" data-role="head" data-for="e2" d="M556 256L551 246L561 246Z"/>
+<path class="ek" data-role="edge" data-id="e3" data-from="yes" data-to="count" d="M192 324L192 340L96 340L96 391"/>
+<path class="hk" data-role="head" data-for="e3" d="M96 400L91 390L101 390Z"/>
+<path class="ek" data-role="edge" data-id="e4" data-from="yes" data-to="each" d="M192 324L192 340L288 340L288 391"/>
+<path class="hk" data-role="head" data-for="e4" d="M288 400L283 390L293 390Z"/>
+<path class="ek" data-role="edge" data-id="e5" data-from="no" data-to="once" d="M556 324L556 340L480 340L480 391"/>
+<path class="hk" data-role="head" data-for="e5" d="M480 400L475 390L485 390Z"/>
+<path class="ek" data-role="edge" data-id="e6" data-from="no" data-to="zero" d="M556 324L556 340L632 340L632 391"/>
+<path class="hk" data-role="head" data-for="e6" d="M632 400L627 390L637 390Z"/>
+<text class="tt ink" data-role="title" data-id="title"><tspan x="24" y="41">Which loop should I use?</tspan></text>
+<text class="t ink" data-role="label" data-id="q" data-in="q" text-anchor="middle"><tspan x="374" y="96">Do you know how</tspan><tspan x="374" y="115.5">many times the</tspan><tspan x="374" y="135">loop runs before it</tspan><tspan x="374" y="154.5">starts?</tspan></text>
+<text class="t hink" data-role="label" data-id="yes" data-in="yes" text-anchor="middle"><tspan x="192" y="293.2"><tspan class="m">for</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="no" data-in="no" text-anchor="middle"><tspan x="556" y="283.5">Must the body run</tspan><tspan x="556" y="303">at least once?</tspan></text>
+<text class="t ink" data-role="label" data-id="once" data-in="once" text-anchor="middle"><tspan x="480" y="437.2"><tspan class="m">do</tspan> ... <tspan class="m">while</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="zero" data-in="zero" text-anchor="middle"><tspan x="632" y="437.2"><tspan class="m">while</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="count" data-in="count" text-anchor="middle"><tspan x="96" y="427.5">counting up</tspan><tspan x="96" y="447">or down</tspan></text>
+<text class="t ink" data-role="label" data-id="each" data-in="each" text-anchor="middle"><tspan x="288" y="427.5">walking an array</tspan><tspan x="288" y="447">by index</tspan></text>
+<rect class="plate" data-role="plate" data-for="e1" x="174.8" y="213.6" width="34.3" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e1" text-anchor="middle"><tspan x="192" y="228.6">yes</tspan></text>
+<rect class="plate" data-role="plate" data-for="e2" x="542.8" y="213.6" width="26.4" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e2" text-anchor="middle"><tspan x="556" y="228.6">no</tspan></text>
+<rect class="plate" data-role="plate" data-for="e5" x="462.8" y="357.6" width="34.3" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e5" text-anchor="middle"><tspan x="480" y="372.6">yes</tspan></text>
+<rect class="plate" data-role="plate" data-for="e6" x="618.8" y="357.6" width="26.4" height="20.9"/>
+<text class="s ink" data-role="label" data-id="e6" text-anchor="middle"><tspan x="632" y="372.6">no</tspan></text>
+</svg>

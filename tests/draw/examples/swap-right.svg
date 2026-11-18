@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 544 424" width="544" height="424" role="img" aria-labelledby="swap-right-t swap-right-d" data-kind="memory" data-count="5">
+<title id="swap-right-t">swap gets two addresses and writes through them</title>
+<desc id="swap-right-d">Memory. swap's frame (int *a, int *b). It holds a, b and temp. a holds 1000 at address 3000 and points to x (writes 7). b holds 1004 at address 3008 and points to y (writes 3). temp holds 3 at address 3016. temp is greyed out. main's frame. It holds x and y. x holds 7 at address 1000. y holds 3 at address 1004. x is highlighted. y is highlighted.</desc>
+<style>.bg{fill:#E6ECF0}.sh{fill:#000000}.box{fill:#FFFFFF;stroke:#000000;stroke-width:2.5}.hot{fill:#FFE600;stroke:#000000;stroke-width:4.5}.mut{fill:#CDD5DC;stroke:#000000;stroke-width:2.5;stroke-dasharray:6 4}.band{fill:#F6F8FA;stroke:#000000;stroke-width:2.5}.note{fill:#FFFFFF;stroke:#000000;stroke-width:1.5}.deco{stroke:#000000;fill:none;stroke-width:2}.ek{stroke:#000000;fill:none;stroke-width:2}.er{stroke:#D92B2B;fill:none;stroke-width:3}.eb{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.ep{stroke:#1F4BFF;fill:none;stroke-dasharray:7 5;stroke-width:2}.hk{fill:#000000}.hr{fill:#D92B2B}.hb{fill:#1F4BFF}.hp{stroke:#1F4BFF;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:2.5}.dot{fill:#1F4BFF}.tick{fill:#000000}.life{stroke:#3B4651;fill:none;stroke-dasharray:4 5;stroke-width:1.5}.plate{fill:#E6ECF0}.plateb{fill:#F6F8FA}.ink{fill:#000000}.soft{fill:#3B4651}.hink{fill:#000000}.t{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:15px;font-weight:600}.s{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:13px;font-weight:600}.tt{font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;font-size:17px;font-weight:700}.m{font-family:ui-monospace, 'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', 'Liberation Mono', monospace}@media (prefers-color-scheme:dark){svg:not([data-theme="light"]) .bg{fill:#2A2F36}svg:not([data-theme="light"]) .sh{fill:#000000}svg:not([data-theme="light"]) .box{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .hot{fill:#F2D13A;stroke:#ECE9E2}svg:not([data-theme="light"]) .mut{fill:#1D2126;stroke:#ECE9E2}svg:not([data-theme="light"]) .band{fill:#2F343C;stroke:#ECE9E2}svg:not([data-theme="light"]) .note{fill:#343A42;stroke:#ECE9E2}svg:not([data-theme="light"]) .deco{stroke:#ECE9E2}svg:not([data-theme="light"]) .ek{stroke:#ECE9E2}svg:not([data-theme="light"]) .er{stroke:#FF7B72}svg:not([data-theme="light"]) .eb{stroke:#8EA6FF}svg:not([data-theme="light"]) .ep{stroke:#8EA6FF}svg:not([data-theme="light"]) .hk{fill:#ECE9E2}svg:not([data-theme="light"]) .hr{fill:#FF7B72}svg:not([data-theme="light"]) .hb{fill:#8EA6FF}svg:not([data-theme="light"]) .hp{stroke:#8EA6FF}svg:not([data-theme="light"]) .dot{fill:#8EA6FF}svg:not([data-theme="light"]) .tick{fill:#ECE9E2}svg:not([data-theme="light"]) .life{stroke:#B9BFC7}svg:not([data-theme="light"]) .plate{fill:#2A2F36}svg:not([data-theme="light"]) .plateb{fill:#2F343C}svg:not([data-theme="light"]) .ink{fill:#ECE9E2}svg:not([data-theme="light"]) .soft{fill:#B9BFC7}svg:not([data-theme="light"]) .hink{fill:#000000}}svg[data-theme="dark"] .bg{fill:#2A2F36}svg[data-theme="dark"] .sh{fill:#000000}svg[data-theme="dark"] .box{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .hot{fill:#F2D13A;stroke:#ECE9E2}svg[data-theme="dark"] .mut{fill:#1D2126;stroke:#ECE9E2}svg[data-theme="dark"] .band{fill:#2F343C;stroke:#ECE9E2}svg[data-theme="dark"] .note{fill:#343A42;stroke:#ECE9E2}svg[data-theme="dark"] .deco{stroke:#ECE9E2}svg[data-theme="dark"] .ek{stroke:#ECE9E2}svg[data-theme="dark"] .er{stroke:#FF7B72}svg[data-theme="dark"] .eb{stroke:#8EA6FF}svg[data-theme="dark"] .ep{stroke:#8EA6FF}svg[data-theme="dark"] .hk{fill:#ECE9E2}svg[data-theme="dark"] .hr{fill:#FF7B72}svg[data-theme="dark"] .hb{fill:#8EA6FF}svg[data-theme="dark"] .hp{stroke:#8EA6FF}svg[data-theme="dark"] .dot{fill:#8EA6FF}svg[data-theme="dark"] .tick{fill:#ECE9E2}svg[data-theme="dark"] .life{stroke:#B9BFC7}svg[data-theme="dark"] .plate{fill:#2A2F36}svg[data-theme="dark"] .plateb{fill:#2F343C}svg[data-theme="dark"] .ink{fill:#ECE9E2}svg[data-theme="dark"] .soft{fill:#B9BFC7}svg[data-theme="dark"] .hink{fill:#000000}</style>
+<rect class="bg" data-role="bg" x="0" y="0" width="544" height="424"/>
+<rect class="sh" data-role="shadow" data-for="main" x="68" y="256" width="416" height="144"/>
+<rect class="band" data-role="band" data-id="main" x="64" y="252" width="416" height="144"/>
+<rect class="sh" data-role="shadow" data-for="swap" x="68" y="68" width="416" height="144"/>
+<rect class="band" data-role="band" data-id="swap" x="64" y="64" width="416" height="144"/>
+<rect class="sh" data-role="shadow" data-for="a" x="92" y="124" width="112" height="48"/>
+<rect class="box" data-role="cell" data-id="a" x="88" y="120" width="112" height="48"/>
+<rect class="sh" data-role="shadow" data-for="b" x="244" y="124" width="112" height="48"/>
+<rect class="box" data-role="cell" data-id="b" x="240" y="120" width="112" height="48"/>
+<rect class="sh" data-role="shadow" data-for="temp" x="396" y="124" width="64" height="48"/>
+<rect class="mut" data-role="cell" data-id="temp" x="392" y="120" width="64" height="48"/>
+<rect class="sh" data-role="shadow" data-for="x" x="196" y="312" width="64" height="48"/>
+<rect class="hot" data-role="cell" data-id="x" x="192" y="308" width="64" height="48"/>
+<rect class="sh" data-role="shadow" data-for="y" x="300" y="312" width="64" height="48"/>
+<rect class="hot" data-role="cell" data-id="y" x="296" y="308" width="64" height="48"/>
+<path class="ep" data-role="edge" data-id="p1" data-from="a" data-to="x" d="M184 144C233.7 210.3 208 258.3 208 308"/>
+<circle class="dot" data-role="deco" cx="184" cy="144" r="4.5"/>
+<path class="hp" data-role="head" data-for="p1" d="M208 308L213 299.3M208 308L203 299.3"/>
+<path class="ep" data-role="edge" data-id="p2" data-from="b" data-to="y" d="M336 144C365.5 224.7 373.5 224.5 344 308"/>
+<circle class="dot" data-role="deco" cx="336" cy="144" r="4.5"/>
+<path class="hp" data-role="head" data-for="p2" d="M344 308L351.6 301.5M344 308L342.2 298.2"/>
+<text class="tt ink" data-role="title" data-id="title"><tspan x="24" y="41">swap gets two addresses and writes through them</tspan></text>
+<text class="t ink" data-role="label" data-id="a" data-in="a" text-anchor="middle"><tspan x="128" y="149.2"><tspan class="m">1000</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="a:name" text-anchor="middle"><tspan x="144" y="113.2"><tspan class="m">a</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="a:addr" text-anchor="middle"><tspan x="128" y="186.6"><tspan class="m">at 3000</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="b" data-in="b" text-anchor="middle"><tspan x="280" y="149.2"><tspan class="m">1004</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="b:name" text-anchor="middle"><tspan x="296" y="113.2"><tspan class="m">b</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="b:addr" text-anchor="middle"><tspan x="280" y="186.6"><tspan class="m">at 3008</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="temp" data-in="temp" text-anchor="middle"><tspan x="424" y="149.2"><tspan class="m">3</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="temp:name" text-anchor="middle"><tspan x="424" y="113.2"><tspan class="m">temp</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="temp:addr" text-anchor="middle"><tspan x="424" y="186.6"><tspan class="m">at 3016</tspan></tspan></text>
+<text class="s ink" data-role="label" data-id="swap:label"><tspan x="76" y="85">swap's frame (<tspan class="m">int *a, int *b</tspan>)</tspan></text>
+<text class="t hink" data-role="label" data-id="x" data-in="x" text-anchor="middle"><tspan x="224" y="337.2"><tspan class="m">7</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="x:name" text-anchor="middle"><tspan x="224" y="301.2"><tspan class="m">x</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="x:addr" text-anchor="middle"><tspan x="224" y="374.6"><tspan class="m">at 1000</tspan></tspan></text>
+<text class="t hink" data-role="label" data-id="y" data-in="y" text-anchor="middle"><tspan x="328" y="337.2"><tspan class="m">3</tspan></tspan></text>
+<text class="t ink" data-role="label" data-id="y:name" text-anchor="middle"><tspan x="328" y="301.2"><tspan class="m">y</tspan></tspan></text>
+<text class="s soft" data-role="label" data-id="y:addr" text-anchor="middle"><tspan x="328" y="374.6"><tspan class="m">at 1004</tspan></tspan></text>
+<text class="s ink" data-role="label" data-id="main:label"><tspan x="76" y="273">main's frame</tspan></text>
+<rect class="plate" data-role="plate" data-for="p1" x="181.3" y="221.8" width="66.8" height="20.9"/>
+<text class="s ink" data-role="label" data-id="p1" text-anchor="middle"><tspan x="214.6" y="236.8">writes 7</tspan></text>
+<rect class="plate" data-role="plate" data-for="p2" x="328.2" y="214.5" width="67.8" height="20.9"/>
+<text class="s ink" data-role="label" data-id="p2" text-anchor="middle"><tspan x="362.1" y="229.5">writes 3</tspan></text>
+</svg>

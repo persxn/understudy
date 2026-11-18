@@ -1,0 +1,14 @@
+title: What happens when the shell runs ls
+actor sh: shell
+actor k: kernel
+actor ch: child process with a long name
+actor fs: file system
+sh -> k: `fork()`
+k -> ch: create
+note over ch: a copy of the shell,\nsame code
+ch -> k: `exec("ls")`
+k -> fs: load ls
+fs ..> k: program bytes
+ch -> ch: run ls
+ch ..> sh: exit status
+note over sh,k: the shell waits

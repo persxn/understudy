@@ -1,0 +1,13 @@
+box root: where it starts
+box a: a step with a long name
+box b: another step with a long name
+box c: yet another step with a long name
+box d: the fourth step with a long name
+box e: the fifth step with a long name
+box f: the sixth step with a long name
+root -> a
+root -> b
+root -> c
+root -> d
+root -> e
+root -> f
