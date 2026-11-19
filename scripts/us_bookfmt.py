@@ -51,6 +51,8 @@ class PlanChapter:
     raw: str
     part: str = ""
     sections: list = field(default_factory=list)
+    from_refs: list = field(default_factory=list)   # (card id, [steps] or None) of its `from:` line
+    from_line: int = 0
 
 
 @dataclass
@@ -64,6 +66,21 @@ class Plan:
     chapters: list = field(default_factory=list)
     errors: list = field(default_factory=list)
     meta: dict = field(default_factory=dict)      # other header lines: key -> [(line number, value), ...]
+    held: list = field(default_factory=list)      # (line, card id, [steps] or None) of the `held:` lines
+    later: list = field(default_factory=list)     # (line, card id, [steps] or None) of the `later:` lines
+    track: list = field(default_factory=list)     # (line, DOMAIN/TRACK, [rows] or None) of the `track:` lines
+    budget: tuple = None                          # (line, hours) of the `budget: N hours` line
+    later_books: set = field(default_factory=set)  # lines of the `later:` lines whose bracket starts "book N"
+
+    def uses_curriculum(self):
+        """True when the plan has a held:, later: or from: line."""
+        return bool(self.held or self.later or any(c.from_line for c in self.chapters))
+
+    def curriculum_refs(self):
+        """(line, where, card id, [steps] or None) of every from:, held: and later: entry; where is 'from N',
+        'held' or 'later'."""
+        out = [(c.from_line, "from %d" % c.number, i, st) for c in self.chapters for i, st in c.from_refs]
+        return out + [(ln, "held", i, st) for ln, i, st in self.held] + [(ln, "later", i, st) for ln, i, st in self.later]
 
     def chapter(self, n):
         """The planned chapter numbered n, or None."""
@@ -144,6 +161,11 @@ class SectionDoc:
     simplified: list = field(default_factory=list)
     markers: list = field(default_factory=list)
     bare_fences: list = field(default_factory=list)
+    questions: list = field(default_factory=list)   # 1-based first line of each question/task (as us_practice finds them)
+    qtags: list = field(default_factory=list)       # {'line', 'idea', 'type', 'wrong', 'question'}: q markers (question K, 0 if above none)
+    untagged: list = field(default_factory=list)    # (K, line) of each question with no q marker directly above it
+    checks: list = field(default_factory=list)      # (id, command) of each program block with check=
+    checklists: list = field(default_factory=list)  # {'id', 'line', 'items'} of each checklist marker
 
 
 @dataclass
@@ -154,6 +176,7 @@ class ChapterDoc:
     title_line: int = 0
     sections: list = field(default_factory=list)
     other_headings: list = field(default_factory=list)
+    bad_headings: list = field(default_factory=list)    # (line, text) of headings no rule reads, e.g. '###x' 
     lines: list = field(default_factory=list)
 
     def section(self, number):
@@ -258,6 +281,86 @@ PLAN_SECTION = re.compile(r"^(\d+)\s*\.\s*(\d+)\s+(.*)$")
 PLAN_META = re.compile(r"^(for|run)\s*:\s*(.*?)\s*$", re.I)
 META_KEYS = ("state", "timeout", "check", "mask", "kind")   # header lines above the first chapter, read with plan_meta()
 PLAN_HEAD = re.compile(r"^(%s)\s*:\s*(.*?)\s*$" % "|".join(META_KEYS), re.I)
+PLAN_BUDGET = re.compile(r"^budget\s*:\s*(.*?)\s*$", re.I)  # the learner's hours of study for this book
+PLAN_TRACK = re.compile(r"^track\s*:\s*(.*?)\s*$", re.I)   # the goal's rows of a track map
+TRACK_ENTRY = re.compile(r"^([a-z0-9]+(?:-[a-z0-9]+)*/[a-z0-9]+(?:-[a-z0-9]+)*)(?:\s+(\S.*))?$")
+PLAN_STEPS = re.compile(r"^(held|later|from)\s*:\s*(.*?)\s*$", re.I)   # curriculum steps: curriculum/FORMAT.md
+CARD_ENTRY = re.compile(r"^([a-z0-9]+(?:-[a-z0-9]+)*)(?:\s+(\S.*))?$")
+
+
+def unbracket(text):
+    """Text with every (round-bracketed reason) taken out, nested brackets included."""
+    while True:
+        new = re.sub(r"\([^()]*\)", " ", text)
+        if new == text:
+            return text
+        text = new
+
+
+def curriculum_entries(text):
+    """([(card id, [steps] or None)], [bad entries]) of 'CARD STEPS; CARD STEPS (reason)'."""
+    from us_path import parse_steps
+    entries, bad = [], []
+    for piece in [p.strip() for p in unbracket(text).split(";") if p.strip()]:
+        m = CARD_ENTRY.match(piece)
+        steps = parse_steps(m.group(2)) if m and m.group(2) else None
+        if not m or (m.group(2) and not steps):
+            bad.append(piece)
+        else:
+            entries.append((m.group(1), steps))
+    return entries, bad
+
+
+def add_budget_line(plan, chapter, m, n):
+    """Read the `budget: N hours` line; misplaced, repeated or unreadable lines are errors."""
+    text = unbracket(m.group(1)).strip()
+    found = re.fullmatch(r"(\d+(?:\.\d+)?)\s*(?:hours?|h)?", text, re.I)
+    if chapter is not None:
+        plan.errors.append((n, "budget: goes above the first chapter, with the other header lines; move it there"))
+    elif not found or float(found.group(1)) <= 0:
+        plan.errors.append((n, "budget: cannot read '%s'; write budget: N hours, such as budget: 40 hours" % text))
+    elif plan.budget:
+        plan.errors.append((n, "budget: is written twice; keep one"))
+    else:
+        plan.budget = (n, float(found.group(1)))
+
+
+def add_track_line(plan, chapter, m, n):
+    """Read one `track: DOMAIN/TRACK ROWS` line (no rows: all of them); misplaced or unreadable lines are errors."""
+    from us_path import parse_steps
+    text = unbracket(m.group(1)).strip()
+    found = TRACK_ENTRY.match(text)
+    rows = parse_steps(found.group(2)) if found and found.group(2) else None
+    if chapter is not None:
+        plan.errors.append((n, "track: lines go above the first chapter, with the other header lines; move it there"))
+    elif not found or (found.group(2) and not rows):
+        plan.errors.append((n, "track: cannot read '%s'; write track: DOMAIN/TRACK ROWS, such as "
+                               "system-design/foundations 1-5, 7 (no rows: all of them)" % text))
+    else:
+        plan.track.append((n, found.group(1), rows))
+
+
+def add_steps_line(plan, chapter, m, n):
+    """Read one held:, later: or from: line into the plan; misplaced or unreadable lines are errors."""
+    key = m.group(1).lower()
+    entries, bad = curriculum_entries(m.group(2))
+    for piece in bad:
+        plan.errors.append((n, "%s: cannot read '%s'; write CARD STEPS, such as cpp-for-contests 1-3 or "
+                               "dsa-core-techniques 2,5 (no steps: all of them), entries joined by ';'" % (key, piece)))
+    if not entries and not bad:
+        plan.errors.append((n, "%s: names no card; write %s: CARD STEPS, or drop the line" % (key, key)))
+    if key == "from":
+        if chapter is None or chapter.sections or chapter.from_line:
+            plan.errors.append((n, "a from: line goes directly under its chapter's '### N Title' line, before the "
+                                   "first section, once a chapter; move it there"))
+            return
+        chapter.from_line, chapter.from_refs = n, entries
+    elif chapter is not None:
+        plan.errors.append((n, "%s: lines go above the first chapter, with the other header lines; move it there" % key))
+    else:
+        getattr(plan, key).extend((n, i, st) for i, st in entries)
+        if key == "later" and re.search(r"\(\s*book\s+\d", m.group(2), re.I):
+            plan.later_books.add(n)              # a later book of a series: (book 2)
 
 
 def split_ids(text):
@@ -322,6 +425,12 @@ def parse_plan_text(text, path=""):
             plan.title = PLAN_TITLE.match(line).group(1)
         elif m_meta and not chapter:
             setattr(plan, "audience" if m_meta.group(1).lower() == "for" else "run", m_meta.group(2))
+        elif PLAN_BUDGET.match(line):
+            add_budget_line(plan, chapter, PLAN_BUDGET.match(line), n)
+        elif PLAN_TRACK.match(line):
+            add_track_line(plan, chapter, PLAN_TRACK.match(line), n)
+        elif PLAN_STEPS.match(line):
+            add_steps_line(plan, chapter, PLAN_STEPS.match(line), n)
         elif PLAN_HEAD.match(line) and not chapter:
             m_head = PLAN_HEAD.match(line)
             plan.meta.setdefault(m_head.group(1).lower(), []).append((n, m_head.group(2)))
@@ -365,7 +474,7 @@ def load_plan(book):
 FENCE_OPEN = re.compile(r"^\s*(`{3,}|~{3,})\s*([^`\s]*)")
 HEAD_CHAPTER = re.compile(r"^#\s+(?:Chapter\s+(\d+)\s*[:.]\s*)?(.*?)\s*$")
 HEAD_SECTION = re.compile(r"^##\s+(\d+)\.(\d+)\s+(.*?)\s*$")
-HEAD_BEAT = re.compile(r"^###\s+(.*?)\s*#*\s*$")
+HEAD_BEAT = re.compile(r"^#{3,6}\s+(.*?)\s*#*\s*$")    # ### to ###### inside a section
 CHECK_RE = re.compile(r"^\s*(\*\*Check yourself\*\*|#+\s*Check yourself)", re.I)
 REF_RE = re.compile(r"§\s?(\d+)\.(\d+)")
 ATTR_RE = re.compile(r'([A-Za-z][\w-]*)=("(?:[^"\\]|\\.)*"|\S+)')
@@ -440,6 +549,188 @@ def parse_attrs(text):
     return attrs
 
 
+# The fact record (stage 3). The writer marks what it doubts with <!-- risk: why -->. The review settles each and
+# turns it into a lasting mark on the same line:
+#   <!-- checked: how=source date=2026-11-18 ref="packages.ubuntu.com/noble/python3" h=1a2b3c4d -->
+# how: run (a program or session proved it), practices (the book's PRACTICES.md states it), source (one look at
+# an official source, named in ref), known (certain without looking), reworded (the text now says only what is
+# sure). h: a short hash of the passage above the mark, stamped by `us_plan.py mark ... reviewed`; when the
+# passage later changes, the hash no longer fits and the check says so.
+CHECK_HOWS = ("run", "practices", "source", "known", "reworded")
+CHECKED_MARK = re.compile(r"<!--\s*checked:(.*?)-->")
+RISK_MARK = re.compile(r"<!--\s*risk:(.*?)-->")
+
+
+def parse_checked(line):
+    """{'how', 'date', 'ref', 'h'} from a line holding a checked mark, or None."""
+    m = CHECKED_MARK.search(line)
+    if not m:
+        return None
+    attrs = parse_attrs(m.group(1))
+    return {k: attrs.get(k, "") for k in ("how", "date", "ref", "h")}
+
+
+def passage_above(lines, at, cap=12):
+    """The paragraph or fenced block that ends just above line `at` (1-based), or the one holding text
+    before a marker on the same line; at most `cap` lines, the last ones."""
+    i = at - 1
+    if lines[i].split("<!--")[0].strip():
+        end = i + 1
+    else:
+        while i > 0 and not lines[i - 1].strip():
+            i -= 1
+        end = i
+    if end == 0:
+        return []
+    start = end - 1
+    fence = re.match(r"^\s*(`{3,}|~{3,})", lines[start])
+    if fence:
+        start -= 1
+        while start > 0 and not lines[start].lstrip().startswith(fence.group(1)):
+            start -= 1
+    else:
+        while start > 0 and lines[start - 1].strip() and not lines[start - 1].lstrip().startswith(("#", "<!--")):
+            start -= 1
+    return lines[max(start, end - cap):end]
+
+
+def passage_hash(lines, at):
+    """Eight hex digits for the passage above line `at` (1-based), blind to spacing and to hidden marks."""
+    import hashlib
+    text = " ".join(" ".join(re.sub(r"<!--.*?-->", "", l).split()) for l in passage_above(lines, at, cap=40))
+    return hashlib.sha1(text.strip().encode("utf-8")).hexdigest()[:8]
+
+
+# Question tags (stage 2): one hidden line directly above a numbered question or practice task:
+#   <!-- q: idea=variable type=predict wrong="equals means the same" -->
+# idea: an idea id the book teaches; type: what the question makes the reader do; wrong: a short name for the
+# wrong belief this question catches (optional); unseen: on a practice task, the name of the problem, case or
+# material the chapter has not used before its practice (optional).
+Q_TYPES = ("recall", "explain", "predict", "fix", "apply", "decide", "build")
+Q_APPLY = ("predict", "fix", "apply", "decide", "build")     # doing, as against saying
+Q_MARK = re.compile(r"^\s*<!--\s*q:(.*?)-->\s*$")
+CHECKLIST_MARK = re.compile(r"^\s*<!--\s*checklist:(.*?)-->\s*$")   # then a Markdown list of yes/no tests
+
+
+def parse_q(line):
+    """{'idea', 'type', 'wrong', 'unseen'} from a q marker line, or None when the line is not one."""
+    m = Q_MARK.match(line)
+    if not m:
+        return None
+    attrs = parse_attrs(m.group(1))
+    return {"idea": attrs.get("idea", ""), "type": attrs.get("type", ""), "wrong": attrs.get("wrong", ""),
+            "unseen": attrs.get("unseen", "")}
+
+
+QUESTION_START = re.compile(r"^\s*(\d+[.)]\s|\*\*([A-Za-z]+\s+)?\d+([.:)]?\*\*|[.:)]\s)|\*\*(Exercise|Question|Task)\b|#{3,6}\s+(Exercise|Question|Task)\b)")
+LIST_ITEM = re.compile(r"^\s*(?:[-*+]|\d+[.)])\s+\S")
+
+
+def list_start(lines, k, end=None):
+    """0-based index where the list under a checklist marker on index k may start: past blank lines and at most one
+    paragraph (a lead-in sentence) before the list."""
+    end = len(lines) if end is None else end
+    j = k + 1
+    while j < end and not lines[j].strip():
+        j += 1
+    if j < end and not LIST_ITEM.match(lines[j]) and not lines[j].lstrip().startswith(("#", "<!--", "```", "~~~", "<details")):
+        while j < end and lines[j].strip() and not LIST_ITEM.match(lines[j]):
+            j += 1
+    return j
+
+
+def checklist_rows(lines):
+    """0-based indexes of the list items that belong to a checklist (a numbered one is not a run of questions)."""
+    rows = set()
+    for k, line in enumerate(lines):
+        if CHECKLIST_MARK.match(line):
+            seen = False
+            for j in range(list_start(lines, k), len(lines)):
+                if LIST_ITEM.match(lines[j]):
+                    rows.add(j)
+                    seen = True
+                elif lines[j].strip() and not (seen and lines[j].startswith((" ", "\t"))):
+                    break
+    return rows
+
+
+def question_starts(lines, free_from=0):
+    """0-based index of the first line of each question in lines: the same questions us_practice.py's
+    section_questions finds (each <details> outside fences, with the question above it; before index
+    free_from, the Check yourself line, only numbered questions and exercises count)."""
+    out, fence, start, i = [], None, 0, 0
+    while i < len(lines):
+        s = lines[i].strip()
+        if fence:
+            fence = None if fence_close(lines[i], fence) else fence
+        elif FENCE_OPEN.match(lines[i]):
+            fence = FENCE_OPEN.match(lines[i]).group(1)
+        elif s.startswith("<details>"):
+            end, depth = i, 0
+            for end in range(i, len(lines)):
+                depth += lines[end].count("<details>") - lines[end].count("</details>")
+                if depth <= 0:
+                    break
+            inside, opener, starts, tagged = [], None, [], []
+            listed = checklist_rows(lines[start:i])
+            for k in range(start, i):
+                if k - start in listed:
+                    continue
+                if opener:
+                    opener = None if fence_close(lines[k], opener) else opener
+                    continue
+                m = FENCE_OPEN.match(lines[k])
+                if m:
+                    opener = m.group(1)
+                elif k > start and Q_MARK.match(lines[k - 1]) and lines[k].strip():
+                    tagged.append(k)                 # a q tag opens a question, whatever its first line looks like
+                elif QUESTION_START.match(lines[k]):
+                    starts.append(k)
+            starts = tagged or starts                # numbered steps inside a tagged task are not new questions
+            text = [k for k in range(start, i) if lines[k].strip() and not Q_MARK.match(lines[k])]
+            if starts:
+                out.append(starts[-1])
+            elif text and i >= free_from:
+                out.append(text[0])
+            start = i = end + 1
+            continue
+        i += 1
+    return out
+
+
+def read_questions(doc, sec):
+    """Fill a section's questions, q tags, untagged questions, check= blocks and checklists."""
+    lines = doc.lines[sec.line:sec.end]
+    free = sec.check_line - sec.line if sec.check_line else len(lines)
+    firsts = [sec.line + 1 + k for k in question_starts(lines, free)]
+    sec.questions = firsts
+    for k, ln in enumerate(firsts, 1):
+        if ln < 2 or parse_q(doc.lines[ln - 2]) is None:
+            sec.untagged.append((k, ln))
+    for ln in range(sec.line + 1, sec.end + 1):
+        tag = parse_q(doc.lines[ln - 1])
+        if tag is not None:
+            tag.update(line=ln, question=firsts.index(ln + 1) + 1 if ln + 1 in firsts else 0)
+            sec.qtags.append(tag)
+        m = CHECKLIST_MARK.match(doc.lines[ln - 1])
+        if m:
+            sec.checklists.append({"id": parse_attrs(m.group(1)).get("id", ""), "line": ln,
+                                   "items": checklist_items(doc.lines, ln, sec.end)})
+    sec.checks = [(c.id, c.attrs["check"]) for c in sec.code if "check" in c.attrs]
+
+
+def checklist_items(lines, line, end):
+    """The list items after a checklist marker on 1-based line `line` (blank lines and one lead-in paragraph
+    between allowed)."""
+    items = []
+    for raw in lines[list_start(lines, line - 1, end):end]:
+        if LIST_ITEM.match(raw):
+            items.append(re.sub(r"^\s*(?:[-*+]|\d+[.)])\s+", "", raw).strip())
+        elif raw.strip() and not (items and raw.startswith((" ", "\t"))):
+            break
+    return items
+
+
 def parse_teach(marker):
     """Teach from a teaches marker body 'id = words, words'."""
     ident, _, words = marker.body.partition("=")
@@ -463,6 +754,8 @@ def parse_chapter(text):
     if cur is not None:
         cur.end = len(lines)
     attach(doc, markers, fences, scanned)
+    for sec in doc.sections:
+        read_questions(doc, sec)
     return doc
 
 
@@ -490,8 +783,11 @@ def read_heading(doc, cur, n, body):
         doc.sections.append(sec)
         return sec
     if body.startswith("###"):
-        if cur is not None:
-            cur.beats.append((HEAD_BEAT.match(body).group(1), n))
+        m = HEAD_BEAT.match(body)
+        if m is None:
+            doc.bad_headings.append((n, body.strip()))
+        elif cur is not None:
+            cur.beats.append((m.group(1), n))
         return cur
     if body.startswith("## ") or body.startswith("# "):
         if cur is not None:
@@ -607,7 +903,7 @@ def paragraph_after(lines, line, limit=12):
     out = []
     for raw in lines[line:line + limit]:
         s = raw.strip()
-        if s.startswith("#") or s.startswith("```") or (s.startswith("<!--") and out):
+        if s.startswith(("#", "```", "**Check yourself**")) or (s.startswith("<!--") and out):
             break
         if s.startswith("<!--") or "-->" in s and not out:
             continue
@@ -615,6 +911,28 @@ def paragraph_after(lines, line, limit=12):
             break
         out.append(s)
     return " ".join(x for x in out if x)
+
+
+def section_prose(lines, line, limit=400):
+    """The prose from a marker line to the end of its section (the next `## ` heading): fences, markers,
+    headings, tables and hidden answers left out."""
+    out, fence, hidden = [], None, 0
+    for raw in lines[line:line + limit]:
+        s = raw.strip()
+        if fence:
+            fence = None if fence_close(raw, fence) else fence
+            continue
+        m = FENCE_OPEN.match(raw)
+        if m:
+            fence = m.group(1)
+            continue
+        if s.startswith(("## ", "**Check yourself**")):          # the questions are not where an idea is defined
+            break
+        hidden += s.count("<details>") - s.count("</details>")
+        if hidden > 0 or not s or s.startswith(("#", "<", "|")):
+            continue
+        out.append(s)
+    return " ".join(out)
 
 
 def bold_spans(text):
@@ -653,6 +971,13 @@ def definition(teach, lines, cap=25):
     bolded = [s for s in sentences if "**" in s]
     pick = next((s for s in bolded if any(b.lower().replace("`", "") in wanted for b in bold_spans(s))), None)
     pick = pick or next((s for s in bolded if len(s.split()) > 6), bolded[0] if bolded else "")
+    if not pick:                                 # not under the marker: look through the rest of the section
+        term = idea_term(teach, lines).lower()                      # only the idea's own name counts here
+        names = lambda s: len(term) > 2 and re.search(r"(?<!\w)%s(?!\w)" % re.escape(term), s.replace("`", "").lower())
+        rest = [s for s in SENTENCE_END.split(section_prose(lines, teach.line)) if s and len(s.split()) > 4]
+        pick = next((s for s in rest if any(b.lower().replace("`", "") in wanted for b in bold_spans(s))), "") or \
+            next((s for s in rest if names(s) and re.search(r"\b(is|are|means|called)\b|:", s)), "") or \
+            next((s for s in sentences if len(s.split()) > 4 and names(s)), "")
     if pick and len(pick.split()) <= 5 and pick in sentences[:-1]:
         pick += " " + sentences[sentences.index(pick) + 1]
     words = pick.replace("**", "").split()

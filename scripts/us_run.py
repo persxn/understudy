@@ -8,11 +8,13 @@
 A program is marked by a hidden comment directly above its fence:
 
     <!-- code: id=NAME mode=run stdin="3 4\\n" args="a b" file=util.h exit=3 timeout=5 varies
-               stderr=hide nosan danger="why" answer after=ID[,ID] -->
+               stderr=hide nosan danger="why" answer after=ID[,ID] check="python3 NAME.py" -->
 
     args="in.txt -n"   command-line arguments: the program runs as ./NAME in.txt -n
     exit=1             the exit code it must end with (default 0); in a console block, the last command's
     after=save-log     it reads files that block (above it) makes; try runs that block first, silently
+    check="CMD"        the reader's own program, run by CMD in their folder with the same stdin and args, must
+                       print this output (us_practice.py check); only on a mode=run program, not varies
 
 mode=run (default) builds with warnings on, runs it twice and writes what it printed as the ```text
 fence directly below the code fence (creating or replacing that fence). It runs as on the reader's
@@ -105,7 +107,7 @@ import us_state  # noqa: E402
 import us_term  # noqa: E402
 from us_lib import ROOT, load_config  # noqa: E402
 
-VERSION = "7"  # part of every cache key: bump it when the way output is made changes
+VERSION = "8"  # part of every cache key: bump it when the way output is made changes
 
 # Errors in gcc 14 but only warnings in gcc 13: made errors everywhere, so both agree. (g++ refuses
 # these flags with a warning; in C++ the three are errors already.)
@@ -132,12 +134,13 @@ CONSOLE = "console"
 MODES = ["run", "compile", "warns", "error", "crash", "fragment"]
 MODE_ALIASES = {"compile-error": "error"}
 ATTRS = {"id", "mode", "stdin", "args", "file", "exit", "timeout", "varies", "danger", "stderr", "answer", "after",
-         "nosan", "unrun", "wait"}
+         "nosan", "unrun", "wait", "check"}
 POSIX_RE = re.compile(r'^\s*#\s*include\s*<(?:unistd|fcntl|dirent|sys/\w+)\.h>', re.M)
 SAN_FLAGS = ["-g", "-fsanitize=address,undefined", "-w"]
 SAN_ENV = {"ASAN_OPTIONS": "detect_leaks=0", "UBSAN_OPTIONS": "print_stacktrace=1"}  # a leak is no fault here
 SAN_RE = re.compile(r"ERROR: AddressSanitizer|runtime error:|ERROR: \w+Sanitizer")
 MAX_LINES = 60
+MAX_CHARS = 8000  # one endless line is as unreadable as a thousand short ones
 SHOW_LINES = 20   # of output over MAX_LINES, the first lines shown (try prints them)
 UNPRINTABLE = "output has unprintable bytes: show them with `od -c` or `xxd` instead of printing them"
 CRASH = {signal.SIGSEGV: "Segmentation fault", signal.SIGABRT: "Aborted", signal.SIGFPE: "Floating point exception",
@@ -402,6 +405,13 @@ def check_block(block, errors, seen):
         errors.append((line, block.id, "mode=crash takes no exit="))
     if block.attrs.get("stderr", "show") not in ("show", "hide"):
         errors.append((line, block.id, "stderr= takes show or hide"))
+    if "check" in block.attrs:
+        why = ("a console session" if block.lang == CONSOLE else "mode=" + block.mode if block.mode != "run"
+               else "varies" if "varies" in block.attrs else "an empty command" if not block.attrs["check"].strip()
+               else "")
+        if why:
+            errors.append((line, block.id, f"check= needs a mode=run program whose output is pasted, not {why}: "
+                           "remove check= or make it such a program"))
 
 
 class Trace:
@@ -1247,6 +1257,10 @@ class Chapter:
             if ok:
                 self.problem(block.marker, block, "builds without errors", "mode=error needs a program that fails to build")
                 return False
+            if block.lang == "python":       # show what `python3 file.py` prints, not the compile step's wording
+                r = run(self.command(block, "run"), self.place(block), self.pw, timeout=self.limit(block), tty="both")
+                if r.code and r.out.strip():
+                    msgs = tidy(self.text(block, r.out))
             return self.limit_lines(block, msgs)
         if not ok:
             line, msg = self.first_diag(block, msgs)
@@ -1372,14 +1386,21 @@ class Chapter:
         if n > MAX_LINES:
             self.too_long(block, text, f"prints {n} lines")
             return False
+        if len(text) > MAX_CHARS:
+            self.too_long(block, text, f"prints {len(text):,} characters")
+            return False
         return text
 
     def too_long(self, block, text, said):
         """A problem for output over MAX_LINES, and its first lines kept as the block's note (try shows it)."""
-        rows = text.splitlines()
-        self.notes[block.id] = "\n".join(rows[:SHOW_LINES] + [f"… {len(rows) - SHOW_LINES} more lines cut"])
-        self.problem(block.marker, block, said, f"print less: {MAX_LINES} lines at most; the first "
-                                                f"{SHOW_LINES} are shown")
+        rows = [r if len(r) <= 200 else r[:200] + f" … {len(r) - 200:,} more characters cut"
+                for r in text.splitlines()]
+        shown = rows[:SHOW_LINES]
+        if len(rows) > SHOW_LINES:
+            shown.append(f"… {len(rows) - SHOW_LINES} more lines cut")
+        self.notes[block.id] = "\n".join(shown)
+        self.problem(block.marker, block, said, f"print less: {MAX_LINES} lines and {MAX_CHARS:,} characters "
+                                                f"at most; the first {SHOW_LINES} lines are shown")
 
     def printable(self, block, text):
         """False (and a problem) for text with control bytes or bytes that are not UTF-8."""
@@ -1509,6 +1530,9 @@ class Chapter:
             return False
         if body.count("\n") > MAX_LINES:
             self.too_long(block, body, f"transcript is {body.count(chr(10))} lines")
+            return False
+        if len(body) > MAX_CHARS:
+            self.too_long(block, body, f"transcript is {len(body):,} characters")
             return False
         return body
 

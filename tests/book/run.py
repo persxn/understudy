@@ -13,7 +13,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 SCRIPTS = os.path.join(ROOT, "scripts")
 FIXTURE = os.path.join(HERE, "fixture")
-REAL = os.environ.get("JOJO_CHAPTERS", "")  # optional: the C book's chapters folder; unset skips real_book
+REAL = os.environ.get("JOJO_CHAPTERS", "")   # optional: a real book
 sys.path.insert(0, SCRIPTS)
 import us_bookfmt as bf  # noqa: E402
 
@@ -641,9 +641,11 @@ def parser_markers_and_fences():
 # ---------------------------------------------------------------- real book
 
 
+@test
 def real_book():
-    if not os.path.isdir(REAL):
-        raise AssertionError("no real book at " + REAL)
+    if not REAL or not os.path.isdir(REAL):
+        print("skip  real_book: set JOJO_CHAPTERS to the chapters folder of a real book (the owner's C book) to run it")
+        return
     book = os.path.join(TMP, "jojoway")
     shutil.copytree(REAL, os.path.join(book, "chapters"))
     code, out = run("us_plan.py", "from-chapters", book, "--title", "Learn C the Jojo way", "--for", "someone who has never programmed")
@@ -665,12 +667,6 @@ def real_book():
             totals[1] += len(s.code)
             totals[2] += len(s.figures)
     check(totals == [493, 786, 90], totals)
-
-
-if REAL:
-    test(real_book)
-else:
-    print("skip  real_book: JOJO_CHAPTERS not set")
 
 
 REPORT = []

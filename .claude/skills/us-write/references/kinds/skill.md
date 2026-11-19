@@ -21,6 +21,6 @@ The reasons: the weak task names the control, so it tests reading, not finding; 
 **Usual failures of generated material, and the cure.**
 - *Advice with no worked case*: a list of tips. Every principle appears first inside a case, weak then better.
 - *Platitudes* ("know your audience"): replace with what the better version visibly does that the weak one does not.
-- *A forced program*: there is nothing to run; the real thing is the case. Set `run: none`.
+- *A forced program*: where there is nothing to run, the real thing is the case: set `run: none`. A skill that is practised with a computer (estimating a system's load, solving contest problems) does run things: set `run:` to its language and keep this shape, with the worked case carried by real programs. For problem solving the weak version is the slow sure solution, or the plausible wrong one that a small test breaks; the better one is the technique with the argument that it is right.
 - *No judgement calls*: show one case where the rule should be broken, and why.
 - *Practice nobody can check*: give a checklist and a model answer, so the reader can judge their own work.

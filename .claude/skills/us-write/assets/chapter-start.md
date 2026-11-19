@@ -19,7 +19,8 @@ $ one command the reader types
 
 **Check yourself**
 
-1. A question that makes the reader predict, find a fault, change something or decide.
+<!-- q: idea=idea-id type=predict wrong="the tempting wrong belief, in a few words" -->
+1. A question that makes the reader predict, find a fault (type=fix), change something or decide.
 
 <details>
 <summary>Answer</summary>

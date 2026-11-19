@@ -1,6 +1,6 @@
 # Plan pattern: a professional skill
 
-For writing, design, testing, research, managing work, interviewing, analysis: practice that is not programming. Header: `run: none`, `kind: skill`.
+For writing, design, testing, research, managing work, interviewing, analysis: practice that is not programming. Header: `kind: skill`, and `run: none` unless the skill is practised with a computer (solving contest or interview problems, estimates for a system design): then `run:` names the language and the cases are carried by real programs. A skill trained on problems (contests, interviews) has no cycle to walk: its chapters are techniques, each going from the slow sure solution to the technique that beats it, and chapter 1 takes one whole problem from statement to accepted.
 
 ## The shape
 

@@ -4,7 +4,8 @@
     python3 scripts/us_index.py [BOOK]        no BOOK: every book under the book root
 
 Per chapter: the contents list under '# Chapter N: Title', between <!-- contents --> and <!-- /contents -->.
-Per book: README.md, KEYTERMS.md, INDEX.md. At the book root: manifest.json and search.json for the reading page.
+Per book: README.md, KEYTERMS.md, INDEX.md, and FACTS.md when the book has a checked mark or an unrun
+block. At the book root: manifest.json and search.json for the reading page.
 A file is written only when its text changes; nothing is read from the private folder.
 """
 import json
@@ -210,8 +211,35 @@ class BookIndex:
             name = "%d %s" % (ch.number, ch.title)
             link = "[%s](%s)" % (name, self.rel(self.docs[ch.number][0])) if ch.number in self.docs else name
             out.append("- %s · %s · %d of %d sections" % (link, state, done, len(ch.sections)))
-        out += ["", "[Key terms](KEYTERMS.md) · [Index](INDEX.md)", ""]
+        facts = " · [Checked facts](FACTS.md)" if self.facts_md() else ""
+        out += ["", "[Key terms](KEYTERMS.md) · [Index](INDEX.md)" + facts, ""]
         return "\n".join(out)
+
+    def facts_md(self):
+        """FACTS.md: per chapter each checked fact, how it was checked; then the blocks shown but not run.
+        None when the book has neither."""
+        out, unrun = ["# Checked facts: " + self.plan.title, NOTE, "",
+                      "What this book states that was checked, and how; and the programs and sessions shown "
+                      "but not run where it was written."], []
+        for ch in self.plan.chapters:
+            if ch.number not in self.docs:
+                continue
+            doc = self.docs[ch.number][1]
+            rows = []
+            for n, mark in us_plan.checked_marks(doc.lines):
+                sec = bf.section_at(doc, n)
+                how = ", ".join(x for x in (mark["how"], mark["ref"], mark["date"]) if x)
+                rows.append("- §%s: %s — how it was checked: %s" % (sec.number if sec else ch.number,
+                                                                     passage_start(doc.lines, n, 140), how))
+            if rows:
+                out += ["", "## Chapter %d: %s" % (ch.number, ch.title), ""] + rows
+            unrun += ["- §%s `%s`: %s" % (s.number, c.id or "(no id)", c.attrs["unrun"] or "no reason given")
+                      for s in doc.sections for c in s.code if "unrun" in c.attrs]
+        if len(out) == 4 and not unrun:
+            return None
+        if unrun:
+            out += ["", "Shown but not run on the writer's machine:", ""] + unrun
+        return "\n".join(out) + "\n"
 
     def keyterms(self):
         """KEYTERMS.md: per chapter, each term with the sentence that defines it and its section."""
@@ -243,6 +271,14 @@ class BookIndex:
                 out += ["", "## " + letter, ""]
             out.append("- %s: [%s](%s)" % (term, number, self.section_link(number)))
         return "\n".join(out) + "\n"
+
+
+def passage_start(lines, at, n):
+    """The first n characters of the passage a mark at line `at` stands for: comments and fence lines out,
+    spacing collapsed."""
+    kept = [re.sub(r"<!--.*?-->", "", l) for l in bf.passage_above(lines, at, cap=40)]
+    text = " ".join(" ".join(l.split()) for l in kept if not re.match(r"^\s*(`{3,}|~{3,})", l))
+    return " ".join(text.split())[:n]
 
 
 def opening_words(doc, sec, n):
@@ -298,6 +334,11 @@ def main(argv):
             write_if_changed(os.path.join(path, "README.md"), bk.readme())
             write_if_changed(os.path.join(path, "KEYTERMS.md"), bk.keyterms())
             write_if_changed(os.path.join(path, "INDEX.md"), bk.index_md())
+            facts, facts_path = bk.facts_md(), os.path.join(path, "FACTS.md")
+            if facts:
+                write_if_changed(facts_path, facts)
+            elif os.path.exists(facts_path) and NOTE in bf.read_text(facts_path):
+                os.remove(facts_path)                # the last mark went: a generated FACTS.md goes too
         books.append((bk, path in named))
     manifest = {"schema": SCHEMA, "books": [], "edges": [], "chapter_edges": []}
     search = {"schema": SCHEMA, "sections": []}

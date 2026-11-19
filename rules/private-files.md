@@ -11,6 +11,7 @@ Everything about the person lives in `private/`. It is never pushed and never co
 | `goal.md` | see the template below | under 20 lines |
 | `route.md` | the current route: books and chapters in order (`learn-git 3`), the reason for each in a few words, `skip` on chapters placement showed they already have; a chapter taken by section names them (`- learn-docker 1 sections 1.2 1.5`); what was left off, at the bottom | one line per chapter |
 | `levels.yaml` | `learn-git/3: {level: 2, state: proven, checked: 2026-11-16, next: 2026-12-20}` (book/chapter); `state` is `claimed`, `in progress` (answers logged by `us_practice.py record`, no check passed yet) or `proven` | one line per chapter |
+| `learner.md` | written by `python3 scripts/us_practice.py`: wrong beliefs that keep returning, weak foundations, what they can explain but not yet apply, what is solid, projects passed alone. Read it at the start of a lesson; never edit it | fifteen lines |
 | `weaknesses.md` | weak spots that keep returning, each with the section (`§N.M`) it belongs to | under 30 lines |
 | `week.md` | this week's plan, including the share for algorithm practice that the learner chose this week | under 20 lines |
 | `standard.md` | progress on the engineer standard (only if it applies) | one line per item |

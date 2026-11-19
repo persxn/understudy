@@ -21,7 +21,7 @@ Only something the learner produced counts: an answer, a trace, working code, a 
 
 ## Offline practice
 
-`python3 scripts/us_practice.py` asks Check yourself questions with no AI and keeps every answer in `private/practice.json` (per question: book, section, box, due date, history). A section whose questions sit in box 2 or higher has been answered right offline: count it as **practised**. A practised section is worth a quick spoken check (one question in your own words, one new case), not a full check. A question in box 1 after a miss is a weak spot; `--stats` lists them. Offline practice alone never raises a level above 1.
+`python3 scripts/us_practice.py` asks Check yourself questions with no AI, `--cards` asks the key terms as flashcards, and `check <book> N.M` runs the learner's own project against the chapter's finish line (a pass is one of the two proofs a Build level needs, got with no model). Each run chooses what is most worth asking (weak spots, wrong beliefs, time since last asked, balance across books) and rewrites `private/learner.md`. It keeps every answer in `private/practice.json` (per question: book, section, box, due date, history). A section whose questions sit in box 2 or higher has been answered right offline: count it as **practised**. A practised section is worth a quick spoken check (one question in your own words, one new case), not a full check. A question in box 1 after a miss is a weak spot; `--stats` lists them. Offline practice alone never raises a level above 1.
 
 ## Declared levels
 
@@ -29,7 +29,7 @@ The learner may declare a level in a chapter of the book (anything else is `alre
 
 ## Keeping it fresh
 
-- During any lesson, slip in a question from an older chapter without warning, choosing chapters whose `next` date has passed. Right → double the gap (first gap 3 days, then 6, 12 … up to 90). Wrong → set `next` to 2 days from now and halve the gap.
+- During any lesson, slip in a question from an older chapter without warning: the ones `python3 scripts/us_practice.py --due --plain --count 2` prints. Right → double the gap (first gap 3 days, then 6, 12 … up to 90). Wrong → set `next` to 2 days from now and halve the gap.
 - Wrong twice → mark the chapter `rusty` and offer a short repair lesson.
 - Once a week, offer a session on rusty chapters and weak spots only. It is optional.
 

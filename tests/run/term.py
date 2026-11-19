@@ -136,6 +136,14 @@ def sessions():
     test("over the line limit: the first lines are shown and the cut is counted",
          "transcript is 71 lines" in out and "$ seq 70\n1\n2\n" in out and "\n19\n… 51 more lines cut" in out
          and "\n20\n" not in out, out)
+    code, out = us_run("try", b, "1", stdin="<!-- code: id=wide -->\n```console\n"
+                                            "$ python3 -c 'print(\"x\" * 50000)'\n```\n")
+    test("one endless line is over the limit too, and is shown cut",
+         "transcript is 50," in out and "characters" in out and "more characters cut" in out
+         and len(out) < 2000, out[:600])
+    code, out = us_run("try", b, "1", stdin="<!-- code: id=widep -->\n```python\nprint('y' * 50000)\n```\n")
+    test("a program that prints one endless line is over the limit too",
+         "prints 50," in out and "characters" in out and len(out) < 2000, out[:600])
     code, out = us_run("try", b, "1", stdin="<!-- code: id=badwait wait=x -->\n```console\n$ true\n```\n")
     test("wait= must be a number", "wait= must be a number" in out, out)
 

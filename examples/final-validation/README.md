@@ -31,5 +31,8 @@ its learner with [`tests/evals/RUBRIC.md`](../../tests/evals/RUBRIC.md):
   show, clock times that do not fit, one prompt missing from the model notes); nothing about testing a phone
   design on a phone; more everyday pictures than it needs.
 
+These three chapters were written before question tags and testable projects existed (stage 2, later the same
+day), so today's `us_check.py` asks for tags they do not have; `examples/stage2-trial/` shows a chapter with them.
+
 The pasted output in these chapters was produced just before the runner began showing a program's own folder as
 `/home/you/...` in its error messages; a chapter written today shows the full path there.

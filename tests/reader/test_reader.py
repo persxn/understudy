@@ -28,7 +28,7 @@ from shelf import ROOT, JOJO, make_shelf  # noqa: E402
 
 HTML = os.path.join(ROOT, 'reader', 'index.html')
 SHOTS = os.path.join(HERE, 'shots')
-HAVE_C = os.path.isdir(JOJO)                # the owner's 11-chapter book; the checks that need it say so when it is absent
+HAVE_C = os.path.isdir(os.path.join(JOJO, 'chapters'))                # the owner's 11-chapter book; the checks that need it say so when it is absent
 BIG = 'learn-c' if HAVE_C else 'long-read'  # the book used where any real book will do
 
 RESULTS = []

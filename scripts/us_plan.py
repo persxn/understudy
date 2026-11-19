@@ -7,7 +7,10 @@
   us_plan.py status BOOK           one row per chapter
   us_plan.py mark BOOK N reviewed [--false A] [--stuck B] [--open "text"]
                                    record that chapter N is reviewed (or: written, to undo), and add a
-                                   line to the book's REVIEW.md: suspects found false, places stuck, left open
+                                   line to the book's REVIEW.md: suspects found false, places stuck, left open;
+                                   stamps h= on each <!-- checked: --> mark that has none, records the facts
+  us_plan.py mark BOOK N restamp   stamp every checked mark of chapter N afresh (after a deliberate re-check)
+  us_plan.py mark BOOK pass N      record that the book pass (us_check.py BOOK --digest) covered chapters 1 to N
   us_plan.py from-chapters BOOK [--force] [--title T] [--for F] [--run R]
                                    build PLAN.md from existing chapter files
   us_plan.py place BOOK N...       placement: mark chapters N... `skip` in private/route.md and claimed at
@@ -32,6 +35,15 @@ and `run: console` (a terminal tool), a language or `none` (nothing to run), `ki
 system|skill`, `state: docker`, `timeout: N` (seconds),
 `check: COMMAND` and `mask: REGEX` (both repeatable). Section fields: teaches:, needs:, level:,
 story, practice, short (one command or small idea, 300 to 700 words) and fig (a figure is required).
+
+A plan made from the curriculum (curriculum/FORMAT.md) may hold, above the first chapter,
+  held: CARD STEPS; CARD STEPS        steps the learner has shown (STEPS like 1-3 or 2,5; none: all)
+  later: CARD STEPS                   steps left for a later book ((a reason in brackets) is ignored,
+                                      but "(book 2)" marks a later book of a series)
+and, directly under a chapter's `### N Title` line, `from: CARD STEPS; CARD STEPS`: the steps it teaches.
+check then accounts for every step of every card these lines touch, and for the cards those need; with a
+`track:` line the plan is one book: at most 16 chapters;
+brief adds the curriculum's notes for the chapter's steps.
 """
 import collections
 import datetime
@@ -177,6 +189,10 @@ def cmd_check(book):
     """Print problems, or 'plan ok: ...'; exit 1 on errors."""
     plan = need_plan(book)
     errors, warnings = check_plan(plan)
+    counts = check_curriculum(book, plan, errors, warnings)
+    budget = check_budget(book, plan, errors)
+    series = check_one_book(book, plan, errors)
+    errors, warnings = sorted(errors), sorted(warnings)
     for line, msg in errors:
         print("error PLAN.md:%d: %s" % (line, msg))
     for line, msg in warnings:
@@ -184,8 +200,226 @@ def cmd_check(book):
     if errors:
         return 1
     ideas = sum(len(s.teaches) for s in plan.sections())
-    print("plan ok: %d chapters, %d sections, %d ideas" % (len(plan.chapters), len(plan.sections()), ideas))
+    print("plan ok: %d chapters, %d sections, %d ideas" % (len(plan.chapters), len(plan.sections()), ideas) +
+          (", %d curriculum steps taught, %d held, %d later" % counts if counts else "") +
+          (", about %.0f of %g budget hours (%s)" % (budget, plan.budget[1], "study and practice, by the roadmap" if any(
+              c.from_refs for c in plan.chapters) and curriculum() else "reading and study, as cost counts it")
+           if budget is not None else "") +
+          (", %d steps for later books" % series if series else ""))
     return 0
+
+BUDGET_SLACK = 0.15       # a plan may run this far over its budget: line
+BOOK_CHAPTERS = 16        # one book of a plan with a track: line
+
+
+def plan_map(cur, plan):
+    """The track map of the plan's first track: line, or None."""
+    return next((m for m in (cur.find_map(ref) for _, ref, _ in plan.track) if m), None) if cur else None
+
+
+def check_one_book(book, plan, errors):
+    """A plan with a track: line is one book: at most 16 chapters. Returns how many steps later: lines leave for later books ('(book 2)')."""
+    if not plan.track:
+        return 0
+    cur = curriculum()
+    if len(plan.chapters) > BOOK_CHAPTERS:
+        errors.append((plan.track[0][0], "this is more than one book (%d chapters): a book has at most %d chapters; "
+                                         "group more steps in a chapter, leave what the goal can do without under "
+                                         "later:, and only if the goal still does not fit make it a series with "
+                                         "later: ... (book 2)" % (len(plan.chapters), BOOK_CHAPTERS)))
+    return len(series_steps(cur, plan)) if cur else 0
+
+
+def series_steps(cur, plan):
+    """(card, step) pairs on later: lines that name a later book of the series."""
+    return {(i, n) for ln, i, st in plan.later if ln in plan.later_books and i in cur.cards
+            for n in (card_numbers(cur, i) if st is None else st)}
+
+
+def check_budget(book, plan, errors):
+    """ERROR when the plan's study hours (plan_hours) pass `budget:` by more than 15%; returns the hours, or None
+    when the plan has no budget: line."""
+    if not plan.budget:
+        return None
+    line, hours = plan.budget
+    need = plan_hours(book, plan)
+    if need > hours * (1 + BUDGET_SLACK):
+        errors.append((line, "the plan needs about %.0f hours of study; the learner has %g (budget:): move steps to "
+                             "later: or cut sections, keeping every card the goal names" % (need, hours)))
+    return need
+
+
+def plan_hours(book, plan):
+    """Study hours of the plan. With from: lines and a curriculum: each card's track-map Hours scaled by the share
+    of its steps on from: lines (as us_path.py spine counts them), plus the cost hours of the chapters with no
+    from: line and of the chapters of cards no map gives hours for. Otherwise: the cost total."""
+    written = all_written(book, plan)
+    cur = curriculum() if any(c.from_refs for c in plan.chapters) else None
+    if cur is None:
+        return chapter_cost(plan.sections(), written)[2]
+    import us_path
+    taught, tmap = {}, plan_map(cur, plan)
+    for c in plan.chapters:
+        for ident, steps in c.from_refs:
+            have = card_numbers(cur, ident) if ident in cur.cards else []
+            taught.setdefault(ident, set()).update(n for n in (have if steps is None else steps) if n in have)
+    total, costed = 0, {c.number for c in plan.chapters if not c.from_refs}
+    for ident, steps in taught.items():
+        hours = us_path.card_hours(cur, ident, sorted(steps), tmap)[0] if ident in cur.cards else None
+        if hours is None:
+            costed |= {c.number for c in plan.chapters if any(i == ident for i, _ in c.from_refs)}
+        else:
+            total += hours
+    secs = [s for c in plan.chapters if c.number in costed for s in c.sections]
+    return total + (chapter_cost(secs, written)[2] if secs else 0)
+
+# ---------------------------------------------------------------- the curriculum's steps (from:, held:, later:)
+
+
+def curriculum():
+    """The curriculum (us_path.Curriculum), or None when there is no curriculum folder."""
+    import us_path
+    return us_path.Curriculum() if os.path.isdir(us_path.curriculum_dir()) else None
+
+
+def card_numbers(cur, ident):
+    """The step numbers of a card."""
+    import us_path
+    return [n for n, _, _ in us_path.card_steps(cur.cards[ident])]
+
+
+def needs_of(cur, ident):
+    """The entries of a card's needs: line, each a list of alternatives (any one will do) that have cards."""
+    import us_path
+    entries = [[a for a in e if a in cur.cards] for e in us_path.need_entries(cur.cards[ident].get("needs"))]
+    return [e for e in entries if e]
+
+
+def shelf_teaches(book):
+    """Card ids on a from: line of another book's PLAN.md on the same shelf (the book's folder's parent)."""
+    found = set()
+    for other in bf.list_books(os.path.dirname(os.path.abspath(book).rstrip(os.sep))):
+        if os.path.abspath(other) == os.path.abspath(book) or not os.path.exists(os.path.join(other, "PLAN.md")):
+            continue
+        found |= {i for c in bf.load_plan(other).chapters for i, _ in c.from_refs}
+    return found
+
+
+def check_curriculum(book, plan, errors, warnings):
+    """Account for every step of every card the plan touches; returns (taught, held, later) counts, or None
+    when the plan has no from:, held: or later: line or there is no curriculum folder."""
+    cur = curriculum() if plan.uses_curriculum() or plan.track else None
+    if cur is None:
+        return None
+    where, sets = {}, {"from": set(), "held": set(), "later": set()}
+    first = {}                                    # card -> first chapter that teaches it
+    chapter_of = {}                               # (card, step) -> first chapter that teaches it
+    for line, kind, ident, steps in plan.curriculum_refs():
+        if ident not in cur.cards:
+            errors.append((line, "no card '%s' in the curriculum; fix the id (python3 scripts/us_path.py find %s)"
+                           % (ident, ident.replace("-", " "))))
+            continue
+        have = card_numbers(cur, ident)
+        gone = [n for n in steps or [] if n not in have]
+        if gone:
+            errors.append((line, "%s has steps 1 to %d; step %s does not exist" % (ident, len(have),
+                                                                                 ", ".join(map(str, gone)))))
+        where[ident] = min(where.get(ident, line), line)
+        for n in [n for n in (have if steps is None else steps) if n in have]:
+            sets[kind.split()[0]].add((ident, n))
+            if kind.startswith("from"):
+                ch = int(kind.split()[1])
+                first[ident] = min(first.get(ident, ch), ch)
+                chapter_of[(ident, n)] = min(chapter_of.get((ident, n), ch), ch)
+    for ident, line in sorted(where.items(), key=lambda x: (x[1], x[0])):
+        have = card_numbers(cur, ident)
+        taught, held, later = [{n for i, n in sets[k] if i == ident} for k in ("from", "held", "later")]
+        missing = [n for n in have if n not in taught | held | later]
+        if missing:
+            errors.append((line, "%s: step%s %s %s in no from:, held: or later: line; add them to a chapter's from: "
+                                 "line, or to held: (the learner has shown it) or later: (left for a later book)"
+                           % (ident, "" if len(missing) == 1 else "s", ", ".join(map(str, missing)),
+                              "is" if len(missing) == 1 else "are")))
+        both = sorted((taught & (held | later)) | (held & later))
+        if both:
+            errors.append((line, "%s: step%s %s %s in more than one of from:, held: and later:; a step is taught, "
+                                 "held or left for later: keep it in one" % (
+                                     ident, "" if len(both) == 1 else "s", ", ".join(map(str, both)),
+                                     "is" if len(both) == 1 else "are")))
+    touched, elsewhere = set(where), None
+    for ident in sorted(first, key=lambda i: (where[i], i)):
+        for need in needs_of(cur, ident):
+            if any(a in touched for a in need):
+                continue
+            elsewhere = shelf_teaches(book) if elsewhere is None else elsewhere
+            if not any(a in elsewhere for a in need):
+                errors.append((where[ident], "%s needs %s: teach its steps here, or list them under held: (the learner "
+                                             "showed they have them) or later:" % (ident, " or ".join(need))))
+    lines = {c.number: c.from_line for c in plan.chapters}
+    held = {i for i, _ in sets["held"]}
+    for ident in sorted(first):
+        for need in needs_of(cur, ident):
+            if any(a in touched and a not in first or a in held for a in need):
+                continue                          # some of it held, or all left for later: the order may be meant
+            taught = sorted((first[a], a) for a in need if a in first)
+            if taught and taught[0][0] > first[ident]:
+                warnings.append((lines[first[ident]], "note: %s is first taught in chapter %d, before %s (chapter %d), "
+                                                      "which it needs: is this order meant?" % (
+                                                          ident, first[ident], taught[0][1], taught[0][0])))
+        order = sorted((n, c) for (i, n), c in chapter_of.items() if i == ident)
+        for k, (n, c) in enumerate(order):
+            low = [m for m, d in order[:k] if d > c]
+            if low:
+                warnings.append((lines[c], "note: %s step %d is taught in chapter %d, before step %d (chapter %d); "
+                                           "the card teaches them the other way round: is this order meant?" % (
+                                               ident, n, c, low[0], chapter_of[(ident, low[0])])))
+                break
+    check_track(book, plan, cur, touched, sets, errors, warnings, series_steps(cur, plan))
+    check_deep_room(plan, cur, warnings)
+    return tuple(len(sets[k]) for k in ("from", "held", "later")) if plan.uses_curriculum() else None
+
+
+def check_deep_room(plan, cur, warnings):
+    """A note when a chapter's from: line holds a deep step of a card with three or more other steps."""
+    import us_path
+    for c in plan.chapters:
+        held = [(i, n) for i, steps in c.from_refs if i in cur.cards
+                for n in (card_numbers(cur, i) if steps is None else steps)]
+        for ident, n in held:
+            if n in (us_path.deep_steps(cur.cards[ident]) or []) and len(held) - 1 >= 3:
+                warnings.append((c.from_line, "note: chapter %d holds the deep step %s %d with %d other steps: give it "
+                                              "room" % (c.number, ident, n, len(held) - 1)))
+
+
+def check_track(book, plan, cur, touched, sets, errors, warnings, series=()):
+    """The `track:` lines: the map and its rows exist; every goal row with a card is accounted for here or
+    taught by another book on the shelf; a note for a goal card this book only leaves for later."""
+    elsewhere = None
+    for line, ref, rows in plan.track:
+        tmap = cur.find_map(ref)
+        if tmap is None:
+            errors.append((line, "no track map '%s'; tracks: %s" % (ref, ", ".join(m.ref() for m in cur.maps) or "none")))
+            continue
+        import us_path
+        subjects = [us_path.subject_of(c[1]) for _, c in tmap.rows() if len(c) > 1]
+        gone = [n for n in rows or [] if not 1 <= n <= len(subjects)]
+        if gone:
+            errors.append((line, "%s has rows 1 to %d; row %s does not exist" % (ref, len(subjects),
+                                                                              ", ".join(map(str, gone)))))
+        for n in [n for n in (rows or range(1, len(subjects) + 1)) if 1 <= n <= len(subjects)]:
+            ident, planned = subjects[n - 1]
+            if planned or ident not in cur.cards:
+                continue
+            if ident not in touched:
+                elsewhere = shelf_teaches(book) if elsewhere is None else elsewhere
+                if ident not in elsewhere:
+                    errors.append((line, "the goal's track names %s (row %d of %s): teach its steps in a chapter, or "
+                                         "account for them under held: or later:" % (ident, n, ref)))
+            elif not any(i == ident for k in ("from", "held") for i, _ in sets[k]) and \
+                    any(i == ident for i, _ in sets["later"]) and \
+                    not all((ident, n) in series for n in card_numbers(cur, ident)):   # left for book 2: taught there
+                errors.append((line, "%s is in the goal's rows (track:) but this book teaches none of it: teach at "
+                                     "least the steps the goal cannot do without" % ident))
 
 
 def need_plan(book):
@@ -254,7 +488,9 @@ def make_brief(book, plan, n):
     ch = plan.chapter(n)
     env = ["env: " + e.strip() for e in bf.ENV_RE.findall(bf.read_text(plan.path))] if plan.path else []
     sheet = os.path.join(book, "BOOK.md")
-    sheet = bf.read_text(sheet).strip().splitlines() + [""] if os.path.exists(sheet) else []
+    sheet = bf.read_text(sheet).strip().splitlines() if os.path.exists(sheet) else []
+    left = [l for l in sheet if l.startswith("Left at end of chapter")]
+    sheet = [l for l in sheet if l not in left[:-2]] + [""] if sheet else []      # the last two chapters' state is enough
     meta = ["%s: %s" % (k, v) for k in ("kind", "state", "timeout") for _, v in plan.meta.get(k, [])]
     head = sheet + ["# %s" % plan.title, "for: %s" % plan.audience, "run: %s" % plan.run] + meta + env + ["", ch.raw] + \
         [s.raw + section_notes(s) for s in ch.sections] + ([] if sheet else carried(book, n))
@@ -335,6 +571,12 @@ def cmd_brief(book, n):
     if plan.chapter(n) is None:
         sys.exit("chapter %d is not in the plan" % n)
     print(make_brief(book, plan, n))
+    refs = plan.chapter(n).from_refs
+    if refs:
+        import us_path
+        cur = curriculum()
+        print("\n" + us_path.NOTES_HEAD)
+        print("\n".join(us_path.chapter_notes(refs, cur) if cur else ["(no curriculum folder: no notes)"]))
     return 0
 
 # ---------------------------------------------------------------- progress
@@ -410,6 +652,7 @@ def cmd_next(book):
         taken = {c.number for c in route_chapters(book, plan)}
         left = [c.number for c in plan.chapters if c.number not in taken and len(written_sections(book, c)[0]) < len(c.sections)]
         print("all written" + (" (skipped on the route: %s)" % ", ".join(map(str, left)) if left else ""))
+        print_pass_due(book, plan)
         return 0
     ch, sec, done = found
     picked = route_sections(book, ch.number)
@@ -417,9 +660,37 @@ def cmd_next(book):
         have = set(written_sections(book, ch)[0])
         print("chapter %d, section %s (%d of %d route sections written: %s)" % (
             ch.number, sec.number, len([p for p in picked if p in have]), len(picked), " ".join(picked)))
-        return 0
-    print("chapter %d, section %s (%d of %d written)" % (ch.number, sec.number, done, len(ch.sections)))
+    else:
+        print("chapter %d, section %s (%d of %d written)" % (ch.number, sec.number, done, len(ch.sections)))
+    print_pass_due(book, plan)
     return 0
+
+
+def pass_ends(plan):
+    """Chapters that close a stretch for the book pass: the last chapter of each part (PLAN.md `## Part`);
+    a book with no parts: every fourth chapter and the last one."""
+    chs = plan.chapters
+    if plan.parts:
+        return [c.number for i, c in enumerate(chs) if i + 1 == len(chs) or chs[i + 1].part != c.part]
+    return [c.number for i, c in enumerate(chs, 1) if i % 4 == 0 or i == len(chs)]
+
+
+def pass_due(book, plan, status=None):
+    """(A, B) when a reviewed chapter B closes a stretch the book pass has not covered (it covered 1 to A-1),
+    else None."""
+    status = status or bf.read_status(book)
+    done = int(status.get("book_pass", 0) or 0)
+    reviewed = {int(k) for k, v in status["chapters"].items() if k.isdigit() and v.get("state") == "reviewed"}
+    ends = [b for b in pass_ends(plan) if b > done and b in reviewed]
+    return (done + 1, max(ends)) if ends else None
+
+
+def print_pass_due(book, plan, status=None):
+    """One line when a book pass is due."""
+    due = pass_due(book, plan, status)
+    if due:
+        print("book pass due: chapters %d to %d (python3 scripts/us_check.py %s --digest --from %d --to %d; then "
+              "us_plan.py mark %s pass %d)" % (due[0], due[1], book, due[0], due[1], book, due[1]))
 
 
 def chapter_state(book, ch, status):
@@ -443,18 +714,118 @@ def cmd_status(book):
         title = ch.title if len(ch.title) <= 40 else ch.title[:37] + "..."
         unrun = not_run(book, ch.number)
         state += ", %d not run" % unrun if unrun else ""
+        path = bf.chapter_path(book, ch.number)
+        facts = sum(fact_counts(bf.read_text(path).split("\n")).values()) if path else 0
+        state += ", facts %d" % facts if facts else ""
         print("%-3d %-40s %4d/%-4d %8s  %s" % (ch.number, title, len(done), len(ch.sections), bf.fmt_int(words), state))
+    print_pass_due(book, plan, status)
     return 0
 
 
 RISK_RE = re.compile(r"<!--\s*risk:")
 UNRUN_RE = re.compile(r"<!--\s*code:[^>]*?\bunrun=", re.S)
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 def not_run(book, n):
     """How many programs and sessions of chapter n's file carry unrun= (could not run on this machine)."""
     path = bf.chapter_path(book, n)
     return len(UNRUN_RE.findall(bf.read_text(path))) if path else 0
+
+
+def checked_marks(lines):
+    """(line number, {'how', 'date', 'ref', 'h'}) of each <!-- checked: --> mark outside code fences."""
+    scanned, _ = bf.scan_lines(lines)
+    return [(n, bf.parse_checked(lines[n - 1])) for n, kind, _ in scanned
+            if kind == "prose" and bf.CHECKED_MARK.search(lines[n - 1])]
+
+
+def mark_problem(mark):
+    """What is wrong with a checked mark, or '' when it is well formed."""
+    if mark["how"] not in bf.CHECK_HOWS:
+        return "how=%s is not known; write how= one of %s" % (mark["how"] or "(none)", ", ".join(bf.CHECK_HOWS))
+    if not mark["date"]:
+        return "no date; add date=YYYY-MM-DD (the day it was checked)"
+    if not DATE_RE.match(mark["date"]):
+        return "date=%s is not YYYY-MM-DD" % mark["date"]
+    if mark["how"] == "source" and not mark["ref"]:
+        return 'how=source has no ref; add ref="the page or document that proved it"'
+    return ""
+
+
+def fact_counts(lines):
+    """{how: count} of the well-formed checked marks, in CHECK_HOWS order."""
+    found = collections.Counter(m["how"] for _, m in checked_marks(lines) if not mark_problem(m))
+    return {how: found[how] for how in bf.CHECK_HOWS if found[how]}
+
+
+def stamp_marks(lines, fresh=False):
+    """Stamp h= on checked marks that have none (fresh: on every mark), in place; returns how many changed."""
+    changed = 0
+    for n, mark in checked_marks(lines):
+        if mark["h"] and not fresh:
+            continue
+        h = bf.passage_hash(lines, n)
+        if h == mark["h"]:
+            continue
+        m = bf.CHECKED_MARK.search(lines[n - 1])
+        inner = re.sub(r'(^|\s)h=("[^"]*"|\S+)', "", m.group(1)).rstrip()
+        lines[n - 1] = lines[n - 1][:m.start(1)] + inner + " h=%s " % h + lines[n - 1][m.end(1):]
+        changed += 1
+    return changed
+
+
+def malformed(book, n, lines):
+    """Refusal lines for chapter n's malformed checked marks, or []."""
+    bad = [(k, mark_problem(m)) for k, m in checked_marks(lines) if mark_problem(m)]
+    if not bad:
+        return []
+    name = os.path.relpath(bf.chapter_path(book, n), book)
+    return ["chapter %d has %d malformed checked mark%s; fix %s:" % (n, len(bad), "" if len(bad) == 1 else "s",
+                                                                   "it" if len(bad) == 1 else "them")] + \
+        ["  %s:%d: %s" % (name, k, why) for k, why in bad]
+
+
+def record_facts(book, n, lines, entry):
+    """Put the chapter's fact counts ({how: n}) and unrun count in its STATUS.json entry."""
+    entry.update(facts=fact_counts(lines), unrun=not_run(book, n))
+
+
+def cmd_restamp(book, n):
+    """Stamp every checked mark of chapter n afresh; refuse malformed marks."""
+    plan = need_plan(book)
+    path = bf.chapter_path(book, n) if plan.chapter(n) else None
+    if path is None:
+        print("chapter %d is not in the plan or not written" % n)
+        return 1
+    text = bf.read_text(path)
+    lines = text.split("\n")
+    bad = malformed(book, n, lines)
+    if bad:
+        print("\n".join(bad))
+        return 1
+    changed = stamp_marks(lines, fresh=True)
+    if changed:
+        bf.write_text(path, "\n".join(lines))
+    status = bf.read_status(book)
+    entry = status["chapters"].setdefault(str(n), {})
+    record_facts(book, n, lines, entry)
+    bf.write_status(book, status)
+    print("chapter %d: restamped %d of %d checked marks" % (n, changed, len(checked_marks(lines))))
+    return 0
+
+
+def cmd_mark_pass(book, n):
+    """Record that the book pass covered chapters 1 to n."""
+    plan = need_plan(book)
+    if plan.chapter(n) is None:
+        print("chapter %d is not in the plan" % n)
+        return 1
+    status = bf.read_status(book)
+    status["book_pass"] = n
+    bf.write_status(book, status)
+    print("book pass: chapters 1 to %d covered" % n)
+    return 0
 
 
 def cmd_mark(book, n, state, notes=None):
@@ -470,14 +841,29 @@ def cmd_mark(book, n, state, notes=None):
         print("chapter %d is not fully written (%d of %d; next %s); write it before marking it %s" % (
             n, len(ch.sections) - len(missing), len(ch.sections), missing[0], state))
         return 1
-    risks = len(RISK_RE.findall(bf.read_text(bf.chapter_path(book, n))))
+    path = bf.chapter_path(book, n)
+    text = bf.read_text(path)
+    lines = text.split("\n")
+    risks = len(RISK_RE.findall(text))
     if state == "reviewed" and risks:
-        print("chapter %d still has %d risk note%s (<!-- risk: -->); settle each and delete it: python3 scripts/us_check.py %s %d --risks"
+        print("chapter %d still has %d risk note%s (<!-- risk: -->); settle each and turn it into a "
+              "<!-- checked: how=... date=... --> mark: python3 scripts/us_check.py %s %d --risks"
               % (n, risks, "" if risks == 1 else "s", book, n))
         return 1
+    stamped = 0
+    if state == "reviewed":
+        bad = malformed(book, n, lines)
+        if bad:
+            print("\n".join(bad))
+            return 1
+        stamped = stamp_marks(lines)
+        if stamped:
+            bf.write_text(path, "\n".join(lines))
     status = bf.read_status(book)
     entry = status["chapters"].setdefault(str(n), {})
     entry.update(state=state, sections=done, planned=len(ch.sections), words=words)
+    if state == "reviewed":
+        record_facts(book, n, lines, entry)
     bf.write_status(book, status)
     if state == "reviewed":
         path = os.path.join(book, "REVIEW.md")
@@ -486,7 +872,8 @@ def cmd_mark(book, n, state, notes=None):
         line += "; open: %s" % notes["--open"] if (notes or {}).get("--open") else ""
         old = bf.read_text(path) if os.path.exists(path) else "# Review log\n\n"
         bf.write_text(path, old + line + "\n")
-    print("chapter %d: %s" % (n, state))
+    print("chapter %d: %s" % (n, state) + ("; stamped %d checked mark%s" % (stamped, "" if stamped == 1 else "s")
+                                           if stamped else ""))
     return 0
 
 
@@ -601,8 +988,8 @@ def cmd_cost(book, n=None):
         rest = chapters[22:]
         rows = rows[:22] + [("%d-%d" % (rest[0].number, rest[-1].number), "(together)",
                              chapter_cost([s for c in rest for s in c.sections], written))]
-    fmt = "%-5s %-32s %8s %8s %8s %9s %11s"
-    print(fmt % ("ch", "title", "sections", "words", "study h", "write min", "tokens"))
+    fmt = "%-5s %-32s %8s %8s %9s %9s %11s"
+    print(fmt % ("ch", "title", "sections", "words", "reading h", "write min", "tokens"))
     for num, title, (k, words, study, mins, toks) in rows:
         title = title if len(title) <= 32 else title[:29] + "..."
         print(fmt % (num, title, k, bf.fmt_int(words), "%.1f" % study, "%.0f" % mins, bf.fmt_int(int(toks))))
@@ -808,12 +1195,21 @@ def main(argv):
         return cmd_next(book)
     if cmd == "status":
         return cmd_status(book)
+    if cmd == "mark" and argv[2:3] == ["pass"]:
+        if len(argv) != 4 or not argv[3].isdigit():
+            sys.exit("usage: us_plan.py mark BOOK pass N")
+        return cmd_mark_pass(book, int(argv[3]))
+    if cmd == "mark" and argv[3:4] == ["restamp"]:
+        if len(argv) != 4 or not argv[2].isdigit():
+            sys.exit("usage: us_plan.py mark BOOK N restamp")
+        return cmd_restamp(book, int(argv[2]))
     if cmd == "mark":
         notes = dict(zip(argv[4::2], argv[5::2]))
         if (len(argv) < 4 or not argv[2].isdigit() or argv[3] not in ("reviewed", "written") or len(argv) % 2
                 or set(notes) - {"--false", "--stuck", "--open"}
                 or not all(notes.get(k, "0").isdigit() for k in ("--false", "--stuck"))):
-            sys.exit('usage: us_plan.py mark BOOK N reviewed|written [--false A] [--stuck B] [--open "text"]')
+            sys.exit('usage: us_plan.py mark BOOK N reviewed|written [--false A] [--stuck B] [--open "text"]'
+                     " | mark BOOK N restamp | mark BOOK pass N")
         return cmd_mark(book, int(argv[2]), argv[3], notes)
     if cmd == "place":
         if len(argv) < 3 or not all(a.isdigit() for a in argv[2:]):

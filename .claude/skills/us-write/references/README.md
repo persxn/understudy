@@ -7,8 +7,8 @@ Read the guide (`rules/writers-guide.md`), the book's `BOOK.md` and `PRACTICES.m
 | `kinds/language.md` | `kind: language`; read the one kind file of the book before writing |
 | `kinds/tool.md` | `kind: tool` |
 | `kinds/framework.md` | `kind: framework` |
-| `kinds/system.md` | `kind: system` (operating systems, networks, databases, architecture, algorithms, theory) |
-| `kinds/skill.md` | `kind: skill` (professional practice that is not programming) |
+| `kinds/system.md` | `kind: system` (operating systems, networks, databases, architecture, theory; algorithms studied for how and why they work) |
+| `kinds/skill.md` | `kind: skill` (professional practice; also problem solving trained by doing: contest and interview problems, design estimates) |
 | `samples/<kind>.md` | before writing a book: the one sample for its kind, read in full; it sets the voice and the depth (`samples/README.md` lists them) |
 | `sections/concept.md` | unsure of the shape of a section that introduces one idea |
 | `sections/mechanism.md` | unsure of the shape of a section about how something happens, in order |

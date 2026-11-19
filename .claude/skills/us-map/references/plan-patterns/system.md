@@ -1,6 +1,6 @@
 # Plan pattern: how a system works
 
-For operating systems, networks, database internals, architecture, algorithms and theory. Header: `run: console` when experiments are typed at a terminal, `run: c` or `python` when the reader writes small programs, else `run: none`; `kind: system`.
+For operating systems, networks, database internals, architecture and theory, and for algorithms studied for how and why they work (training to solve contest or interview problems is `plan-patterns/skill.md`). Header: `run: console` when experiments are typed at a terminal, `run: c` or `python` when the reader writes small programs, else `run: none`; `kind: system`.
 
 ## The shape
 

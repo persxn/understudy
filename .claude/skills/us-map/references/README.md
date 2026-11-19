@@ -2,6 +2,7 @@
 
 | File | Read when |
 |---|---|
+| `references/from-a-card.md` | `us_path.py find` printed a track, a card or a role: how to plan for the learner's goal with the curriculum's checked steps, and the `from:`, `held:` and `later:` lines |
 | `references/syllabus.md` | drawing the contents page of a new book: where coverage comes from, listing ideas, dependencies, order, cutting for the promise |
 | `references/plan-patterns/language.md` | the book's `kind:` is `language` |
 | `references/plan-patterns/tool.md` | the book's `kind:` is `tool` (also read `rules/tool-books.md`) |

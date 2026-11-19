@@ -8,6 +8,8 @@ Look up when facts change between versions or vendors: tools, frameworks, langua
 
 ## Where to look, in order
 
+0. `python3 scripts/us_check.py --mistakes "<subject words>"` prints what has been got wrong about this subject before, each with the truth and its source. Copy the ones this book will touch into "Facts that change"; it costs nothing.
+
 1. `plans/<subject>/PRACTICES.md`, if one exists: copy it and check its date. Older than six months for a fast-moving tool, re-read its sources.
 2. The sources named for the subject in `plans/SOURCES.md`: official guides first.
 3. One search for the official documentation, only for a subject not listed. With no network, say so to the learner and mark every fact `[unchecked]`.

@@ -138,7 +138,7 @@ def needs_leaves_out_written_sections():
 def cost_per_chapter_and_total():
     code, out = run("cost", book("cost"))
     lines = out.splitlines()
-    check(code == 0 and len(lines) == 5, out)
+    check(code == 0 and len(lines) == 5 and " reading h " in lines[0] and "study h" not in lines[0], out)
     ch1 = lines[1].split()          # 400 + 500 + 1500 + 1200 words; study (3600/150 + 5+5+20)/60 = 0.9 h
     check(ch1[0] == "1" and ch1[-5:] == ["4", "3,600", "0.9", "4", "68,400"], lines[1])
     check(lines[-1].split()[:2] == ["total", "9"] and lines[-1].endswith("180,500"), lines[-1])

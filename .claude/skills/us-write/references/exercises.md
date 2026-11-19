@@ -12,6 +12,8 @@
 - *Decide*: "Two options for storing sessions: in memory or in Redis. Your app runs on three servers. Which, and why?" There is a better answer and a reason; say both.
 - *Explain to a friend*: "A colleague says `git pull` is the same as `git fetch`. In three sentences, what would you tell them?" Forces the reader to order the idea in their own words.
 
+**Tag every question.** On the line directly above each question's or task's first line (its number or its heading) goes `<!-- q: idea=ID type=TYPE -->`: the idea it tests (an id from the plan) and what it makes the reader do: `recall`, `explain`, `predict`, `fix`, `apply`, `decide` or `build`. When a question exists to catch one wrong belief, name it: `wrong="break leaves both loops"`. The reader never sees the tag. The practice script uses it, with no AI, to tell an idea the reader can only repeat from one they can use, to bring a wrong belief back until it is gone, and to choose what to revise.
+
 **Hidden answers.** Every question has its answer in `<details>`, and the answer teaches: the result, the reason, and the most likely wrong answer with why it is tempting. Weak: "`B`." Better: "`B`. The inner loop's `break` ends only the inner loop, so the outer one carries on with the next row. If you said `A`, you pictured `break` leaving both loops; that needs a flag or a function return." An answer that is a program is tagged and run (`rules/book-standard.md`, `answer`).
 
 **How a chapter project is set, by kind.**
@@ -21,4 +23,4 @@
 - *System*: a trace or experiment on a new situation: fill a table, predict, then check by running where the machine allows; answer gives the full table.
 - *Skill*: the practice done on the reader's own material, then judged against the chapter's checklist; the answer is a model version with its reasons, since the reader's own work cannot be marked here.
 
-Every project states what done looks like. A project with no finish line is either skipped or never ends.
+Every project states what done looks like, in a form the reader can test alone. Where a program can be run, give the model answer `check="COMMAND"` (for example `check="python3 receipt.py"` with its `stdin=`): `python3 scripts/us_practice.py check <book> N.M --in THEIR-FOLDER` then runs the reader's own program and compares what it prints with the model's real output. Where nothing can be run, put `<!-- checklist: id=NAME -->` above 3 to 10 yes/no tests the reader applies to their own work. Tell the reader that command in the project's text, with their folder's name. A project with no finish line is either skipped or never ends. When the chapter gives the reader that command, say once where to type it: in the understudy folder (the one that holds `book/`), in the terminal, not inside their own project folder.

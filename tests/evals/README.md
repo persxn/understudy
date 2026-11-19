@@ -19,3 +19,5 @@ chapters are in [`examples/final-validation/`](../../examples/final-validation/R
 | `python.md` | language | a first-year student with no programming |
 | `operating-systems.md` | system | a third-year student before an exam and interviews |
 | `usability-testing.md` | skill (not programming) | a design intern who must run a usability test |
+| `dsa.md` | language and technique (the curriculum cards) | a student who wants to get good at contests |
+| `system-design.md` | system (the curriculum cards) | a backend developer with one year of experience |

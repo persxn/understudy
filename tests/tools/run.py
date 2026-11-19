@@ -16,7 +16,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 SCRIPTS = os.path.join(ROOT, "scripts")
 FIXTURE = os.path.join(ROOT, "tests", "book", "fixture")
-REAL = os.path.dirname(os.environ.get("JOJO_CHAPTERS", "").rstrip("/"))  # optional: the C book; unset skips real_book
+REAL = os.path.dirname(os.environ.get("JOJO_CHAPTERS", "").rstrip("/"))   # optional
 TMP = tempfile.mkdtemp(prefix="us-tools-test-")
 os.chmod(TMP, 0o755)          # programs run as an ordinary user must reach their working folder
 os.environ["TMPDIR"] = tempfile.tempdir = TMP  # run folders go in TMP too, and leave with it
@@ -330,6 +330,9 @@ def check_recall_questions_and_many_forward_references():
     code, out = run("us_check.py", book(lambda b: [edit(b), replace(b, 1, "Which command prints a line?",
                                                                        "Which command prints `hi`?")]), "1")
     check(not any("only ask to recall" in l for l in out), "a question with code in it is not pure recall: %s" % out)
+    code, out = run("us_check.py", book(lambda b: [edit(b), replace(b, 1, "2. Which command prints a line?",
+                                                                       "<!-- q: idea=x type=decide -->\n2. Which command prints a line?")]), "1")
+    check(not any("only ask to recall" in l for l in out), "a tag of type decide is trusted: %s" % out)
 
 
 @test
@@ -723,8 +726,11 @@ def timed(*args):
     return code, out, time.time() - start
 
 
+@test
 def real_book():
-    check(os.path.isdir(REAL), "no real book at " + REAL)
+    if not REAL or not os.path.isdir(os.path.join(REAL, "chapters")):
+        print("skip  real_book: set JOJO_CHAPTERS to the chapters folder of a real book (the owner's C book) to run it")
+        return
     b = os.path.join(TMP, "real", "jojoway")
     shutil.copytree(os.path.join(REAL, "chapters"), os.path.join(b, "chapters"))
     if os.path.isdir(os.path.join(REAL, "diagrams")):
@@ -752,12 +758,6 @@ def real_book():
     check(code == 0 and out[0].startswith("jojoway 8.3 "), out)
     code, out = run("us_find.py", "dereference", "--book", b, "--read")
     check(len(out) <= 122 and out[-1].startswith("[cut: "), out[-1])
-
-
-if REAL:
-    test(real_book)
-else:
-    print("skip  real_book: JOJO_CHAPTERS not set")
 
 
 def main():

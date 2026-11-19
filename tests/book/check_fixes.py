@@ -172,6 +172,19 @@ def short_sections():
     code, out = run(book([text.replace("**Check yourself**", "**Questions**")], extra), "1")
     check(any(l.startswith("ERROR") and "1.4 (short) needs a '**Check yourself**'" in l for l in out), out)
 
+@test
+def working_files_and_empty_code_blocks():
+    b = three("As PRACTICES.md says, use `PLAN.md` here.\n\n<!-- see FACTS.md -->\n\n```text\nREVIEW.md\n```",
+              "Empty:\n\n```console\n```\n\nAnd none:\n\n```\n```", "MYPLAN.md and PLAN.mdx and plan.md are other files.")
+    code, out = run(b, "1")
+    files = [l for l in out if "names a working file" in l]
+    check(len(files) == 2 and all(l.startswith("FLAG chapters/01-basics.md:") for l in files), out)
+    check("(PRACTICES.md): state the fact itself" in files[0] and "(PLAN.md)" in files[1], files)
+    empty = [l for l in out if "empty code block: fill it or remove it" in l]
+    check(len(empty) == 2 and all(l.startswith("FLAG ") for l in empty), out)
+    code, out = run(three("A plain sentence.", "```text\nfull\n```"), "1")
+    check(not any("working file" in l or "empty code block" in l for l in out), out)
+
 # ---------------------------------------------------------------- suspects, index note
 
 
@@ -187,6 +200,29 @@ def suspects_all_and_forward_excerpt():
     check(len(fwd) == 1 and fwd[0].split(" ", 2)[2].startswith("§1.3"), fwd)
     code, out = run(b, "1", "--all")
     check(code == 2 and "--suspects" in out[0], out)
+
+
+@test
+def a_timing_in_prose_must_come_from_a_run():
+    prose = ("It took 0.045 s, then 14.9 seconds, then 14.9 seconds again, under 2 s, about 3 seconds, a 5 s limit, "
+             "in the 1990s, and `sleep 7s`.")
+    run_it = "<!-- code: id=t1 -->\n```console\n$ echo 0.045\n0.045\n```\n\n"
+    code, out = run(three(first=run_it + prose), "1")
+    timings = [l for l in out if "the timing" in l]
+    check(len(timings) == 1 and timings[0].startswith("NOTE chapters/01-basics.md:") and timings[0].endswith(
+        "the timing '14.9 seconds' appears in no pasted output: paste the run or give an order of magnitude"), out)
+    code, out = run(three(first=prose), "1")            # nothing pasted in the chapter: no note
+    check(not any("the timing" in l for l in out), out)
+
+
+@test
+def no_heading_shape_crashes_the_check():
+    code, out = run(three(first="#### A deeper heading\n\nText.\n\n###No space\n\nText."), "1")
+    check("Traceback" not in "\n".join(out) and not any("A deeper heading" in l for l in out), out)
+    bad = [l for l in out if "No space" in l]
+    check(len(bad) == 1 and bad[0].startswith("ERROR chapters/01-basics.md:") and bad[0].endswith(
+        "heading '###No space' cannot be read: inside a section use '### Title' down to '###### Title' (a space "
+        "after the #s, at most six)"), out)
 
 
 def index(path):

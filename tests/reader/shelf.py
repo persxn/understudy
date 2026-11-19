@@ -17,7 +17,7 @@ import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, '..', '..'))
-JOJO = os.path.dirname(os.environ.get('JOJO_CHAPTERS', '').rstrip('/'))  # optional: the C book; '' when unset
+JOJO = os.path.dirname(os.environ.get('JOJO_CHAPTERS', '').rstrip('/'))
 PY = sys.executable
 
 FIG = '''
@@ -191,7 +191,7 @@ def make_shelf(books=('first-steps-c', 'learn-c', 'long-read'), index=True):
         text = a.rstrip('\n') + '\n' + EXTRA + '\n### The trace' + b
         open(path, 'w', encoding='utf-8').write(text)
         made.append(book)
-    if 'learn-c' in books and os.path.isdir(JOJO):
+    if 'learn-c' in books and JOJO and os.path.isdir(os.path.join(JOJO, 'chapters')):
         book = os.path.join(shelf, 'learn-c')
         os.makedirs(book)
         shutil.copytree(os.path.join(JOJO, 'chapters'), os.path.join(book, 'chapters'))

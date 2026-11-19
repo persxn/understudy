@@ -12,7 +12,8 @@ The reader found something; the chapter is already reviewed. Repair the passage 
    - *different here*: their version or system behaves otherwise. Say which versions differ, and add the fact to PRACTICES.md "Facts that change".
    - *unclear*: true but too compressed. Add the missing step, not a new paragraph of everything.
 4. **Repair that passage only.** Never edit pasted output; change the program and rerun it. If the repair changes a definition, find the sections that reuse the term (`python3 scripts/us_find.py TERM --book <book>`) and check only those sentences.
-5. `python3 scripts/us_check.py <book> N`: no ERROR. Add one line to REVIEW.md (the template's "Reader report" line). Tell the reader what changed in one line, and carry on.
+5. If the cause was *wrong* and the same false statement could come back in a later chapter, teach the script to watch for it: `python3 scripts/us_check.py --learn "SUBJECT" "PATTERN" "THE TRUTH" "SOURCE, DATE" --book <book>` (a short regular expression that matches the false wording and not the truth). Put a checked mark under the repaired statement.
+6. `python3 scripts/us_check.py <book> N`: no ERROR. Add one line to REVIEW.md (the template's "Reader report" line). Tell the reader what changed in one line, and carry on.
 
 ## Example
 

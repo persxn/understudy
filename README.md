@@ -12,6 +12,10 @@ Skills and scripts for Claude Code. One subject becomes one book on your own dis
 programs that were actually run, figures, hidden answers. When the subscription runs out, the book and
 your progress stay.
 
+It writes about five kinds of subject: a programming language, a tool, a framework, how a system works
+(operating systems, networks, databases), and a professional skill with nothing to run (usability testing,
+writing a bug report).
+
 <a href="#a-page-from-a-real-chapter">See a page</a> ·
 <a href="#start-in-a-minute">Start</a> ·
 <a href="#how-a-chapter-gets-made">How it works</a> ·
@@ -166,8 +170,11 @@ There is nothing to memorise. "Teach me Docker", "quiz me on chapter 3", "I'm st
    writer's risk notes, commands that can delete things, output that could not be run here), each item the
    cheapest sure way. Then it reads the chapter once, hunting five things a list cannot show: an example that
    disagrees with itself, something used before you have it, a page that shows what you would not see, too
-   many new words at once, and repetition. After that, you are the reviewer, and what you report is fixed
-   in place.
+   many new words at once, and repetition. Each fact it settles keeps a hidden mark saying how and when it
+   was checked; your book's `FACTS.md` lists them all, and a later change to a checked passage is noticed.
+   A script also re-checks every chapter against a list of mistakes that have been made before. At the end
+   of each part of a book, one more read compares the chapters with each other, from a short digest. After
+   that, you are the reviewer, and what you report is fixed in place and watched for in later chapters.
 5. **Read and practise.** In your browser, with the tutor, or with no AI at all.
 
 </td>
@@ -223,8 +230,11 @@ which chapters lean on which, and a reading view for chapters.
 
 **Practise.** `python3 scripts/us_practice.py` asks the "Check yourself" questions and practice exercises
 from the chapters you have, one at a time. You answer on paper or in your head, see the hidden answer,
-and say honestly whether you got it. Right answers come back later and later (1, 3, 7, 14, 30 days);
+and say honestly whether you got it. Right answers come back later and later (1, 3, 7, 14, 30, 60 days);
 missed ones come back tomorrow. The author's own 11-chapter C book gives 537 questions this way.
+What is asked first is chosen for you: what you missed, what you were sure of and got wrong, what later
+sections lean on, spread across all your books so none is forgotten. `--cards` does the same with each
+book's key terms, and `check BOOK N.M` runs your own project against the chapter's finish line.
 
 ```text
 [1/2] Learn C · §12.1 Why files: data that outlives the program · new
@@ -291,6 +301,9 @@ templates for the three files every book starts with. Each folder's `README.md` 
 |---|---|
 | `python3 scripts/us_reader.py --serve` | open your books in the browser |
 | `python3 scripts/us_practice.py [BOOK] --due` | practise what is due today |
+| `python3 scripts/us_practice.py --cards` | flashcards of your books' key terms |
+| `python3 scripts/us_practice.py check BOOK 2.7 --in YOUR-FOLDER` | test your own project against the chapter's finish line, with no AI |
+| `python3 scripts/us_practice.py --summary` | what you know in fifteen lines: wrong beliefs that return, weak foundations, what you can explain but not yet apply |
 | `python3 scripts/us_practice.py --stats` | your practice record and weak spots |
 | `python3 scripts/us_resume.py` | write the "where you left off" note |
 | `python3 scripts/us_doctor.py [BOOK]` | check that this machine can do what the book teaches, before any usage is spent |
@@ -299,10 +312,26 @@ templates for the three files every book starts with. Each folder's `README.md` 
 | `python3 scripts/us_find.py WORDS --read` | find and print the section that teaches something |
 | `python3 scripts/us_plan.py status BOOK` | what is written and reviewed, chapter by chapter |
 | `python3 scripts/us_autopilot.py BOOK --chapters 3` | write chapters one after another with no conversation open |
+| `python3 scripts/us_path.py index` | the routes the curriculum knows: contest programming, coding interviews, system design, full-stack web, DevOps, AI engineering |
+| `python3 scripts/us_path.py goal system-design/foundations 1` | one goal of a route as a checked plan: its steps, how the book opens, the deep steps, the order, then the outline of those steps |
+| `python3 scripts/us_plan.py brief BOOK 3` | what the writer of chapter 3 is handed: its plan lines, then the curriculum's notes for each of its steps in lesson order |
+| `python3 scripts/us_path.py ready backend-engineer` | how ready your books and practice records say you are for a job, line by line, and what to start next |
 
 A ready-made contents page ships for Git: [`plans/learn-git/PLAN.md`](plans/learn-git/PLAN.md), 6 parts,
 17 chapters, 189 sections, with a [practice card](plans/learn-git/PRACTICES.md) of current Git habits and
 their sources. When you ask to learn Git, the planner offers this plan first instead of drawing a new one.
+
+For 34 subjects the planner also has a checked curriculum to draw on ([`curriculum/`](curriculum/FORMAT.md)): the
+steps of each subject in the order a practitioner would teach them, and for every step how it lands: the question
+the learner has just before it, one experiment that makes it undeniable (run on a real machine or quoted from a
+named source, with its real output), the mechanism in a sentence, and two tasks to try. Each subject names its few
+deep steps, the wrong beliefs and failures to teach against, and the words to own (others are only met in
+passing). For common goals a route has a ready plan: what the goal cannot do without, how the book opens, which
+steps go deep, and the order. The planner still plans your book for your goal, your hours and your own setting,
+one book at a time: at most 16 chapters that reach your goal on their own; only a goal too large for that becomes a series. A script checks that
+no step the goal needs was dropped. Each chapter is one problem carried through to finished work, and its practice
+ends on something the chapter has not used. In the second design's blind tests the curriculum made a better
+contest-programming book and a system-design book level with one planned without it. Third design (19 and 20 November): books planned with the curriculum beat books planned without it on the contents page in all six tested subjects (system design, contest programming, web, machine learning, coding interviews, DevOps; two blind judges each, 2 of 2, the last two after one round of fixes). First chapters: ahead in system design (8.71, 8.57 against 8.43, 8.29) and contest programming (8.86, 8.86 against 8.00, 8.43), level in web, slightly behind in the short extracts for machine learning, interviews and DevOps.
 
 ---
 
@@ -345,6 +374,9 @@ one chapter on a Pro plan.
   [`examples/final-validation/`](examples/final-validation/README.md) records what was measured and what was found;
   [`tests/evals/README.md`](tests/evals/README.md) says how to re-test.
 - Keep the agent's load small: a script beats an instruction, because a script costs no tokens.
+- Before building on it, read [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) (how the parts fit and what each
+  costs), [`docs/FEATURES.md`](docs/FEATURES.md) (every capability, where it lives and how it was checked),
+  [`docs/SETUP.md`](docs/SETUP.md) and [`docs/OUTSTANDING.md`](docs/OUTSTANDING.md) (what is not built yet).
 
 ## Standing on
 

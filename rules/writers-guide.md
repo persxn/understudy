@@ -15,7 +15,7 @@ Six moves. They are jobs to do, not headings to fill; name your headings after t
 3. **Mechanism.** How it really works and why it exists: what problem it solved, what happens step by step, what it is built from. This is where the depth lives; take the room it needs and no more.
 4. **The real thing.** A worked example the reader does with you, then a walk through what just happened, step by step.
 5. **When it goes wrong.** The usual mistakes with their real symptoms, and how to get out.
-6. **Keep it.** A short recap, then `**Check yourself**`: questions that make the reader do something (predict, find the fault, change it, decide), each answer hidden in `<details>`.
+6. **Keep it.** A short recap, then `**Check yourself**`: questions that make the reader do something (predict, fix a fault, change it, decide), each answer hidden in `<details>`.
 
 A move that would only repeat another is merged or dropped. A section about one small thing (one command, one term) is short: need, the real thing, one mistake, a question.
 

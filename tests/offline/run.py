@@ -131,7 +131,7 @@ def test_practice():
     code, out = run("us_practice.py", book, "--plain", "--count", 50, e=env(private, UNDERSTUDY_TODAY=day(1)))
     check("the edited question is offered as new", "2. What does line 4 do?" in out, out[:400])
     code, out = run("us_practice.py", "--stats", e=e)
-    check("stats: a row per chapter with boxes and percent right", re.search(r"fx\s+1\s+4\s+0\s+4\s+0\s+0\s+0\s+\d+%", out), out)
+    check("stats: a row per chapter with boxes 1-6 and percent right", re.search(r"fx\s+1\s+4\s+0\s+4\s+0\s+0\s+0\s+0\s+\d+%", out), out)
     check("stats: weak spots name the sections", "weak spots:" in out and "§1.3 Variables (missed 1)" in out, out)
     rows = [l for l in out.splitlines() if re.match(r"  fx §1\.\d .* due ", l)]
     check("stats: a row per practised section with times, lowest box and next due",
@@ -198,11 +198,8 @@ def test_resume(book, private):
 
 
 def test_real_book():
-    if not JOJO:
-        print("skip  real book: JOJO_CHAPTERS not set")
-        return 0
-    if not os.path.isdir(JOJO):
-        check("real book present at %s" % JOJO, False)
+    if not JOJO or not os.path.isdir(JOJO):
+        print("skip  real book: set JOJO_CHAPTERS to the chapters folder of a real book (the owner's C book) to run it")
         return 0
     book, private = os.path.join(TMP, "jojo"), os.path.join(TMP, "p2")
     os.makedirs(book)

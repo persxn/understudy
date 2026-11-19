@@ -6,11 +6,13 @@
 
 Made from files only (each book's PLAN.md and STATUS.json, private/now.md, goal.md, route.md, levels.yaml,
 practice.json, weaknesses.md, build.md and machine.md), so it is safe to run at the end of every job.
+Under the weak spots: the first six lines of the learner summary (us_practice.py --summary).
 Same files, same note.
 """
 import os
 import re
 import sys
+import textwrap
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import us_bookfmt as bf  # noqa: E402
@@ -153,8 +155,9 @@ def build(books):
         out.append("- Practise: `python3 scripts/us_practice.py %s` (your record: `--stats`)" % arg)
     spots = us_practice.weak_spots(store)
     noted = [l.strip() for l in private_file("weaknesses.md").splitlines() if l.strip().startswith(("-", "*"))][-5:]
+    learner = [textwrap.shorten(l, 160, placeholder=" ...") for l in us_practice.summary_lines(books, store)[:6]]
     out += ["", "## Weak spots"] + (["- §%s %s (missed %d)" % (sec, title, k) for (_, sec, title), k in spots] + noted
-                                    or ["- none yet"])
+                                    + learner or ["- none yet"])
     where = "my book %s" % bf.load_plan(cur).title if cur else "the start"
     if last:
         where += ", chapter %s, §%s %s" % (last[1]["section"].split(".")[0], last[1]["section"], last[1]["title"])

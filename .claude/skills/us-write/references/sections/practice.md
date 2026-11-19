@@ -6,7 +6,7 @@
 1. One paragraph: what the reader can now do, and what this practice will prove.
 2. Guided tasks (two or three): the reader works on something already in the chapter, with a nudge. A change to an example, a prediction, a fault to find.
 3. On-your-own tasks (two or three): new material, no nudge, using several of the chapter's ideas together. At least one asks the reader to decide or explain, not just to produce.
-4. The chapter project or case: one larger task that uses the whole chapter, on the book's running project or on the reader's own material. State what done looks like so the reader knows when to stop.
+4. The chapter project or case: one larger task that uses the whole chapter, on the book's running project or on the reader's own material. State what done looks like so the reader knows when to stop, as a finish line they can test alone: `check=` on the model answer, or a checklist (`../exercises.md`).
 5. Every task has its answer hidden in `<details>`: a run program, an expected terminal state, or a model answer with the reasons and the most likely mistake.
 
 **Size.** As long as the tasks need: usually 600 to 1,500 words including answers. Six to eight tasks. Fewer, harder tasks beat many easy ones.

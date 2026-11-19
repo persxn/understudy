@@ -1,6 +1,6 @@
 ## Chapter N: Title
 
-- Risks: R items (M marked, D destructive, U unrun, L dangling). Settled: a by PRACTICES.md, b run, c one look (source), d known for certain, e reworded as uncertain.
+- Risks: R items (M marked, D destructive, U unrun, L dangling). Settled: a by PRACTICES.md, b run, c one look (source), d known for certain, e reworded as uncertain; each now a `checked` mark.
 - One read: a case, b order, c page, d words, e repeats fixed.
 - Fixed: N.M what was wrong and what it says now; N.M ...
 - Not run: N.M ID judged against (source), because (reason it cannot run here).

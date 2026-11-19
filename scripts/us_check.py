@@ -11,13 +11,25 @@
                                    lines of the file and of the program numbered
     python3 scripts/us_check.py BOOK N --risks             the review's reading list for chapter N: each
                                    <!-- risk: --> note with its passage, each command that can destroy
-                                   something, each dangling reference, each unrun block
+                                   something, each dangling reference, each unrun block (what a checked
+                                   mark already settles is left out)
+    python3 scripts/us_check.py BOOK [N] --facts [--stale MONTHS]
+                                   the record of checked facts and of blocks shown but not run here;
+                                   --stale: only source and practices checks older than MONTHS months
+    python3 scripts/us_check.py BOOK --digest [--from A] [--to B]
+                                   chapters A to B in at most 3,500 words, for a read across chapters
+    python3 scripts/us_check.py --mistakes WORDS
+                                   the truths of rules/known-mistakes.md whose subject is among WORDS
+    python3 scripts/us_check.py --learn SUBJECT PATTERN TRUTH SOURCE [--book BOOK]
+                                   add a known mistake to rules/known-mistakes.md (or the book's MISTAKES.md)
 
 One line per problem: ERROR (must fix), FLAG (look, fix if right), NOTE (for information).
 --tokens   also print the rough token size of everything an agent can load, and fail (exit 1) when
            the always-loaded text is over 2,000 tokens or a skill body is 1,000 or more
 """
+import calendar
 import collections
+import datetime
 import os
 import re
 import sys
@@ -58,6 +70,8 @@ def check_skills():
             if not os.path.exists(os.path.join(ROOT, ref)):
                 errors.append(f"skill {name}: points to {ref}, which does not exist")
         sizes.append((name, tokens(description), tokens(body)))
+    _, bad = read_mistakes(MISTAKES)
+    errors.extend("rules/known-mistakes.md:%d: %s" % (k, msg) for k, msg in bad)
     for name, line in (("CLAUDE.md", "@AGENTS.md"), ("GEMINI.md", "@./AGENTS.md")):
         path = os.path.join(ROOT, name)
         if not os.path.exists(path) or line not in open(path, encoding="utf-8").read().split():
@@ -86,8 +100,16 @@ def token_report(sizes):
         print(f"  on use: {name:<12} {body}")
     rules = os.path.join(ROOT, "rules")
     for name in sorted(os.listdir(rules)):
+        if os.path.join(rules, name) == MISTAKES:
+            print("  script data: rules/%s (read by us_check.py; no agent loads it)" % name)
+            continue
         size = tokens(open(os.path.join(rules, name), encoding="utf-8").read())
         print(f"  on demand: rules/{name:<22} {size}")
+    import us_path                       # curriculum files are never loaded text: us_path.py prints one each time
+    files = us_path.Curriculum().files
+    cards = [tokens(f.text) for f in files if f.kind == "card"]
+    print("  curriculum: %d files; the planner is handed an outline (us_path.py spine) and each chapter's writer the "
+          "notes of its steps (largest card %s)" % (len(files), "%d tokens" % max(cards) if cards else "none yet"))
     if always > ALWAYS_CAP:
         errors.append(f"always-loaded text is {always} tokens; keep it at or under {ALWAYS_CAP}")
     errors.extend(f"skill {name}: body is {body} tokens; keep it under {BODY_CAP}" for name, _, body in sizes if body >= BODY_CAP)
@@ -170,6 +192,16 @@ def check_book(bk, only, rep):
         rep.add("ERROR", bk.rel(os.path.join(bk.path, "PLAN.md")), "missing; write it, or run python3 scripts/us_plan.py from-chapters %s" % shown(bk.path))
         return
     check_plan(bk, only, rep)
+    sheet = os.path.join(bk.path, "BOOK.md")
+    if os.path.exists(sheet):
+        lines = bf.read_text(sheet).splitlines()
+        head = sum(len(l.split()) for l in lines if not l.startswith("Left at end of chapter"))
+        if head > SHEET_WORDS:
+            rep.add("NOTE", bk.rel(sheet, 1), "the sheet's own lines have %d words (at most %d; its 'Left at end of chapter N:' lines are "
+                    "not counted): shorten the other lines" % (head, SHEET_WORDS))
+        for k, l in enumerate(lines, 1):
+            if l.startswith("Left at end of chapter") and len(l.split()) > LEFT_WORDS:
+                rep.add("NOTE", bk.rel(sheet, k), "this line has %d words (at most %d): keep only what the next chapter starts from" % (len(l.split()), LEFT_WORDS))
     for n in sorted(bk.docs):
         if bk.plan.chapter(n) is None and only in (None, n):
             rep.add("ERROR", bk.rel(bk.docs[n][0], 1), "chapter %d is not in PLAN.md; add '### %d Title' and its sections" % (n, n))
@@ -185,8 +217,11 @@ def check_book(bk, only, rep):
         if only is not None and doc.sections:
             rep.add("NOTE", bk.rel(path), "words per section: %s (%s)" % (" · ".join(
                 "%s %d" % (sec.number, sec.words) for sec in doc.sections), WORDS_COUNTED))
+        if only is not None and doc.sections and has_sheet(bk):
+            rep.add("NOTE", bk.rel(path), "questions by kind: %s" % question_kinds(doc))
         run_helpers(bk, path, doc, rep)
     used_before_taught(bk, only, taught, rep)
+    across_book(bk, only, taught, rep)
     unpaid_simplified(bk, only, rep)
     if only is None:
         private_inside(bk, rep)
@@ -243,6 +278,9 @@ def check_chapter(bk, n, path, doc, rep):
         rep.add("ERROR", bk.rel(path, doc.title_line), "heading says chapter %d but the file is chapter %d; fix '# Chapter %d: Title'" % (doc.number, n, n))
     if not doc.title:
         rep.add("ERROR", bk.rel(path, 1), "no '# Chapter %d: Title' heading; add it as the first line" % n)
+    for line, text in doc.bad_headings:
+        rep.add("ERROR", bk.rel(path, line), "heading '%s' cannot be read: inside a section use '### Title' down to "
+                "'###### Title' (a space after the #s, at most six)" % text[:40])
     for line, text in doc.other_headings:
         rep.add("FLAG", bk.rel(path, line), "'%s' is not a numbered section; make it '## %d.M Title' or a '###' inside one" % (text[:40], n))
     if planned:
@@ -279,6 +317,8 @@ def check_chapter(bk, n, path, doc, rep):
     if marked:
         rep.add("NOTE", bk.rel(path), "risk: %d marked for review (python3 scripts/us_check.py %s %d --risks)"
                 % (marked, shown(bk.path), n))
+    check_marks(bk, path, doc, rep)
+    known_mistakes(bk, path, doc, rep)
     for start, end, lang in bf.collect_fences(scan(doc)[0]):
         if not lang:
             rep.add("ERROR", bk.rel(path, start), "fence has no language tag; write ```c, ```text or similar")
@@ -286,9 +326,67 @@ def check_chapter(bk, n, path, doc, rep):
     repeated_sentences(bk, path, doc, rep)
     new_words(bk, n, path, rep)
     check_programs(bk, path, doc, rep)
+    prose_timings(bk, path, doc, rep)
     portability(bk, path, doc, rep)
     screen_suggests(bk, n, path, rep)
     recall_questions(bk, path, doc, rep)
+    if has_sheet(bk):
+        check_questions(bk, path, doc, rep)
+    curriculum_words(bk, n, path, doc, rep)
+    working_files(bk, path, doc, rep)
+
+
+WORKING_FILES = re.compile(r"(?<![\w./-])(PLAN\.md|BOOK\.md|PRACTICES\.md|REVIEW\.md|STATUS\.json|FACTS\.md)(?![\w-])")
+
+
+def working_files(bk, path, doc, rep):
+    """FLAG prose (outside code fences and HTML comments) that names one of the book's working files, and every
+    empty code fence."""
+    for ln, kind, text in scan(doc)[0]:
+        if kind == "prose":
+            for name in dict.fromkeys(WORKING_FILES.findall(text)):
+                rep.add("FLAG", bk.rel(path, ln), "names a working file the reader never opens (%s): state the fact "
+                        "itself" % name)
+    for start, end, _ in bf.collect_fences(scan(doc)[0]):
+        if end == start + 1:
+            rep.add("FLAG", bk.rel(path, start), "empty code block: fill it or remove it")
+
+
+def word_pattern(word):
+    """A regex for a curriculum word: any case, a plural s or es, a hyphen or a space between its parts."""
+    parts = [re.escape(p) for p in re.split(r"[-\s]+", word.strip().lower()) if p]
+    return r"(?<![\w-])%s(?:e?s)?(?![\w-])" % r"[-\s]+".join(parts)
+
+
+def curriculum_words(bk, n, path, doc, rep):
+    """FLAG each word tagged to the steps on chapter n's from: line that the chapter never writes and no earlier
+    chapter teaches (its teaches: ids and teaches markers)."""
+    planned = bk.plan.chapter(n) if bk.plan else None
+    if not planned or not planned.from_refs:
+        return
+    import us_path
+    if not os.path.isdir(us_path.curriculum_dir()):
+        return
+    cur = us_path.Curriculum()
+    text = plain_text(doc)
+    earlier = [bf.humanise(i).lower() for c in bk.plan.chapters if c.number < n for s in c.sections for i in s.teaches]
+    earlier += [w.lower() for k, (_, d) in bk.docs.items() if k < n for sec in d.sections for t in sec.teaches
+                for w in t.words + [bf.humanise(t.id)]]
+    earlier = "\n".join(earlier)
+    seen = set()
+    for ident, steps in planned.from_refs:
+        f = cur.cards.get(ident)
+        if f is None:
+            continue
+        for _, tags, words, _ in us_path.word_groups(f):
+            mine = [t for t in tags or [] if steps is None or t in steps]
+            for word in [w for w in words if not us_path.is_met(w)] if mine else []:   # met words: not taught
+                pat = word_pattern(word)
+                if word.lower() in seen or re.search(pat, text) or re.search(pat, earlier):
+                    continue
+                seen.add(word.lower())
+                rep.add("FLAG", bk.rel(path), "curriculum word '%s' (%s step %d) is not in this chapter: teach it where "
+                        "the step is taught" % (word, ident, mine[0]))
 
 
 def prose_lines(doc, sec):
@@ -483,7 +581,8 @@ def recall_questions(bk, path, doc, rep):
                 cur = None
                 continue
             if scanned[ln - 1][1] == "prose" and re.match(r"^\s*\d+\.\s", line):
-                cur = [ln, "", False]
+                tag = bf.parse_q(doc.lines[ln - 2]) if ln > 1 else None
+                cur = [ln, "", bool(tag and tag["type"] and tag["type"] != "recall")]   # the tag's type is trusted
                 questions.append(cur)
             if cur is not None:
                 cur[1] += " " + scanned[ln - 1][2]
@@ -491,8 +590,147 @@ def recall_questions(bk, path, doc, rep):
         recall = [q for q in questions if not q[2] and RECALL.search(q[1])]
         if len(recall) > 1:
             rep.add("NOTE", bk.rel(path, recall[0][0]), "%s Check yourself: %d questions only ask to recall (%s): "
-                    "make one predict output, find the fault or write a line" % (
+                    "make one predict output, find the fault (type=fix) or write a line" % (
                         sec.number, len(recall), ", ".join(re.match(r"\s*(\d+)", q[1]).group(1) for q in recall)))
+
+
+TIMING_RE = re.compile(r"(?<![\w.])(\d+(?:\.\d+)?)(\s?)(milliseconds?|seconds?|secs?|ms|s)(?![\w])")
+TIMING_HEDGE = ("limit", "within", "under", "about", "roughly", "around")
+
+
+def prose_timings(bk, path, doc, rep):
+    """NOTE a timing in prose ('0.045 s', '14.9 seconds') whose number is in no fence of a chapter that pastes
+    program output: a made-up measurement. A limit or an estimate ('under 2 s', 'about 3 seconds') is skipped."""
+    scanned = scan(doc)[0]
+    pasted = any(c.output or (c.lang == "console" and c.mode != "fragment") for s in doc.sections for c in s.code)
+    if not pasted:
+        return
+    fenced = "\n".join(text for _, kind, text in scanned if kind == "code")
+    seen = set()
+    for ln, kind, text in scanned:
+        if kind != "prose" or text.lstrip().startswith("#"):
+            continue
+        line = re.sub(r"`[^`]*`", lambda m: " " * len(m.group(0)), text)
+        for m in TIMING_RE.finditer(line):
+            num, gap, unit = m.groups()
+            if unit.lower() == "s" and not gap and re.fullmatch(r"\d{4}", num):
+                continue                                   # the 1990s
+            before = [w.lower() for w in re.findall(r"[A-Za-z']+|\d[\d.,]*", line[:m.start()])][-4:]
+            after = re.findall(r"[A-Za-z]+", line[m.end():])[:2]
+            if any(w in TIMING_HEDGE for w in before) or "at most" in " ".join(before) or \
+                    (after and after[0].lower() == "limit"):
+                continue
+            said = " ".join(m.group(0).split())
+            if said.lower() in seen:
+                continue
+            seen.add(said.lower())
+            if re.search(r"(?<![\d.])%s(?![\d])" % re.escape(num), fenced):
+                continue
+            rep.add("NOTE", bk.rel(path, ln), "the timing '%s' appears in no pasted output: paste the run or give an "
+                    "order of magnitude" % said)
+
+
+def has_sheet(bk):
+    """True for a book with a BOOK.md: planned with stage 2, so its questions carry q tags."""
+    return os.path.exists(os.path.join(bk.path, "BOOK.md"))
+
+
+def question_kinds(doc):
+    """'recall 2 · predict 1 · untagged 1': the chapter's questions counted by their tag's type."""
+    counts = collections.Counter(t["type"] for sec in doc.sections for t in sec.qtags if t["question"])
+    parts = ["%s %d" % (k, counts[k]) for k in bf.Q_TYPES if counts[k]]
+    parts += ["%s %d" % (k, v) for k, v in sorted(counts.items()) if k not in bf.Q_TYPES]
+    untagged = sum(len(sec.untagged) for sec in doc.sections)
+    parts += ["untagged %d" % untagged] if untagged else []
+    return " · ".join(parts) or "none"
+
+
+CHECKLIST_ITEMS = (3, 10)
+
+
+def check_questions(bk, path, doc, rep):
+    """Stage 2 (books with BOOK.md): every question tagged with a taught idea and a known type; a lesson asks
+    more than recall; a practice has a build task and a finish line the reader can test alone."""
+    teacher, run_none = bk.plan.teacher(), (bk.plan.run or "").strip().lower() == "none"
+    console = (bk.plan.run or "").strip().lower() == "console"     # sessions cannot carry check=: a checklist will do
+    for sec in doc.sections:
+        psec = bk.plan.section(sec.number)
+        kind = plan_kind(psec) if psec else ("practice" if sec.title.lower().startswith("practice") else "lesson")
+        if kind in ("lesson", "short", "practice"):
+            for k, ln in sec.untagged:
+                rep.add("ERROR", bk.rel(path, ln), "%s question %d has no tag: put `<!-- q: idea=ID type=TYPE -->` "
+                        "on the line above it" % (sec.number, k))
+        for tag in sec.qtags:
+            where, idea, first = bk.rel(path, tag["line"]), tag["idea"], teacher.get(tag["idea"])
+            if not idea:
+                rep.add("ERROR", where, "%s q tag has no idea=: name an idea the plan teaches at or before %s"
+                        % (sec.number, sec.number))
+            elif first is None:
+                rep.add("ERROR", where, "%s q tag names idea '%s', which PLAN.md does not teach: use an idea id "
+                        "from a `teaches:` field" % (sec.number, idea))
+            elif bf.section_key(first.number) > bf.section_key(sec.number):
+                rep.add("ERROR", where, "%s q tag names idea '%s', which is taught later (in %s): use an idea "
+                        "taught at or before %s" % (sec.number, idea, first.number, sec.number))
+            if tag["type"] not in bf.Q_TYPES:
+                rep.add("ERROR", where, "%s q tag has type '%s'; types: %s (a find-the-fault question is type=fix)"
+                        % (sec.number, tag["type"], ", ".join(bf.Q_TYPES)))
+        types = [t["type"] for t in sec.qtags if t["question"]]
+        if kind == "lesson" and types and all(t == "recall" for t in types):
+            rep.add("FLAG", bk.rel(path, sec.check_line or sec.line), "%s asks only for recall; make one question "
+                    "predict, fix, apply or decide" % sec.number)
+        for cl in sec.checklists:
+            if not CHECKLIST_ITEMS[0] <= len(cl["items"]) <= CHECKLIST_ITEMS[1]:
+                rep.add("ERROR", bk.rel(path, cl["line"]), "%s checklist%s has %d items; give %d to %d yes/no tests "
+                        "as a list under the marker (at most one paragraph between)" % (sec.number, " id=" + cl["id"] if cl["id"] else "",
+                                                                 len(cl["items"]), *CHECKLIST_ITEMS))
+        if kind != "practice":
+            continue
+        if psec and psec.kind == "practice":
+            check_unseen(bk, path, doc, sec, rep)
+        if "build" not in types:
+            rep.add("ERROR", bk.rel(path, sec.line), "%s has no build task: tag the task where the reader makes "
+                    "something whole with type=build" % sec.number)
+        listed = any(CHECKLIST_ITEMS[0] <= len(cl["items"]) <= CHECKLIST_ITEMS[1] for cl in sec.checklists)
+        if run_none and not listed:
+            rep.add("ERROR", bk.rel(path, sec.line), "%s has no finish line the reader can test alone: add "
+                    "`<!-- checklist: id=NAME -->` and 3 to 10 yes/no tests as a list under it" % sec.number)
+        elif console and not listed and not sec.checks:
+            rep.add("ERROR", bk.rel(path, sec.line), "%s has no finish line the reader can test alone: add "
+                    "`<!-- checklist: id=NAME -->` and 3 to 10 yes/no tests as a list under it (a session cannot "
+                    "carry check=)" % sec.number)
+        elif not run_none and not console and not sec.checks:
+            rep.add("ERROR", bk.rel(path, sec.line), "%s has no finish line the reader can test alone: add "
+                    "check=\"COMMAND\" to the code marker of a model answer (the command that runs the reader's "
+                    "own program)" % sec.number)
+
+
+def check_unseen(bk, path, doc, sec, rep):
+    """A planned practice reaches something new: one q tag names, with unseen=, a problem, case or material that
+    occurs nowhere in the chapter before the practice heading. ERROR while the chapter is not finished; NOTE once
+    STATUS.json marks it written or reviewed, so finished chapters keep passing."""
+    n = bf.section_key(sec.number)[0]
+    state = bf.read_status(bk.path)["chapters"].get(str(n), {}).get("state", "")
+    level = "NOTE" if state in ("written", "reviewed") else "ERROR"
+    tags = [t for t in sec.qtags if " ".join(t.get("unseen", "").split())]
+    if not tags:
+        rep.add(level, bk.rel(path, sec.line), "the practice section has no task on something new: tag one task "
+                "unseen=\"<its name>\" (a problem, case or material the chapter has not used)")
+        return
+    before = [" ".join(l.split()).lower() for l in doc.lines[:sec.line - 1]]
+    text, starts = "", []
+    for l in before:
+        starts.append(len(text))
+        text += l + " "
+    used = []
+    for t in tags:
+        name = " ".join(t["unseen"].split()).lower()
+        at = text.find(name)
+        if at < 0:
+            return                            # one task on something new is enough
+        used.append((t, sum(1 for s0 in starts if s0 <= at)))
+    for t, ln in used:
+        rep.add(level, bk.rel(path, t["line"]), "unseen=\"%s\" is already used earlier in this chapter (line %d): the "
+                "reader must meet it first in the practice" % (t["unseen"], ln))
 
 
 def check_order(bk, planned, path, doc, rep):
@@ -535,6 +773,7 @@ LESSON_WORDS = (1200, 3000)            # rules/writers-guide.md: advice, a NOTE 
 SHORT_WORDS = (300, 700)
 LESSON_MIN = 900                      # under it a lesson is an ERROR: it has left out a move
 SHORT_MIN = 200                        # under it even a `short` section is an ERROR
+SHEET_WORDS, LEFT_WORDS = 350, 60      # BOOK.md: its own lines; each "Left at end of chapter N" line
 TERMS_MAX = 7                          # more new terms than this in one section is a FLAG
 PRACTICE_MIN = 3                       # tasks with a hidden answer: guided, on your own, a small project
 WORDS_COUNTED = ("prose, programs, sessions and hidden answers are counted; headings, markers, "
@@ -580,15 +819,22 @@ def refs_in_code(bk, path, doc, rep):
                     "code and put it after the sentence" % m.groups())
 
 
-def not_run(bk, path, doc, rep):
-    """Count programs and sessions that were not run here (unrun=, or a console fragment with `$ ` lines)."""
+def idle_blocks(doc):
+    """(blocks counted, [(section, code)] of those not run here: unrun=, or a console fragment with `$ ` lines)."""
     blocks, idle = 0, []
-    for c in (c for s in doc.sections for c in s.code if c.fence):
+    for s, c in ((s, c) for s in doc.sections for c in s.code if c.fence):
         command = c.lang == "console" and any(l.startswith("$ ") for l in doc.lines[c.fence[0]:c.fence[1] - 1])
         if c.mode != "fragment" or command:
             blocks += 1
             if "unrun" in c.attrs or c.mode == "fragment":
-                idle.append(c.id or "line %d" % c.line)
+                idle.append((s, c))
+    return blocks, idle
+
+
+def not_run(bk, path, doc, rep):
+    """Count programs and sessions that were not run here (unrun=, or a console fragment with `$ ` lines)."""
+    blocks, idle = idle_blocks(doc)
+    idle = [c.id or "line %d" % c.line for _, c in idle]
     if not idle:
         return
     rep.add("NOTE", bk.rel(path), "not run here: %d of %d (%s)" % (len(idle), blocks, ", ".join(idle)))
@@ -761,7 +1007,7 @@ def used_before_taught(bk, only, taught, rep):
             continue
         limit = next((s[0] for s in spans if bf.section_key(s[2]) >= bf.section_key(number)), len(text))
         pat = re.compile(r"(?<![\w-])(?:%s)(?![\w-])" % "|".join(
-            (r"(?i:%s)" if not re.search(r"[A-Z]", w[1:]) else "%s") % re.escape(w).replace(r"\ ", r"\s+")
+            (r"(?i:%s)" if not re.search(r"[A-Z]", w) else "%s") % re.escape(w).replace(r"\ ", r"\s+")
             for w in sorted(words, key=len, reverse=True)))
         # everyday English ('variable', or a guessed 'depends on'): flagged only in bold
         plain = {w.lower() for w in words if re.fullmatch(r"[a-z]+" if not guessed else r"[a-z]+(?: [a-z]+)*", w)}
@@ -868,7 +1114,7 @@ def private_inside(bk, rep):
 
 
 def stale_index(bk, rep):
-    """NOTE when README.md, KEYTERMS.md or INDEX.md is older than a chapter and would change if rebuilt."""
+    """NOTE when README.md, KEYTERMS.md, INDEX.md or FACTS.md is older than a chapter and would change if rebuilt."""
     if not bk.docs:
         return                                    # nothing written: nothing to index
     newest = max([os.path.getmtime(p) for p, _ in bk.docs.values()] + [os.path.getmtime(os.path.join(bk.path, "PLAN.md"))])
@@ -878,11 +1124,446 @@ def stale_index(bk, rep):
     try:                                          # us_index leaves a file alone when its text is unchanged
         import us_index
         ix = us_index.BookIndex(bk.path, os.path.dirname(bk.path.rstrip(os.sep)))
-        if all(os.path.exists(p) and bf.read_text(p) == text for p, text in zip(made, (ix.readme(), ix.keyterms(), ix.index_md()))):
+        facts, facts_path = ix.facts_md(), os.path.join(bk.path, "FACTS.md")
+        facts_ok = (os.path.exists(facts_path) and bf.read_text(facts_path) == facts) if facts else not os.path.exists(facts_path)
+        if facts_ok and all(os.path.exists(p) and bf.read_text(p) == text
+                            for p, text in zip(made, (ix.readme(), ix.keyterms(), ix.index_md()))):
             return
     except Exception:                             # noqa: BLE001 - an index that cannot be built is reported as stale
         pass
     rep.add("NOTE", "", "the book's index is older than its chapters; run python3 scripts/us_index.py %s" % shown(bk.path))
+
+# ---------------------------------------------------------------- stage 3: checked facts
+
+HOW_ORDER = ("run", "source", "practices", "known", "reworded")     # the order of the count note
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def checked_marks(doc):
+    """(line, {'how', 'date', 'ref', 'h'}) of every checked mark outside fences."""
+    return [(ln, bf.parse_checked(doc.lines[ln - 1])) for ln, kind, _ in scan(doc)[0]
+            if kind == "prose" and bf.CHECKED_MARK.search(doc.lines[ln - 1])]
+
+
+def as_date(text):
+    """A YYYY-MM-DD string as a date, or None."""
+    try:
+        return datetime.date.fromisoformat(text) if DATE_RE.match(text) else None
+    except ValueError:
+        return None
+
+
+def mark_error(m):
+    """What is wrong with a checked mark, in one line with its fix; None when it is well formed."""
+    if m["how"] not in bf.CHECK_HOWS:
+        return "checked mark has how=%s: use how= one of %s" % (m["how"] or "(none)", ", ".join(bf.CHECK_HOWS))
+    if not m["date"]:
+        return "checked mark has no date: add date=YYYY-MM-DD, the day it was checked"
+    if not as_date(m["date"]):
+        return "checked mark has date=%s: write the day as YYYY-MM-DD" % m["date"]
+    if m["how"] == "source" and not m["ref"]:
+        return 'checked mark how=source has no ref: add ref="..." naming the source that proved it'
+    return None
+
+
+def check_marks(bk, path, doc, rep):
+    """Malformed marks are ERRORs; a mark whose passage changed is a FLAG; one NOTE counts the facts."""
+    counts = collections.Counter()
+    for ln, m in checked_marks(doc):
+        err = mark_error(m)
+        if err:
+            rep.add("ERROR", bk.rel(path, ln), err)
+            continue
+        counts[m["how"]] += 1
+        if m["h"] and m["h"] != bf.passage_hash(doc.lines, ln):
+            rep.add("FLAG", bk.rel(path, ln), "the passage changed since it was checked on %s: check it again and "
+                    "restamp, or remove the mark" % m["date"])
+    if counts:
+        rep.add("NOTE", bk.rel(path), "facts checked: %d (%s)" % (sum(counts.values()), ", ".join(
+            "%s %d" % (k, counts[k]) for k in HOW_ORDER if counts[k])))
+
+
+def span_above(lines, at):
+    """(first, last) 1-based lines of bf.passage_above(lines, at): what a mark or note on line `at` is about."""
+    i = at - 1
+    if lines[i].split("<!--")[0].strip():
+        end = at
+    else:
+        while i > 0 and not lines[i - 1].strip():
+            i -= 1
+        end = i
+    return end - len(bf.passage_above(lines, at, cap=40)) + 1, end
+
+
+def settled_spans(doc):
+    """The passages that carry a checked mark, as (first, last) lines."""
+    return [span_above(doc.lines, ln) for ln, _ in checked_marks(doc)]
+
+
+def settled(spans, first, last=None):
+    """True if lines first..last overlap a passage that carries a checked mark."""
+    last = first if last is None else last
+    return any(a <= last and first <= b for a, b in spans)
+
+
+def passage_start(lines, at, size=100):
+    """The first `size` characters of the passage above line `at`, hidden marks and spacing removed."""
+    text = " ".join(" ".join(re.sub(r"<!--.*?-->", "", l).split()) for l in bf.passage_above(lines, at))
+    return text.strip()[:size]
+
+
+def months_before(day, months):
+    """The same day `months` calendar months earlier (the last day of a shorter month)."""
+    y, m = divmod(day.year * 12 + day.month - 1 - months, 12)
+    return datetime.date(y, m + 1, min(day.day, calendar.monthrange(y, m + 1)[1]))
+
+
+def facts(bk, only, stale=None):
+    """Print the record: one line per checked mark, the blocks shown but not run, a count."""
+    if only is not None and only not in bk.docs:
+        print("chapter %d is not written" % only)
+        return 0 if stale is not None else 1
+    cutoff = months_before(datetime.date.today(), stale) if stale is not None else None
+    counts, unrun, shown_marks = collections.Counter(), [], 0
+    for n in [only] if only is not None else sorted(bk.docs):
+        path, doc = bk.docs[n]
+        for ln, m in checked_marks(doc):
+            if cutoff is not None and (m["how"] not in ("source", "practices") or not as_date(m["date"])
+                                       or as_date(m["date"]) >= cutoff):
+                continue
+            sec = bf.section_at(doc, ln)
+            print("%s %s %s %s: %s" % (sec.number if sec else "ch%d" % n, m["how"] or "?", m["date"] or "?",
+                                        m["ref"] or "-", passage_start(doc.lines, ln)))
+            counts[m["how"]] += 1
+            shown_marks += 1
+        unrun += [(s.number, c) for s, c in idle_blocks(doc)[1]]
+    if cutoff is not None:
+        print("%s checked by source or practices more than %d months ago (before %s): check them again"
+              % (plural(shown_marks, "fact"), stale, cutoff.isoformat()))
+        return 0
+    if unrun:
+        print("shown but not run here:")
+        for number, c in unrun:
+            why = c.attrs.get("unrun") or ("a fragment" if c.mode == "fragment" else "no reason given")
+            print("  %s id=%s: %s" % (number, c.id or "line %d" % c.line, why))
+    print("facts: %d checked%s, %d shown but not run here" % (shown_marks, " (%s)" % ", ".join(
+        "%s %d" % (k, counts[k]) for k in HOW_ORDER if counts[k]) if shown_marks else "", len(unrun)))
+    return 0
+
+# ---------------------------------------------------------------- stage 3: known mistakes
+
+MISTAKES = os.path.join(ROOT, "rules", "known-mistakes.md")
+TABLE_HEAD = "| subject | pattern | the truth | source, date |\n|---|---|---|---|\n"
+
+
+def flat(text):
+    """Whitespace runs collapsed to one space."""
+    return " ".join(text.split())
+
+
+def table_cells(line):
+    """The cells of a Markdown table row; `\\|` inside a cell stands for |."""
+    s = line.strip()[1:]
+    if s.endswith("|") and not s.endswith("\\|"):
+        s = s[:-1]
+    return [c.strip().replace("\\|", "|") for c in re.split(r"(?<!\\)\|", s)]
+
+
+def read_mistakes(path):
+    """(rows, problems) of a known-mistakes table: rows are dicts subject, pattern, truth, source, line, re;
+    problems are (line, message) for a row that is malformed, a pattern that does not compile, or a truth
+    that matches its own pattern."""
+    rows, bad = [], []
+    if not os.path.exists(path):
+        return rows, bad
+    for k, line in enumerate(bf.read_text(path).splitlines(), 1):
+        if not line.strip().startswith("|"):
+            continue
+        cells = table_cells(line)
+        if cells[0].lower() == "subject" or all(re.fullmatch(r":?-+:?", c) for c in cells):
+            continue
+        if len(cells) != 4 or not all(cells):
+            bad.append((k, "a row needs four filled cells: | subject | pattern | the truth | source, date |"))
+            continue
+        subject, pattern, truth, source = cells
+        if len(pattern) > 1 and pattern[0] == pattern[-1] == "`":
+            pattern = pattern[1:-1]
+        try:
+            rx = re.compile(pattern, re.I)
+        except re.error as e:
+            bad.append((k, "pattern %s does not compile (%s): fix the regular expression" % (pattern, e)))
+            continue
+        if rx.search(flat(truth)):
+            bad.append((k, "the truth matches its own pattern %s: narrow the pattern" % pattern))
+            continue
+        rows.append({"subject": subject, "pattern": pattern, "truth": truth, "source": source, "line": k, "re": rx})
+    return rows, bad
+
+
+def subject_applies(subject, text):
+    """True if one word of subject appears in text (whole word, any case), or subject is `*`."""
+    if subject.strip() == "*":
+        return True
+    return any(re.search(r"(?<!\w)%s(?!\w)" % re.escape(w), text, re.I) for w in re.split(r"[\s,]+", subject) if w)
+
+
+MISTAKE_CACHE = {}
+
+
+def book_mistakes(bk, rep=None):
+    """The rows that apply to a book: those of rules/known-mistakes.md whose subject is in its title, `for:`
+    line or BOOK.md, and every row of its own MISTAKES.md (whose problems are ERRORs)."""
+    if bk.path not in MISTAKE_CACHE:
+        sheet = os.path.join(bk.path, "BOOK.md")
+        about = "\n".join([bk.plan.title, bk.plan.audience, bf.read_text(sheet) if os.path.exists(sheet) else ""])
+        rows = [r for r in read_mistakes(MISTAKES)[0] if subject_applies(r["subject"], about)]
+        own, bad = read_mistakes(os.path.join(bk.path, "MISTAKES.md"))
+        MISTAKE_CACHE[bk.path] = (rows + own, bad)
+    rows, bad = MISTAKE_CACHE[bk.path]
+    for k, msg in bad if rep else []:
+        rep.add("ERROR", "MISTAKES.md:%d" % k, msg)
+    return rows
+
+
+def text_units(doc):
+    """(text, [(offset, line)]) of each prose paragraph and each code line, whitespace collapsed."""
+    units, cur = [], None
+    for ln, kind, text in scan(doc)[0]:
+        if kind == "prose" and text.strip() and not text.lstrip().startswith("#"):
+            if cur is None:
+                cur = ["", []]
+                units.append(cur)
+            cur[1].append((len(cur[0]) + (1 if cur[0] else 0), ln))
+            cur[0] = (cur[0] + " " + flat(text)) if cur[0] else flat(text)
+            continue
+        cur = None
+        if kind == "code" and text.strip():
+            units.append([flat(text), [(0, ln)]])
+    return units
+
+
+def line_at(offsets, at):
+    """The line holding offset `at` of a unit."""
+    return [ln for off, ln in offsets if off <= at][-1]
+
+
+def known_mistakes(bk, path, doc, rep):
+    """FLAG each match of a known mistake, unless a checked mark sits on its line or within three lines after."""
+    rows = book_mistakes(bk, rep)
+    if not rows:
+        return
+    marked = {ln for ln, _ in checked_marks(doc)}
+    for text, offsets in text_units(doc):
+        for r in rows:
+            for m in r["re"].finditer(text):
+                first, last = line_at(offsets, m.start()), line_at(offsets, max(m.start(), m.end() - 1))
+                if not any(first <= k <= last + 3 for k in marked):
+                    rep.add("FLAG", bk.rel(path, first), "known mistake (%s): %s [%s]" % (r["subject"], r["truth"], r["source"]))
+
+
+def mistakes_for(words):
+    """Print the truths of every row of rules/known-mistakes.md whose subject is among words."""
+    rows = [r for r in read_mistakes(MISTAKES)[0] if subject_applies(r["subject"], " ".join(words))]
+    for r in rows:
+        print("- %s [%s]" % (r["truth"], r["source"]))
+    if not rows:
+        print("no known mistakes for: %s" % " ".join(words))
+    return 0
+
+
+def learn(subject, pattern, truth, source, book=None):
+    """Append a row to rules/known-mistakes.md (or BOOK/MISTAKES.md) after checking it; exit 1 when refused."""
+    target = os.path.join(bf.resolve_book(book), "MISTAKES.md") if book else MISTAKES
+    if book and not os.path.isdir(bf.resolve_book(book)):
+        print("no book at %s" % bf.resolve_book(book))
+        return 2
+    if not all(x.strip() for x in (subject, pattern, truth, source)):
+        print("refused: subject, pattern, truth and source must all be given")
+        return 1
+    try:
+        rx = re.compile(pattern, re.I)
+    except re.error as e:
+        print("refused: the pattern does not compile (%s)" % e)
+        return 1
+    if rx.search(flat(truth)):
+        print("refused: the truth matches the pattern, so the check would flag the truth itself; narrow the pattern")
+        return 1
+    text = bf.read_text(target) if os.path.exists(target) else ""
+    rows, bad = read_mistakes(target)
+    if pattern in [r["pattern"] for r in rows]:
+        line = next(r["line"] for r in rows if r["pattern"] == pattern)
+        print("refused: %s:%d already has this pattern" % (os.path.relpath(target, ROOT), line))
+        return 1
+    if not re.search(r"\d{4}-\d{2}-\d{2}", source):
+        source += ", " + datetime.date.today().isoformat()
+    esc = lambda s: flat(s).replace("|", "\\|")
+    row = "| %s | `%s` | %s | %s |" % (esc(subject), esc(pattern), esc(truth), esc(source))
+    lines = text.splitlines()
+    last = max([i for i, l in enumerate(lines) if l.strip().startswith("|")], default=None)
+    if last is None:
+        head = "# Known mistakes of %s\n\n" % os.path.basename(os.path.dirname(target)) if book else ""
+        lines = (lines + [""] if lines else []) + (head + TABLE_HEAD).rstrip("\n").split("\n")
+        last = len(lines) - 1
+    lines.insert(last + 1, row)
+    bf.write_text(target, "\n".join(lines) + "\n")
+    print("added to %s: %s" % (os.path.relpath(target, ROOT) if not book else target, row))
+    return 0
+
+# ---------------------------------------------------------------- stage 3: across the whole book
+
+
+def idea_terms(t):
+    """The terms after `=` in a teaches marker, backticks removed, of three letters or more."""
+    return [w for w in (flat(x.replace("`", "")) for x in t.words) if len(w) > 2]
+
+
+def uses(text, terms):
+    """True if text (lower case) holds one of terms as a whole word."""
+    return any(re.search(r"(?<![\w-])%s(?![\w-])" % re.escape(w.lower()).replace(r"\ ", r"\s+"), text) for w in terms)
+
+
+def plain_text(doc, first=1, last=None):
+    """Prose and code of lines first..last, hidden marks removed, lower case."""
+    last = len(doc.lines) if last is None else last
+    return "\n".join(text for ln, kind, text in scan(doc)[0] if first <= ln <= last and kind in ("prose", "code")).lower()
+
+
+def across_book(bk, only, taught, rep):
+    """A term claimed by two ideas; a need never used; how much a chapter builds on earlier ones."""
+    owner = {}                                    # term -> (idea, section)
+    for sec, n, path, doc in bk.written():
+        for t in sec.teaches:
+            for w in idea_terms(t):
+                first = owner.setdefault(w.lower(), (t.id, sec.number))
+                if first[0] != t.id and only in (None, n):
+                    rep.add("FLAG", bk.rel(path, t.line), "term '%s' is already taught in %s (idea %s): one home per "
+                            "idea; refer back, or give this one its own name" % (w, first[1], first[0]))
+    words = {}
+    for idea, (sec, path, t, doc) in taught.items():
+        found = [w for w in bf.idea_words(t, doc.lines)[0] if len(w) > 2]
+        words[idea] = [flat(w.replace("`", "")) for w in found] or [bf.humanise(idea)]
+    for sec, n, path, doc in bk.written():
+        psec = bk.plan.section(sec.number)
+        for idea in (psec.needs if psec and only in (None, n) else []):
+            if idea in taught and not uses(plain_text(doc, sec.line + 1, sec.end), words[idea]):
+                rep.add("NOTE", bk.rel(path, sec.line), "%s says it needs %s (taught in %s) and never uses it: drop the "
+                        "need, or build on it" % (sec.number, idea, taught[idea][0].number))
+    for n in sorted(bk.docs):
+        if n <= 1 or only not in (None, n):
+            continue
+        earlier = sorted((bf.section_key(s.number), idea) for idea, (s, _, _, _) in taught.items()
+                         if bf.section_key(s.number)[0] < n)
+        if not earlier:
+            continue                              # nothing taught before: nothing to build on yet
+        path, doc = bk.docs[n]
+        text = plain_text(doc)
+        used = [idea for _, idea in earlier if uses(text, words[idea])]
+        if used:
+            rep.add("NOTE", bk.rel(path), "builds on %d ideas from earlier chapters (%s%s)" % (
+                len(used), ", ".join(used[:6]), ", ..." if len(used) > 6 else ""))
+        else:
+            rep.add("FLAG", bk.rel(path), "chapter %d uses nothing from earlier chapters: is the order right?" % n)
+
+# ---------------------------------------------------------------- stage 3: the digest
+
+DIGEST_WORDS, DEF_WORDS = 3500, 25
+SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+")
+
+
+def target_state(bk, ref):
+    """'written', 'planned, not written' or 'not in the plan' for 'chapter K' or 'K.M'."""
+    if ref.startswith("chapter"):
+        k = int(ref.split()[1])
+        return "not in the plan" if bk.plan.chapter(k) is None else "written" if k in bk.docs else "planned, not written"
+    if any(s.number == ref for s, _, _, _ in bk.written()):
+        return "written"
+    return "planned, not written" if bk.plan.section(ref) else "not in the plan"
+
+
+def pointers(bk, n, doc):
+    """'N.M points to TARGET (state): sentence' for each prose sentence that points to another chapter."""
+    out = []
+    for sec in doc.sections:
+        for _, text in prose_lines(doc, sec):
+            for sent in SENTENCE_SPLIT.split(text.strip()):
+                bare = re.sub(r"`[^`]*`", "", sent)                      # a number inside code is not a reference
+                refs = ["%d.%d" % (int(a), int(b)) for a, b in bf.REF_RE.findall(bare) + SECTION_WORD_RE.findall(bare)]
+                refs += ["chapter %d" % int(c) for c in CHAPTER_WORD_RE.findall(bare)]
+                for ref in dict.fromkeys(r for r in refs if int(r.split()[-1].split(".")[0]) != n):
+                    out.append("- %s points to %s (%s): %s" % (sec.number, ref if ref.startswith("chapter") else "§" + ref,
+                                                               target_state(bk, ref), " ".join(sent.split()[:30])))
+    return out
+
+
+def digest(bk, start=None, end=None):
+    """Print chapters start..end for the read across chapters, in at most DIGEST_WORDS words."""
+    if bk.plan is None or not bk.docs:
+        print("nothing to digest: the book needs PLAN.md and a written chapter")
+        return 1
+    import us_index                              # its definition finder, as KEYTERMS.md uses it
+    ix = us_index.BookIndex(bk.path, os.path.dirname(bk.path.rstrip(os.sep)))
+    start = start or min(bk.docs)
+    end = end or max(bk.docs)
+    sheet = os.path.join(bk.path, "BOOK.md")
+    sheet = bf.read_text(sheet).splitlines() if os.path.exists(sheet) else []
+    head = [l for l in sheet if l.strip() and not l.startswith("Left at end")]
+    left = {int(m.group(1)): l for l in sheet for m in [re.match(r"Left at end of chapter (\d+)", l)] if m}
+
+    def terms_line(n):
+        words = [w for s in bk.docs[n][1].sections for t in s.teaches
+                 for w in (t.words or [ix.term(t.id)[0] if t.id in ix.taught else bf.humanise(t.id)])]
+        return "Chapter %d terms: %s" % (n, ", ".join(words) or "none")
+
+    def detail(n, cap):
+        doc = bk.docs[n][1]
+        out = ["", "## Chapter %d: %s" % (n, doc.title)]
+        for sec in doc.sections:
+            for t in sec.teaches:
+                if t.id in ix.taught and ix.taught[t.id][0].number == sec.number:
+                    term, _, sentence = ix.term(t.id)
+                    words = re.sub(r"\s*\.\.\.$", "", sentence).split()     # us_index marks its own cut with ...
+                    if cap and len(words) > cap:
+                        sentence = " ".join(words[:cap]) + " ..."
+                        trimmed.add(t.id)
+                    out.append("- idea %s (%s, %s): %s" % (term, t.id, sec.number, sentence or "(no definition found)"))
+        for ln, m in checked_marks(doc):
+            sec = bf.section_at(doc, ln)
+            out.append("- fact %s [%s] %s" % (sec.number if sec else n, m["how"], passage_start(doc.lines, ln, 80)))
+        out += pointers(bk, n, doc)
+        if n in left:
+            out.append("- " + left[n])
+        return out
+
+    chosen = [n for n in sorted(bk.docs) if start <= n <= end]
+    before = [n for n in sorted(bk.docs) if n < start]
+    cuts, cap, brief, trimmed = [], None, [], set()
+    while True:
+        lines = head + ([""] if before else []) + [terms_line(n) for n in before]
+        for n in chosen:
+            lines += ["", terms_line(n)] if n in brief else detail(n, cap)
+        words = sum(len(l.split()) for l in lines)
+        if words <= DIGEST_WORDS:
+            break
+        if cap is None:
+            cap = DEF_WORDS                       # us_index's finder stops at 25 words already, as a rule
+        elif len(brief) < len(chosen) - 1:
+            brief.append(chosen[len(brief)])
+        else:
+            cuts.append("still over %s words: give a narrower --from and --to" % bf.fmt_int(DIGEST_WORDS))
+            break
+    if trimmed:
+        cuts.insert(0, "%s shortened to their first %d words" % (plural(len(trimmed), "definition"), DEF_WORDS))
+    if brief:
+        cuts.append("chapter%s %s shown as terms only" % ("s" if len(brief) > 1 else "", ", ".join(map(str, brief))))
+    if cuts:
+        lines += ["", "cut to fit %s words: %s" % (bf.fmt_int(DIGEST_WORDS), "; ".join(cuts))]
+        words = sum(len(l.split()) for l in lines)
+    print("\n".join(lines))
+    ideas = sum(1 for n in chosen for s in bk.docs[n][1].sections for t in s.teaches)
+    marks = sum(len(checked_marks(bk.docs[n][1])) for n in chosen)
+    print("%s, %s, %s, %s" % (plural(len(chosen), "chapter"), plural(ideas, "idea"), plural(marks, "checked fact"),
+                              plural(words, "word")))
+    return 0
 
 # ---------------------------------------------------------------- suspects
 
@@ -1138,28 +1819,7 @@ DESTROYS = re.compile("|".join([
     r"\brmdir\s+/s\b", r"\bdel\s+/[fsq]\b", r"\bdocker\s+(?:rm|rmi|volume\s+rm)\s+-f\b"]), re.I)
 
 
-def passage_above(lines, at, cap=12):
-    """The paragraph or fenced block that ends just above line `at` (1-based), or the one holding text
-    before a marker on the same line; at most `cap` lines, the last ones."""
-    i = at - 1
-    if lines[i].split("<!--")[0].strip():
-        end = i + 1
-    else:
-        while i > 0 and not lines[i - 1].strip():
-            i -= 1
-        end = i
-    if end == 0:
-        return []
-    start = end - 1
-    fence = re.match(r"^\s*(`{3,}|~{3,})", lines[start])
-    if fence:
-        start -= 1
-        while start > 0 and not lines[start].lstrip().startswith(fence.group(1)):
-            start -= 1
-    else:
-        while start > 0 and lines[start - 1].strip() and not lines[start - 1].lstrip().startswith(("#", "<!--")):
-            start -= 1
-    return lines[max(start, end - cap):end]
+passage_above = bf.passage_above        # shared with us_plan.py and us_index.py
 
 
 def risks(bk, n):
@@ -1169,17 +1829,17 @@ def risks(bk, n):
         return 1
     path, doc = bk.docs[n]
     scanned, markers = scan(doc)
-    items = []
-    for m in (m for m in markers if m.kind == "risk"):
+    items, done = [], settled_spans(doc)
+    for m in (m for m in markers if m.kind == "risk" and not settled(done, *span_above(doc.lines, m.start))):
         body = "\n".join("    " + l for l in passage_above(doc.lines, m.start))
         items.append((m.start, "risk %s: %s\n%s" % (bk.rel(path, m.start), m.body or "(no reason given)", body)))
     for ln, kind, text in scanned:
-        if kind == "code" and DESTROYS.search(text):
+        if kind == "code" and DESTROYS.search(text) and not settled(done, ln):
             items.append((ln, "destroys %s: %s" % (bk.rel(path, ln), text.strip())))
     for sec in doc.sections if bk.plan else []:
         items += [(line, "reference %s: %s %s" % (bk.rel(path, line), sec.number, msg))
-                  for level, line, msg in dangling(bk, doc, sec)]
-    for c in (c for s in doc.sections for c in s.code if "unrun" in c.attrs):
+                  for level, line, msg in dangling(bk, doc, sec) if not settled(done, line)]
+    for c in (c for s in doc.sections for c in s.code if "unrun" in c.attrs and not (c.fence and settled(done, *c.fence))):
         items.append((c.line, "unrun %s: id=%s, %s" % (bk.rel(path, c.line), c.id or "?", c.attrs["unrun"] or "no reason")))
     for _, text in sorted(items, key=lambda x: x[0]):
         print(text)
@@ -1193,8 +1853,27 @@ def main(argv):
     if "--help" in argv or "-h" in argv:
         print(__doc__.strip())
         return 0
+    if "--mistakes" in argv:
+        words = [a for a in argv if a != "--mistakes"]
+        if not words:
+            print("usage: us_check.py --mistakes WORDS")
+            return 2
+        return mistakes_for(words)
+    if "--learn" in argv:
+        rest = [a for a in argv if a != "--learn"]
+        book = None
+        if "--book" in rest:
+            i = rest.index("--book")
+            if i + 1 == len(rest):
+                print("--book needs a book")
+                return 2
+            book, rest = rest[i + 1], rest[:i] + rest[i + 2:]
+        if len(rest) != 4:
+            print("usage: us_check.py --learn SUBJECT PATTERN TRUTH SOURCE [--book BOOK]")
+            return 2
+        return learn(*rest, book=book)
     values = {}
-    for name in ("--from", "--lines", "--show"):
+    for name in ("--from", "--lines", "--show", "--to", "--stale"):
         if name in argv:
             i = argv.index(name)
             if i + 1 == len(argv) or (name != "--show" and not argv[i + 1].isdigit()):
@@ -1203,9 +1882,13 @@ def main(argv):
             values[name] = argv[i + 1]
             argv = argv[:i] + argv[i + 2:]
     flags = {a for a in argv if a.startswith("--")}
-    unknown = flags - {"--tokens", "--suspects", "--prose", "--all", "--risks"}
+    unknown = flags - {"--tokens", "--suspects", "--prose", "--all", "--risks", "--facts", "--digest"}
     if unknown:
-        print("unknown option %s; use --risks, --suspects [--all], --prose, --show or --tokens" % ", ".join(sorted(unknown)))
+        print("unknown option %s; use --risks, --suspects [--all], --prose, --show, --facts, --digest, --mistakes, "
+              "--learn or --tokens" % ", ".join(sorted(unknown)))
+        return 2
+    if "--stale" in values and "--facts" not in flags:
+        print("--stale goes with --facts: us_check.py BOOK [N] --facts --stale MONTHS")
         return 2
     if "--all" in flags and "--suspects" not in flags:
         print("--all goes with --suspects: us_check.py BOOK N --suspects --all")
@@ -1217,6 +1900,17 @@ def main(argv):
             print("chapter must be a number: us_check.py BOOK N")
             return 2
         only = int(args[1])
+    if "--facts" in flags:
+        if not args:
+            print("usage: us_check.py BOOK [N] --facts [--stale MONTHS]")
+            return 2
+        stale = int(values["--stale"]) if "--stale" in values else None
+        return facts(Book(bf.resolve_book(args[0])), only, stale)
+    if "--digest" in flags:
+        if not args or only is not None:
+            print("usage: us_check.py BOOK --digest [--from A] [--to B]")
+            return 2
+        return digest(Book(bf.resolve_book(args[0])), int(values.get("--from", 0)) or None, int(values.get("--to", 0)) or None)
     if "--suspects" in flags:
         if not args or only is None:
             print("usage: us_check.py BOOK N --suspects [--all]")

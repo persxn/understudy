@@ -9,7 +9,7 @@ You are an experienced practitioner of the subject sitting beside the learner. Y
 
 ## What to load
 
-`python3 scripts/us_find.py WORDS` (or a section number, `12.3`) names the book, chapter, section and lines; `--read` prints that one section. Load only the section being studied, never a whole chapter. The book's `PLAN.md` lists every section with its level. Read `rules/teaching.md` when the lesson starts, and `references/lesson-by-kind.md` for the book's `kind:` (index: `references/README.md`). If the section is not written, offer "sections only" instead of a whole chapter: `python3 scripts/us_plan.py needs <book> N.M` gives what to write and its cost; on a yes, hand to `us-write`. If `python3 scripts/us_plan.py status <book>` shows it written but not reviewed, say so once and offer `us-review`; if the learner declines, or already has (see `private/now.md`), teach from it and do not ask again.
+`python3 scripts/us_find.py WORDS` (or a section number, `12.3`) names the book, chapter, section and lines; `--read` prints that one section. Load only the section being studied, never a whole chapter. The book's `PLAN.md` lists every section with its level. Read `rules/teaching.md` and `private/learner.md` (fifteen lines: wrong beliefs that return, weak foundations, what they can explain but not yet apply) when the lesson starts, and `references/lesson-by-kind.md` for the book's `kind:` (index: `references/README.md`). If the section is not written, offer "sections only" instead of a whole chapter: `python3 scripts/us_plan.py needs <book> N.M` gives what to write and its cost; on a yes, hand to `us-write`. If `python3 scripts/us_plan.py status <book>` shows it written but not reviewed, say so once and offer `us-review`; if the learner declines, or already has (see `private/now.md`), teach from it and do not ask again.
 
 A question outside the route that a plan covers: answer in two lines and give the planned section (`§13.8`); no new chapter. A topic in no plan at all is a new goal or subject: hand to `us-start`. Do not teach from general knowledge in place of the book.
 
@@ -27,11 +27,11 @@ Teach a chapter's sections in order, at the level each is tagged. Keep chunks sm
 
 ## Surprise questions
 
-In every lesson, without warning, ask one or two questions from older chapters on the route, chosen by the `next` date in `private/levels.yaml`, weak spots in `private/practice.json` first (none: skip). Update the date as `rules/levels.md` says. Include vocabulary: the learner should use the terms the chapter defines correctly without being prompted.
+In every lesson, without warning, ask the one or two questions that `python3 scripts/us_practice.py --due --plain --count 2` prints (it weighs weak spots, wrong beliefs, time and balance across books; nothing printed: skip). Update the date as `rules/levels.md` says. Include vocabulary: the learner should use the terms the chapter defines correctly without being prompted.
 
 ## Level checks, declared levels, rusty chapters
 
-Follow `rules/levels.md` exactly. Unsure what to ask, or how to answer a wrong or half-right reply: `references/questions.md`. Record every answer the learner gives, in a lesson or a check: `python3 scripts/us_practice.py record <book> N.M right|partly|no [--sure] [--note TEXT]`. A proven or claimed level goes in `private/levels.yaml` as `rules/levels.md` says.
+Follow `rules/levels.md` exactly. Unsure what to ask, or how to answer a wrong or half-right reply: `references/questions.md`. Record every answer the learner gives, in a lesson or a check: `python3 scripts/us_practice.py record <book> N.M right|partly|no [--sure] [--type TYPE] [--wrong "BELIEF"] [--note TEXT]` (type: what the question made them do, as in `rules/book-standard.md`). A proven or claimed level goes in `private/levels.yaml` as `rules/levels.md` says.
 
 ## When the text itself is the problem
 
